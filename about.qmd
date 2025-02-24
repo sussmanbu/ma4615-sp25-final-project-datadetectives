@@ -11,13 +11,25 @@ This comes from the file `about.qmd`.
 This is a website for the final project for MA[46]15 Data Science with R by Team TEAMNAME.
 The members of this team are below.
 
-## Jiaming Hu
+## Chandini Toleti
 
-Jiaming is a Ph.D. student in Stats and is the Teaching Fellow for the course.
+Chandini is majoring in Mathematics and Computer Science at Boston University, Class of 2026'
 
-## Dan Sussman
+## Ranbir
 
-Dan is a professor in the Math/Stat department and is the instructor for the course. [Github](https://github.com/dpmcsuss)
+Description
+
+## Patrio
+
+Description
+
+## Aretha
+
+Description
+
+## Emir
+
+Description
 
 <!-- Please leave in the information below -->
 

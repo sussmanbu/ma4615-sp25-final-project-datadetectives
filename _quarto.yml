@@ -7,7 +7,7 @@ project:
   ]
 
 website:
-  title: "MA [46]15 Final Project"
+  title: "MA 415 Data Detectives Final Project"
   navbar:
     right:
       - about.qmd
