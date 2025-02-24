@@ -29,7 +29,7 @@ Description
 
 ## Emir
 
-Description
+Emir is a sophomore majoring in Economics & Mathematics alongside Data Science at Boston University.
 
 <!-- Please leave in the information below -->
 
