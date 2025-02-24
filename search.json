@@ -98,18 +98,39 @@
     "text": "This comes from the file about.qmd.\nThis is a website for the final project for MA[46]15 Data Science with R by Team TEAMNAME. The members of this team are below."
   },
   {
-    "objectID": "about.html#jiaming-hu",
-    "href": "about.html#jiaming-hu",
+    "objectID": "about.html#chandini-toleti",
+    "href": "about.html#chandini-toleti",
     "title": "About",
-    "section": "Jiaming Hu",
-    "text": "Jiaming Hu\nJiaming is a Ph.D. student in Stats and is the Teaching Fellow for the course."
+    "section": "Chandini Toleti",
+    "text": "Chandini Toleti\nChandini is majoring in Mathematics and Computer Science at Boston University, Class of 2026’"
   },
   {
-    "objectID": "about.html#dan-sussman",
-    "href": "about.html#dan-sussman",
+    "objectID": "about.html#ranbir",
+    "href": "about.html#ranbir",
     "title": "About",
-    "section": "Dan Sussman",
-    "text": "Dan Sussman\nDan is a professor in the Math/Stat department and is the instructor for the course. Github\n\n\nAbout this Template.\nThis is based off of the standard Quarto website template from RStudio (2023.09.0 Build 463)."
+    "section": "Ranbir",
+    "text": "Ranbir\nDescription"
+  },
+  {
+    "objectID": "about.html#patrio",
+    "href": "about.html#patrio",
+    "title": "About",
+    "section": "Patrio",
+    "text": "Patrio\nDescription"
+  },
+  {
+    "objectID": "about.html#aretha",
+    "href": "about.html#aretha",
+    "title": "About",
+    "section": "Aretha",
+    "text": "Aretha\nDescription"
+  },
+  {
+    "objectID": "about.html#emir",
+    "href": "about.html#emir",
+    "title": "About",
+    "section": "Emir",
+    "text": "Emir\nDescription\n\n\nAbout this Template.\nThis is based off of the standard Quarto website template from RStudio (2023.09.0 Build 463)."
   },
   {
     "objectID": "big_picture.html",
