@@ -1,6 +1,6 @@
 ---
 title: "About"
-image: images/profile.jpg
+image: images/data-detectives-logo.png
 about:
   template: jolla
 ---
