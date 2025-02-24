@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/data.html</loc>
-    <lastmod>2025-02-24T19:50:55.703Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/analysis.html</loc>
-    <lastmod>2025-02-24T19:50:55.702Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/index.html</loc>
-    <lastmod>2025-02-24T19:50:55.712Z</lastmod>
-  </url>
-  <url>
     <loc>https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/posts/2024-10-04-general-tips/general-tips.html</loc>
-    <lastmod>2025-02-24T19:50:55.713Z</lastmod>
+    <lastmod>2025-02-21T20:11:58.365Z</lastmod>
   </url>
   <url>
     <loc>https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/posts/2023-10-15-getting-started/getting-started.html</loc>
-    <lastmod>2025-02-24T19:50:55.713Z</lastmod>
+    <lastmod>2025-02-21T20:11:58.358Z</lastmod>
   </url>
   <url>
-    <loc>https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/posts/2023-10-13-first-team-meeting/first-team-meeting.html</loc>
-    <lastmod>2025-02-24T19:50:55.713Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/posts/2023-12-20-examples/examples.html</loc>
-    <lastmod>2025-02-24T19:50:55.713Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/about.html</loc>
-    <lastmod>2025-02-24T19:54:09.540Z</lastmod>
+    <loc>https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/index.html</loc>
+    <lastmod>2025-02-21T20:11:58.353Z</lastmod>
   </url>
   <url>
     <loc>https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/big_picture.html</loc>
-    <lastmod>2025-02-24T19:50:55.703Z</lastmod>
+    <lastmod>2025-02-21T20:11:58.316Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/about.html</loc>
+    <lastmod>2025-02-24T20:09:54.891Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/analysis.html</loc>
+    <lastmod>2025-02-21T20:11:58.316Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/data.html</loc>
+    <lastmod>2025-02-21T20:11:58.316Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/posts/2023-10-13-first-team-meeting/first-team-meeting.html</loc>
+    <lastmod>2025-02-21T20:11:58.358Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/posts/2023-12-20-examples/examples.html</loc>
+    <lastmod>2025-02-21T20:11:58.358Z</lastmod>
   </url>
 </urlset>
