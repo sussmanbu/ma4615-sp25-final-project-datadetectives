@@ -1,11 +1,11 @@
 ---
-title: "Blog Post 21"
+title: "Blog Post #2"
 author: "Patrio Marcus, Chandini Toleti, Ranbir, Aretha McDonald, Emir"
 date: "2025-03-17"
 date-modified: "2025-03-17"
 draft: FALSE
 ---
-# Blog post 1
+# Blog post 2
 This is DataDetectives' second blog post, where we dive into detail regarding one of the data sets we looked at in the past blog post.
 
 
