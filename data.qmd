@@ -61,7 +61,7 @@ To link to this file, you can use `[cleaning script](/scripts/clean_data.R)` wic
 
 You will
 
-* Describe where/how to find data.
+### Describe where/how to find data.
   * You must include a link to the original data source(s). Make sure to provide attribution to those who collected the data.
   * Why was the data collected/curated? Who put it together? (This is important, if you don't know why it was collected then that might not be a good dataset to look at.
 * Describe the different data files used and what each variable means. 
