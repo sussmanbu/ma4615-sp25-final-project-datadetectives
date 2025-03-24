@@ -29,7 +29,36 @@ colnames(nls_data_clean) <- c(
   "Age_2010"
 )
 
+nls_data_clean <- nls_data %>%
+  select(
+    R000010,   # Case ID
+    R0173600,  # Sample ID
+    R0214700,  # Race
+    R0214800,  # Sex
+    T2272800,  # Highest Grade Completed
+    T3045300,  # Total Income from Wages
+    T3108400,  # Marital Status
+    T3108700   # Age at Interview (2010)
+  ) %>%
+  rename(
+    Case_ID = R000010,
+    Sample_ID = R0173600,
+    Race = R0214700,
+    Sex = R0214800,
+    Highest_Grade_Completed = T2272800,
+    Total_Income_Prev_Year = T3045300,
+    Marital_Status = T3108400,
+    Age_2010 = T3108700
+  )
+
 ### 4. REMOVE non-interviews(-5)
+nls_data_clean <- nls_data_clean %>%
+  filter(
+    Race >= 0,
+    Sex >= 0,
+    Highest_Grade_Completed >= 0,
+    Marital_Status >= 0
+  )
 
 ### 5. DECODE race (1 - Hispanic, 2- Black, 3 - Non-Black, Non-Hispanic)
 
