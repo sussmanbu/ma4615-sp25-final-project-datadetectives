@@ -69,6 +69,14 @@ nls_data_clean <- nls_data_clean %>%
 ###       11 - 11TH GRADE, 12 - 12TH GRADE, 13 - 1ST YEAR COLLEGE, 14 - 2ND YEAR COLLEGE, 15 - 3RD YEAR COLLEGE, ...
 ###       16 - 4TH YEAR COLLEGE, 17 - 5TH YEAR COLLEGE, 18 - 6TH YEAR COLLEGE, 19 - 7TH YEAR COLLEGE, 20 - 8TH YEAR COLLEGE OR MORE, 95 - UNGRADED)
 
+nls_data_clean <- nls_data_clean %>%
+  mutate(
+    Highest_Grade_Completed = case_when(
+      Highest_Grade_Completed >= 1 & Highest_Grade_Completed <= 20 ~ grade_levels[Highest_Grade_Completed],
+      Highest_Grade_Completed == 95 ~ "UNGRADED",
+      TRUE ~ NA_character_
+    )
+  )
 
 
 
