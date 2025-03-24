@@ -131,6 +131,7 @@ print(dim(nls_data_clean))
 
 # 5. Save Cleaned Data
 write_rds(nls_data_clean, here("dataset", "nls_clean.rds"))
+write.csv(nls_data_clean, here("dataset", "nls_clean.csv"))
 
 # Verification
 print(colSums(is.na(nls_data_clean)))
