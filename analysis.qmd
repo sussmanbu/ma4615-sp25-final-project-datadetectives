@@ -27,7 +27,7 @@ The code below shows an example of loading the loan refusal data set (which you 
 ```{r}
 library(tidyverse)
 print(getwd())
-data <- read_rds(here::here("dataset/loan_refusal_clean.rds"))
+#data <- read_rds(here::here("dataset/loan_refusal_clean.rds"))
 ```
 
 ## Note on Attribution
