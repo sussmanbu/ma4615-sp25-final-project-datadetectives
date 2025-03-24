@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Data Detectives">
+<meta name="dcterms.date" content="2025-03-24">
+<meta name="description" content="This is Data Detectives’ third blog post where we further investigate, load, and clean our initial dataset.">
 
-<title>MA [46]15 Final Project – MA 415 Data Detectives Final Project</title>
+<title>Blog Post 3 – MA 415 Data Detectives Final Project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +26,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,77 +69,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-subtitle','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">MA 415 Data Detectives Final Project</span>
     </a>
   </div>
@@ -149,19 +92,19 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./big_picture.html"> 
+    <a class="nav-link" href="../../big_picture.html"> 
 <span class="menu-text">Big Picture</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./analysis.html"> 
+    <a class="nav-link" href="../../analysis.html"> 
 <span class="menu-text">Analysis</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./data.html"> 
+    <a class="nav-link" href="../../data.html"> 
 <span class="menu-text">Data</span></a>
   </li>  
 </ul>
@@ -174,254 +117,67 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">MA [46]15 Final Project</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">Blog Post 3</h1>
+            <p class="subtitle lead">Data Loading/Cleaning</p>
+                  <div>
+        <div class="description">
+          <p>This is Data Detectives’ third blog post where we further investigate, load, and clean our initial dataset.</p>
+        </div>
+      </div>
+                </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Data Detectives </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 24, 2025</p>
+      </div>
+    </div>
     
+      <div>
+      <div class="quarto-title-meta-heading">Modified</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date-modified">March 24, 2025</p>
+      </div>
+    </div>
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(7)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
-<p><img src="images/data-science.png" class="img-fluid"></p>
-<section id="final-project-due-may-5-2024-at-1159pm." class="level1">
-<h1>Final Project due May 5, 2024 at 11:59pm.</h1>
-<p>This comes from the <code>index.qmd</code> file.</p>
-
+<section id="data-cleaning" class="level2">
+<h2 class="anchored" data-anchor-id="data-cleaning">Data Cleaning</h2>
+<p>TODO: Use figures or tables to help explain the data. For example, showing a histogram or bar chart for a particularly important variable can provide a quick overview of the values that variable tends to take. TODO: link clean_data.R in placeholder</p>
+<p>Our data set required significant cleaning. In order to work with our CSV file, we needed to decode the integers that served as placeholders for column names, remove “non-interview” data points that we can’t compare across years, and decode integer values representing race, grade, etc. All the R scripts we used to load and clean the data can be found <a href="https://www.bls.gov/nls/nlsy79.htm">here</a>. For this process, we primarily depended on the tidyverse library and other methods discussed in lecture.</p>
+<p>To begin with, working with integer-coded columns would have been incredibly difficult. To combat this issue, we created began with gathering all the integer codes and their String equivalents. Next, we created R scripts to rename all our selected columns based on their integer codes. Our next task was removing non-interview values. These rows, indicated by -5 values, imply that the interviewee either quit or was removed from the data sampling. Therefore, they may be included in earlier years and not in late years. To improve our modeling, we must remove these values.</p>
+<p>Another challenge was modifying actual data points in every row. For example, rather than listing a respondents race, the information is coded in integers (i.e.&nbsp;1 = “black”, 2 = “white”, etc.) This would be incredibly difficult to keep track of in the long term scope of our project, therefore, we decided to modify these values. Columns race, sex, highest grade completed, and marital status were all encoded using this style. Consequently, we used similar R scripts to decode all of these columns.</p>
+<p>Now that our initial dataset is clean we plan to create more visuals to analyze this set, determine our next dataset to combine with this one, choose which additional data from this source to include (and clean of course).</p>
 
 
 </section>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1742788800000" data-listing-file-modified-sort="1742844219971" data-listing-date-modified-sort="1742788800000" data-listing-reading-time-sort="2" data-listing-word-count-sort="336">
-<div class="thumbnail">
-<p><a href="./posts/2025-03-24-blog-post-3/blog-post-3.html" class="no-external"></a></p><a href="./posts/2025-03-24-blog-post-3/blog-post-3.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2025-03-24-blog-post-3/blog-post-3.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-03-24-blog-post-3/blog-post-3.html" class="no-external">Blog Post 3</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-03-24-blog-post-3/blog-post-3.html" class="no-external">Data Loading/Cleaning</a>
-</div>
-<div class="listing-description">
-<a href="./posts/2025-03-24-blog-post-3/blog-post-3.html" class="no-external">This is Data Detectives’ third blog post where we further investigate, load, and clean our initial dataset. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-03-24-blog-post-3/blog-post-3.html" class="no-external">
-<div class="listing-date">
-Mar 24, 2025
-</div>
-<div class="listing-author">
-Data Detectives
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1742184000000" data-listing-file-modified-sort="1742582173427" data-listing-date-modified-sort="1742184000000" data-listing-reading-time-sort="2" data-listing-word-count-sort="380">
-<div class="thumbnail">
-<p><a href="./posts/2025-03-17-blog-post-2/blog-post-2.html" class="no-external"></a></p><a href="./posts/2025-03-17-blog-post-2/blog-post-2.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2025-03-17-blog-post-2/blog-post-2.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-03-17-blog-post-2/blog-post-2.html" class="no-external">Blog Post #2</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-03-17-blog-post-2/blog-post-2.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/2025-03-17-blog-post-2/blog-post-2.html" class="no-external">This is DataDetectives’ second blog post, where we dive into detail regarding one of the data sets we looked at in the past blog post.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-03-17-blog-post-2/blog-post-2.html" class="no-external">
-<div class="listing-date">
-Mar 17, 2025
-</div>
-<div class="listing-author">
-Patrio Marcus, Chandini Toleti, Ranbir, Aretha McDonald, Emir
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1740546000000" data-listing-file-modified-sort="1742582173427" data-listing-date-modified-sort="1740546000000" data-listing-reading-time-sort="3" data-listing-word-count-sort="525">
-<div class="thumbnail">
-<p><a href="./posts/2025-02-26-blog-post-1/blog-post-1.html" class="no-external"></a></p><a href="./posts/2025-02-26-blog-post-1/blog-post-1.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2025-02-26-blog-post-1/blog-post-1.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-02-26-blog-post-1/blog-post-1.html" class="no-external">Blog Post #1</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-02-26-blog-post-1/blog-post-1.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/2025-02-26-blog-post-1/blog-post-1.html" class="no-external">This is DataDetectives’ first blog post, where we describe potential datasets to use for our final project.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-02-26-blog-post-1/blog-post-1.html" class="no-external">
-<div class="listing-date">
-Feb 26, 2025
-</div>
-<div class="listing-author">
-Patrio Marcus, Chandini Toleti, Ranbir, Aretha McDonald, Emir
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1728014400000" data-listing-file-modified-sort="1742582173426" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="232">
-<div class="thumbnail">
-<p><a href="./posts/2024-10-04-general-tips/general-tips.html" class="no-external"></a></p><a href="./posts/2024-10-04-general-tips/general-tips.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2024-10-04-general-tips/general-tips.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2024-10-04-general-tips/general-tips.html" class="no-external">General Tips</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2024-10-04-general-tips/general-tips.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/2024-10-04-general-tips/general-tips.html" class="no-external">Some small but important tips to follow. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2024-10-04-general-tips/general-tips.html" class="no-external">
-<div class="listing-date">
-Oct 4, 2024
-</div>
-<div class="listing-author">
-Daniel Sussman
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="" data-listing-date-sort="1708923600000" data-listing-file-modified-sort="1742582173426" data-listing-date-modified-sort="1708923600000" data-listing-reading-time-sort="1" data-listing-word-count-sort="56">
-<div class="thumbnail">
-<p><a href="./posts/2023-12-20-examples/examples.html" class="no-external"></a></p><a href="./posts/2023-12-20-examples/examples.html" class="no-external">
-<p class="card-img-top"><img src="posts/2023-12-20-examples/examples_files/figure-html/unnamed-chunk-1-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/2023-12-20-examples/examples.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2023-12-20-examples/examples.html" class="no-external">Examples</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2023-12-20-examples/examples.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-
-</div>
-<div class="listing-description">
-<a href="./posts/2023-12-20-examples/examples.html" class="no-external">Here are some examples of changing the size of a figure.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2023-12-20-examples/examples.html" class="no-external">
-<div class="listing-date">
-Feb 26, 2024
-</div>
-<div class="listing-author">
-Daniel Sussman
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="" data-listing-date-sort="1708664400000" data-listing-file-modified-sort="1742582173426" data-listing-date-modified-sort="1708664400000" data-listing-reading-time-sort="3" data-listing-word-count-sort="402">
-<div class="thumbnail">
-<p><a href="./posts/2023-10-15-getting-started/getting-started.html" class="no-external"></a></p><a href="./posts/2023-10-15-getting-started/getting-started.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2023-10-15-getting-started/getting-started.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2023-10-15-getting-started/getting-started.html" class="no-external">Getting started</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2023-10-15-getting-started/getting-started.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-
-</div>
-<div class="listing-description">
-<a href="./posts/2023-10-15-getting-started/getting-started.html" class="no-external">Directions to set up your website and create your first post. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2023-10-15-getting-started/getting-started.html" class="no-external">
-<div class="listing-date">
-Feb 23, 2024
-</div>
-<div class="listing-author">
-Daniel Sussman
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="" data-listing-date-sort="1708491600000" data-listing-file-modified-sort="1742582173426" data-listing-date-modified-sort="1708491600000" data-listing-reading-time-sort="3" data-listing-word-count-sort="404">
-<div class="thumbnail">
-<p><a href="./posts/2023-10-13-first-team-meeting/first-team-meeting.html" class="no-external"></a></p><a href="./posts/2023-10-13-first-team-meeting/first-team-meeting.html" class="no-external">
-<p><img loading="lazy" src="./posts/2023-10-13-first-team-meeting/a-business-team-giving-fist-bump-in-agreement.jpg" class="thumbnail-image"></p>
-</a><p><a href="./posts/2023-10-13-first-team-meeting/first-team-meeting.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2023-10-13-first-team-meeting/first-team-meeting.html" class="no-external">First Team Meeting</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2023-10-13-first-team-meeting/first-team-meeting.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-
-</div>
-<div class="listing-description">
-<a href="./posts/2023-10-13-first-team-meeting/first-team-meeting.html" class="no-external">This post details the steps you’ll take for your first team meeting. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2023-10-13-first-team-meeting/first-team-meeting.html" class="no-external">
-<div class="listing-date">
-Feb 21, 2024
-</div>
-<div class="listing-author">
-Daniel Sussman
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

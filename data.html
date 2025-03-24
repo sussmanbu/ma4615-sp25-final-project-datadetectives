@@ -127,7 +127,13 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#sharing-your-data" id="toc-sharing-your-data" class="nav-link" data-scroll-target="#sharing-your-data">Sharing your data</a></li>
   <li><a href="#clean-data-script" id="toc-clean-data-script" class="nav-link" data-scroll-target="#clean-data-script">Clean data script</a></li>
   </ul></li>
-  <li><a href="#rubric-on-this-page" id="toc-rubric-on-this-page" class="nav-link" data-scroll-target="#rubric-on-this-page">Rubric: On this page</a></li>
+  <li><a href="#rubric-on-this-page" id="toc-rubric-on-this-page" class="nav-link" data-scroll-target="#rubric-on-this-page">Rubric: On this page</a>
+  <ul class="collapse">
+  <li><a href="#describe-wherehow-to-find-data." id="toc-describe-wherehow-to-find-data." class="nav-link" data-scroll-target="#describe-wherehow-to-find-data.">Describe where/how to find data.</a></li>
+  </ul></li>
+  <li><a href="#our-dataset" id="toc-our-dataset" class="nav-link" data-scroll-target="#our-dataset">Our DataSet</a></li>
+  <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning">Data Cleaning</a></li>
+  <li><a href="#data-combination" id="toc-data-combination" class="nav-link" data-scroll-target="#data-combination">Data Combination</a></li>
   </ul>
 </nav>
     </div>
@@ -193,12 +199,11 @@ ul.task-list li input[type="checkbox"] {
 <section id="rubric-on-this-page" class="level2">
 <h2 class="anchored" data-anchor-id="rubric-on-this-page">Rubric: On this page</h2>
 <p>You will</p>
-<ul>
-<li>Describe where/how to find data.
+<section id="describe-wherehow-to-find-data." class="level3">
+<h3 class="anchored" data-anchor-id="describe-wherehow-to-find-data.">Describe where/how to find data.</h3>
 <ul>
 <li>You must include a link to the original data source(s). Make sure to provide attribution to those who collected the data.</li>
 <li>Why was the data collected/curated? Who put it together? (This is important, if you don’t know why it was collected then that might not be a good dataset to look at.</li>
-</ul></li>
 <li>Describe the different data files used and what each variable means.
 <ul>
 <li>If you have many variables then only describe the most relevant ones, possibly grouping together variables that are similar, and summarize the rest.</li>
@@ -212,6 +217,44 @@ ul.task-list li input[type="checkbox"] {
 <li>Describe and show code for how you combined multiple data files and any cleaning that was necessary for that.</li>
 <li>Some repetition of what you do in your <code>clean_data.R</code> file is fine and encouraged if it helps explain what you did.</li>
 </ul></li>
+<li>Organization, clarity, cleanliness of the page
+<ul>
+<li>Make sure to remove excessive warnings, use clean easy-to-read code (without side scrolling), organize with sections, use bullets and other organization tools, etc.</li>
+<li>This page should be self-contained.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="our-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="our-dataset">Our DataSet</h2>
+<ul>
+<li>Describe where/how to find data.
+<ul>
+<li>You must include a link to the original data source(s). Make sure to provide attribution to those who collected the data.</li>
+<li>Why was the data collected/curated? Who put it together? (This is important, if you don’t know why it was collected then that might not be a good dataset to look at.</li>
+</ul></li>
+<li>Describe the different data files used and what each variable means.
+<ul>
+<li>If you have many variables then only describe the most relevant ones, possibly grouping together variables that are similar, and summarize the rest.</li>
+</ul></li>
+</ul>
+</section>
+<section id="data-cleaning" class="level2">
+<h2 class="anchored" data-anchor-id="data-cleaning">Data Cleaning</h2>
+<p>TODO: Use figures or tables to help explain the data. For example, showing a histogram or bar chart for a particularly important variable can provide a quick overview of the values that variable tends to take. TODO: link clean_data.R in placeholder</p>
+<p>Our data set required significant cleaning. In order to work with our CSV file, we needed to decode the integers that served as placeholders for column names, remove “non-interview” data points that we can’t compare across years, and decode integer values representing race, grade, etc. All the R scripts we used to load and clean the data can be found <a href="https://www.bls.gov/nls/nlsy79.htm">here</a>. For this process, we primarily depended on the tidyverse library and other methods discussed in lecture.</p>
+<p>To begin with, working with integer-coded columns would have been incredibly difficult. To combat this issue, we created began with gathering all the integer codes and their String equivalents. Next, we created R scripts to rename all our selected columns based on their integer codes.</p>
+<p>The script is in our clean_data.R as follows:</p>
+<p>Our next task was removing non-interview values. These rows, indicated by -5 values, imply that the interviewee either quit or was removed from the data sampling. Therefore, they may be included in earlier years and not in late years. To improve our modeling, we must remove these values.</p>
+<p>In doing so, we discovered other null values that required further debugging and cleaning. The R script to do both these tasks is as follows:</p>
+<p>Another challenge was modifying actual data points in every row. For example, rather than listing a respondents race, the information is coded in integers (i.e.&nbsp;1 = “black”, 2 = “white”, etc.) This would be incredibly difficult to keep track of in the long term scope of our project, therefore, we decided to modify these values.</p>
+<p>Columns race, sex, highest grade completed, and marital status were all encoded using this style. Consequently, we used similar R scripts to decode all of these columns. The R script to do so is as follows:</p>
+</section>
+<section id="data-combination" class="level2">
+<h2 class="anchored" data-anchor-id="data-combination">Data Combination</h2>
+<ul>
+<li>Describe and show code for how you combined multiple data files and any cleaning that was necessary for that.</li>
+<li>Some repetition of what you do in your <code>clean_data.R</code> file is fine and encouraged if it helps explain what you did.</li>
 <li>Organization, clarity, cleanliness of the page
 <ul>
 <li>Make sure to remove excessive warnings, use clean easy-to-read code (without side scrolling), organize with sections, use bullets and other organization tools, etc.</li>
