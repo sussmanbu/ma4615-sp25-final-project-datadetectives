@@ -21,7 +21,11 @@ To begin with, working with integer-coded columns would have been incredibly dif
 The script is in our clean_data.R as follows: 
 
 ```{r c1}
+
   # Load Data with Explicit Column Types
+  library(tidyverse)
+  library(here)
+
 nls_data <- read_csv(
   here("dataset", "nls_initial_data_updated.csv"),
   col_types = cols(
