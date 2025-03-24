@@ -24,7 +24,7 @@
 # NOTE: Salary and wages are already decoded, Age at Interview Data already decoded
 
 library(tidyverse)
-
+library(here)
 
 # 1. Load Data with Explicit Column Types
 nls_data <- read_csv(
@@ -81,11 +81,30 @@ nls_data_clean <- nls_data %>%
       TRUE ~ NA_character_
     ),
       Highest_Grade_Completed = case_when(
-        Highest_Grade_Completed >= 1 & Highest_Grade_Completed <= 20 ~ grade_levels[Highest_Grade_Completed],
-        Highest_Grade_Completed == 95 ~ "UNGRADED",
+        T2272800 == 1 ~ "1ST GRADE", 
+        T2272800 == 2 ~ "2ND GRADE", 
+        T2272800 == 3 ~ "3RD GRADE",
+        T2272800 == 4 ~ "4TH GRADE", 
+        T2272800 == 5 ~ "5TH GRADE", 
+        T2272800 == 6 ~ "6TH GRADE", 
+        T2272800 == 7 ~ "7TH GRADE", 
+        T2272800 == 8 ~ "8TH GRADE", 
+        T2272800 == 9 ~ "9TH GRADE", 
+        T2272800 == 10 ~ "10TH GRADE", 
+        T2272800 == 11 ~ "11TH GRADE", 
+        T2272800 == 12 ~ "12TH GRADE", 
+        T2272800 == 13 ~ "1ST YEAR COLLEGE", 
+        T2272800 == 14 ~ "2ND YEAR COLLEGE", 
+        T2272800 == 15 ~ "3RD YEAR COLLEGE", 
+        T2272800 == 16 ~ "4TH YEAR COLLEGE", 
+        T2272800 == 17 ~ "5TH YEAR COLLEGE", 
+        T2272800 == 18 ~ "6TH YEAR COLLEGE", 
+        T2272800 == 19 ~ "7TH YEAR COLLEGE", 
+        T2272800 == 20 ~ "8TH YEAR COLLEGE OR MORE", 
+        T2272800 == 95 ~ "UNGRADED",
         TRUE ~ NA_character_
       ),
-    Marital_Status = case_when(
+  Marital_Status = case_when(
       T3108400 == 0 ~ "Never Married",
       T3108400 == 1 ~ "Married",
       T3108400 == 2 ~ "Separated",
@@ -95,7 +114,7 @@ nls_data_clean <- nls_data %>%
     )
   ) %>%
   # Convert categorical variables to factors
-  mutate(across(c(Race, Sex, Marital_Status), as.factor)) %>%
+  mutate(across(c(Race, Sex, Highest_Grade_Completed, Marital_Status), as.factor)) %>%
   # Remove original numeric columns
   select(-c(R0214700, R0214800, T2272800, T3108400)) %>%
   # Rename columns
