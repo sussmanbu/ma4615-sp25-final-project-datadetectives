@@ -74,6 +74,8 @@ library(tidyverse)
 nls_data_clean <- read_rds("dataset/nls_clean.rds")
 
 #income vs highest grade completed
+ggplot(nls_data_clean, aes(x =Highest_Grade_Completed, y=Total_Income_Prev_Year )) + geom_boxplot()
+#change axis tilts and scale 
 ```
 
 ```{r aretha's graphs}
