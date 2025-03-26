@@ -68,3 +68,9 @@ You will
 -   Organization and cleanliness.
     -   Make sure to remove excessive warnings, hide all code, organize with sections or multiple pages, use bullets, etc.
     -   This page should be self-contained, i.e. provide a description of the relevant data.
+    
+```{r chandini's graphs}
+```
+
+```{r aretha's graphs}
+```
