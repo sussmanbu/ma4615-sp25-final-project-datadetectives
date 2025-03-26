@@ -70,6 +70,10 @@ You will
     -   This page should be self-contained, i.e. provide a description of the relevant data.
     
 ```{r chandini's graphs}
+library(tidyverse)
+nls_data_clean <- read_rds("dataset/nls_clean.rds")
+
+#income vs highest grade completed
 ```
 
 ```{r aretha's graphs}
