@@ -12,7 +12,24 @@ draft: FALSE
   
 ## Data Cleaning
 
-TODO:  Use figures or tables to help explain the data. For example, showing a histogram or bar chart for a particularly important variable can provide a quick overview of the values that variable tends to take.
+Here are some basic figures we created after cleaning, these are meant to show a quick breakdown of some of the variables we cleaned. 
+
+```{r datacleaning}
+library(tidyverse)
+nls_data_clean <- read_rds("dataset/nls_clean.rds")
+
+#count of races that participated 
+ggplot(nls_data_clean, aes(x = Race, fill = Sex)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Participant Count by Race and Sex", x = "Race", y = "Count")
+
+
+#count of different marital statuses found in survey
+ggplot(nls_data_clean, aes(x = Marital_Status)) +
+  geom_bar(fill = "orchid") +
+  labs(title = "Marital Status Distribution", x = "Marital Status", y = "Count")
+
+```
 
 Our data set required significant cleaning. In order to work with our CSV file, we needed to decode the integers that served as placeholders for column names, remove "non-interview" data points that we can't compare across years, and decode integer values representing race, grade, etc. For this process, we primarily depended on the tidyverse library and other methods discussed in lecture. 
 
