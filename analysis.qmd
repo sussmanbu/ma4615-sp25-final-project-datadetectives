@@ -106,4 +106,21 @@ ggplot(income_by_grade, aes(x = Highest_Grade_Completed, y = mean_income, group 
 ```
 
 ```{r aretha graphs}
+library(scales)
+nls_data_clean <- read_rds("dataset/nls_clean.rds")
+
+nls_data_clean <- nls_data_clean %>%
+  filter(!is.na(Region))
+
+# Regional Variation in Gender Income Gap
+ggplot(nls_data_clean, aes(x = Region, y = Total_Income_Prev_Year, fill = Sex)) +
+  geom_boxplot(outlier.alpha = 0.5, outlier.size = 1) +
+  labs(title = "Income Distribution by Region and Gender",
+       x = "Region", 
+       y = "Total Income (Previous Year)", 
+       fill = "Gender") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(labels = scales::comma)
 ```
+##### This box plot explores the depth of the relationship between income, gender and region to examine whether there are any disparities between genders. 
