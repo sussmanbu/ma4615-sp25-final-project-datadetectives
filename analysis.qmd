@@ -69,14 +69,41 @@ You will
     -   Make sure to remove excessive warnings, hide all code, organize with sections or multiple pages, use bullets, etc.
     -   This page should be self-contained, i.e. provide a description of the relevant data.
     
-```{r chandini's graphs}
-library(tidyverse)
+```{r chandini graphs}
+library(scales)
 nls_data_clean <- read_rds("dataset/nls_clean.rds")
 
-#income vs highest grade completed
-ggplot(nls_data_clean, aes(x =Highest_Grade_Completed, y=Total_Income_Prev_Year )) + geom_boxplot()
-#change axis tilts and scale 
+#define correct order of education levels(neeeded for next query)
+education_levels <- c(
+  "1ST GRADE", "2ND GRADE", "3RD GRADE", "4TH GRADE", "5TH GRADE", "6TH GRADE", 
+  "7TH GRADE", "8TH GRADE", "9TH GRADE", "10TH GRADE", "11TH GRADE", "12TH GRADE", 
+  "1ST YEAR COLLEGE", "2ND YEAR COLLEGE", "3RD YEAR COLLEGE", "4TH YEAR COLLEGE", 
+  "5TH YEAR COLLEGE", "6TH YEAR COLLEGE", "7TH YEAR COLLEGE", "8TH YEAR COLLEGE OR MORE",
+  "UNGRADED", NA
+)
+
+#mutate to order based on most education completed 
+nls_data_clean <- nls_data_clean %>%
+  mutate(Highest_Grade_Completed = factor(Highest_Grade_Completed, 
+                                          levels = education_levels,
+                                          ordered = TRUE))
+#Calcualte average mean_income for each grade category
+income_by_grade <- nls_data_clean %>%
+  group_by(Highest_Grade_Completed) %>%
+  summarise(mean_income = mean(Total_Income_Prev_Year, na.rm = TRUE)) %>%
+  filter(!is.na(Highest_Grade_Completed))
+
+#income vs highest grade plotted with ggplot
+ggplot(income_by_grade, aes(x = Highest_Grade_Completed, y = mean_income, group = 1)) +
+  geom_line(color = "steelblue", size = 1.2) +
+  geom_point(color = "darkred", size = 2) +
+  labs(title = "Average Income by Highest Grade Completed",
+       x = "Highest Grade Completed",
+       y = "Average Income") +
+  scale_y_continuous(labels = label_comma()) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
 
-```{r aretha's graphs}
+```{r aretha graphs}
 ```
