@@ -96,7 +96,7 @@ income_by_grade <- nls_data_clean %>%
 #income vs highest grade plotted with ggplot
 ggplot(income_by_grade, aes(x = Highest_Grade_Completed, y = mean_income, group = 1)) +
   geom_line(color = "steelblue", linewidth = 1.2) +
-  geom_point(color = "darkred", linewidth = 2) +
+  geom_point(color = "darkred", size = 2) +
   labs(title = "Average Income by Highest Grade Completed",
        x = "Highest Grade Completed",
        y = "Average Income") +
