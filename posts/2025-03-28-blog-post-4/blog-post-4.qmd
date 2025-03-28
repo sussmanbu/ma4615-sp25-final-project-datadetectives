@@ -11,9 +11,54 @@ draft: FALSE
 ---
 
 For this blog post some members of our team each did exploratory analysis into our Data. 
+#Chandini's Graph
+```{r chandini graphs}
+library(tidyverse)
+library(scales)
+nls_data_clean <- read_rds("dataset/nls_clean.rds")
 
-##Aretha's Graph
+#define correct order of education levels(neeeded for next query)
+education_levels <- c(
+  "1ST GRADE", "2ND GRADE", "3RD GRADE", "4TH GRADE", "5TH GRADE", "6TH GRADE", 
+  "7TH GRADE", "8TH GRADE", "9TH GRADE", "10TH GRADE", "11TH GRADE", "12TH GRADE", 
+  "1ST YEAR COLLEGE", "2ND YEAR COLLEGE", "3RD YEAR COLLEGE", "4TH YEAR COLLEGE", 
+  "5TH YEAR COLLEGE", "6TH YEAR COLLEGE", "7TH YEAR COLLEGE", "8TH YEAR COLLEGE OR MORE",
+  "UNGRADED", NA
+)
 
-##Ran's Graph
+#mutate to order based on most education completed 
+nls_data_clean <- nls_data_clean %>%
+  mutate(Highest_Grade_Completed = factor(Highest_Grade_Completed, 
+                                          levels = education_levels,
+                                          ordered = TRUE))
+#Calcualte average mean_income for each grade category
+income_by_grade <- nls_data_clean %>%
+  group_by(Highest_Grade_Completed) %>%
+  summarise(mean_income = mean(Total_Income_Prev_Year, na.rm = TRUE)) %>%
+  filter(!is.na(Highest_Grade_Completed))
 
-##Chandini's Graph 
+#income vs highest grade plotted with ggplot
+ggplot(income_by_grade, aes(x = Highest_Grade_Completed, y = mean_income, group = 1)) +
+  geom_line(color = "steelblue", linewidth = 1.2) +
+  geom_point(color = "darkred", size = 2) +
+  labs(title = "Average Income by Highest Grade Completed",
+       x = "Highest Grade Completed",
+       y = "Average Income") +
+  scale_y_continuous(labels = label_comma()) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+```
+#Aretha's Graph
+
+#Ran's Graph
+```{r ran graphs}
+library(scales)
+nls_data_clean <- read_rds("dataset/nls_clean.rds")
+
+nls_data_clean_filtered <- nls_data_clean %>%
+  filter(!is.na(Total_Income_Prev_Year), is.finite(Total_Income_Prev_Year))
+
+ggplot(nls_data_clean_filtered, aes(x = factor(Age_2010), y = Total_Income_Prev_Year)) + geom_boxplot() + facet_wrap(~ Sex + Race) + scale_y_continuous(labels = dollar_format(prefix = "$", suffix = "K", scale = 1/1000)) + labs(x = "Age in 2010", y = "Total Income for Year", title = "Total Income For Year 2010 Filtered by Age, Race, and Sex") + theme_minimal()
+
+```
+
