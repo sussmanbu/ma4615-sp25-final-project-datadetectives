@@ -123,4 +123,17 @@ ggplot(nls_data_clean, aes(x = Region, y = Total_Income_Prev_Year, fill = Sex)) 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_y_continuous(labels = scales::comma)
 ```
+
+
+```{r ran graphs}
+library(scales)
+nls_data_clean <- read_rds("dataset/nls_clean.rds")
+
+nls_data_clean_filtered <- nls_data_clean %>%
+  filter(!is.na(Total_Income_Prev_Year), is.finite(Total_Income_Prev_Year))
+
+ggplot(nls_data_clean_filtered, aes(x = factor(Age_2010), y = Total_Income_Prev_Year)) + geom_boxplot() + facet_wrap(~ Sex + Race) + scale_y_continuous(labels = dollar_format(prefix = "$", suffix = "K", scale = 1/1000)) + labs(x = "Age in 2010", y = "Total Income for Year", title = "Total Income For Year 2010 Filtered by Age, Race, and Sex") + theme_minimal()
+
+```
+
 ##### This box plot explores the depth of the relationship between income, gender and region to examine whether there are any disparities between genders. 
