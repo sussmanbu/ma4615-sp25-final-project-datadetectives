@@ -10,3 +10,10 @@ date-modified: "2025-03-28"
 draft: FALSE
 ---
 
+For this blog post some members of our team each did exploratory analysis into our Data. 
+
+##Aretha's Graph
+
+##Ran's Graph
+
+##Chandini's Graph 
