@@ -1,0 +1,12 @@
+---
+title: "Blog Post #4"
+subtitle: "Exploratory Data Analysis"
+description:  |
+  This is data detectives' fourth blog post, where we do some initial
+  exploratory data analysis on our cleaned data set.
+author: "Data Detectives"
+date: "2025-03-28"
+date-modified: "2025-03-28"
+draft: FALSE
+---
+
