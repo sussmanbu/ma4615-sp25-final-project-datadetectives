@@ -28,7 +28,7 @@ library(here)
 
 # 1. Load Data with Explicit Column Types
 nls_data <- read_csv(
-  here("dataset", "nls_initial_data_updated.csv"),
+  here("dataset", "nls_w_region.csv"),
   col_types = cols(
     R0000100 = col_integer(),   # Case ID
     R0173600 = col_integer(),   # Sample ID
@@ -37,7 +37,8 @@ nls_data <- read_csv(
     T2272800 = col_integer(),   # Highest Grade Completed
     T3045300 = col_double(),    # Total Income
     T3108400 = col_integer(),   # Marital Status
-    T3108700 = col_integer()    # Age
+    T3108700 = col_integer(),    # Age
+    T3108200 = col_integer()    #Region
   )
 ) %>%
   # Remove rows where any variable is -5
@@ -111,12 +112,19 @@ nls_data_clean <- nls_data %>%
       T3108400 == 3 ~ "Divorced",
       T3108400 == 6 ~ "Widowed",
       TRUE ~ NA_character_
-    )
+    ),
+  Region = case_when(
+    T3108200 == 1 ~ "Northeast",
+    T3108200 == 2 ~ "North Central",
+    T3108200 == 3 ~ "South",
+    T3108200 == 4 ~ "West",
+    TRUE ~ NA_character_
+  )
   ) %>%
   # Convert categorical variables to factors
-  mutate(across(c(Race, Sex, Highest_Grade_Completed, Marital_Status), as.factor)) %>%
+  mutate(across(c(Race, Sex, Highest_Grade_Completed, Marital_Status, Region), as.factor)) %>%
   # Remove original numeric columns
-  select(-c(R0214700, R0214800, T2272800, T3108400)) %>%
+  select(-c(R0214700, R0214800, T2272800, T3108400, T3108200)) %>%
   # Rename columns
   rename(
     Case_ID = R0000100,
