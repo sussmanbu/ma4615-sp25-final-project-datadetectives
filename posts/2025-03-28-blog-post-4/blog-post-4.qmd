@@ -1,0 +1,88 @@
+---
+title: "Blog Post #4"
+subtitle: "Exploratory Data Analysis"
+description:  |
+  This is data detectives' fourth blog post, where we do some initial
+  exploratory data analysis on our cleaned data set.
+author: "Data Detectives"
+date: "2025-03-28"
+date-modified: "2025-03-28"
+draft: FALSE
+---
+
+For this blog post some members of our team each did exploratory analysis into our Data. 
+
+
+# Chandini's Graph
+
+```{r chandini graphs}
+library(tidyverse)
+library(scales)
+nls_data_clean <- read_rds("dataset/nls_clean.rds")
+
+#define correct order of education levels(neeeded for next query)
+education_levels <- c(
+  "1ST GRADE", "2ND GRADE", "3RD GRADE", "4TH GRADE", "5TH GRADE", "6TH GRADE", 
+  "7TH GRADE", "8TH GRADE", "9TH GRADE", "10TH GRADE", "11TH GRADE", "12TH GRADE", 
+  "1ST YEAR COLLEGE", "2ND YEAR COLLEGE", "3RD YEAR COLLEGE", "4TH YEAR COLLEGE", 
+  "5TH YEAR COLLEGE", "6TH YEAR COLLEGE", "7TH YEAR COLLEGE", "8TH YEAR COLLEGE OR MORE",
+  "UNGRADED", NA
+)
+
+#mutate to order based on most education completed 
+nls_data_clean <- nls_data_clean %>%
+  mutate(Highest_Grade_Completed = factor(Highest_Grade_Completed, 
+                                          levels = education_levels,
+                                          ordered = TRUE))
+#Calcualte average mean_income for each grade category
+income_by_grade <- nls_data_clean %>%
+  group_by(Highest_Grade_Completed) %>%
+  summarise(mean_income = mean(Total_Income_Prev_Year, na.rm = TRUE)) %>%
+  filter(!is.na(Highest_Grade_Completed))
+
+#income vs highest grade plotted with ggplot
+ggplot(income_by_grade, aes(x = Highest_Grade_Completed, y = mean_income, group = 1)) +
+  geom_line(color = "steelblue", linewidth = 1.2) +
+  geom_point(color = "darkred", size = 2) +
+  labs(title = "Average Income by Highest Grade Completed",
+       x = "Highest Grade Completed",
+       y = "Average Income") +
+  scale_y_continuous(labels = label_comma()) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+```
+Here, we analyze the relationship between highest grade completed and average income. In order to create this plot, we had to order each grade group and calculate mean incomes for each one. Finally, we discovered the positive relationship we predicted. These variables will be useful for future data analysis when we combine our data with recession data. Hopefully, we can compare these variables to recession information and compare the relationship between them before and after. 
+
+# Aretha's Graph
+```{r aretha graphs}
+library(scales)
+nls_data_clean <- read_rds("dataset/nls_clean.rds")
+
+nls_data_clean <- nls_data_clean %>%
+  filter(!is.na(Region))
+
+# Regional Variation in Gender Income Gap
+ggplot(nls_data_clean, aes(x = Region, y = Total_Income_Prev_Year, fill = Sex)) +
+  geom_boxplot(outlier.alpha = 0.5, outlier.size = 1) +
+  labs(title = "Income Distribution by Region and Gender",
+       x = "Region", 
+       y = "Total Income (Previous Year)", 
+       fill = "Gender") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(labels = scales::comma)
+```
+This box plot explores the depth of the relationship between income, gender and region to examine whether there are any disparities between genders. In order to plot this graph, I had to add the 'region' column which describes which region of the US participants reside in - this usually has an impact on base salaries and living expenses. We believe this data column will become increasingly useful in further analysis as we look to add recession data as our 2nd dataset. We can potentially look how certain regions were impacted (based on income/debt) in comparison to others.
+
+# Ran's Graph
+```{r ran graphs}
+library(scales)
+nls_data_clean <- read_rds("dataset/nls_clean.rds")
+
+nls_data_clean_filtered <- nls_data_clean %>%
+  filter(!is.na(Total_Income_Prev_Year), is.finite(Total_Income_Prev_Year))
+
+ggplot(nls_data_clean_filtered, aes(x = factor(Age_2010), y = Total_Income_Prev_Year)) + geom_boxplot() + facet_wrap(~ Sex + Race) + scale_y_continuous(labels = dollar_format(prefix = "$", suffix = "K", scale = 1/1000)) + labs(x = "Age in 2010", y = "Total Income for Year", title = "Total Income For Year 2010 Filtered by Age, Race, and Sex") + theme_minimal()
+
+```
+

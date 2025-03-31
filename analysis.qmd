@@ -68,3 +68,71 @@ You will
 -   Organization and cleanliness.
     -   Make sure to remove excessive warnings, hide all code, organize with sections or multiple pages, use bullets, etc.
     -   This page should be self-contained, i.e. provide a description of the relevant data.
+    
+```{r chandini graphs}
+library(scales)
+nls_data_clean <- read_rds("dataset/nls_clean.rds")
+
+#define correct order of education levels(neeeded for next query)
+education_levels <- c(
+  "1ST GRADE", "2ND GRADE", "3RD GRADE", "4TH GRADE", "5TH GRADE", "6TH GRADE", 
+  "7TH GRADE", "8TH GRADE", "9TH GRADE", "10TH GRADE", "11TH GRADE", "12TH GRADE", 
+  "1ST YEAR COLLEGE", "2ND YEAR COLLEGE", "3RD YEAR COLLEGE", "4TH YEAR COLLEGE", 
+  "5TH YEAR COLLEGE", "6TH YEAR COLLEGE", "7TH YEAR COLLEGE", "8TH YEAR COLLEGE OR MORE",
+  "UNGRADED", NA
+)
+
+#mutate to order based on most education completed 
+nls_data_clean <- nls_data_clean %>%
+  mutate(Highest_Grade_Completed = factor(Highest_Grade_Completed, 
+                                          levels = education_levels,
+                                          ordered = TRUE))
+#Calcualte average mean_income for each grade category
+income_by_grade <- nls_data_clean %>%
+  group_by(Highest_Grade_Completed) %>%
+  summarise(mean_income = mean(Total_Income_Prev_Year, na.rm = TRUE)) %>%
+  filter(!is.na(Highest_Grade_Completed))
+
+#income vs highest grade plotted with ggplot
+ggplot(income_by_grade, aes(x = Highest_Grade_Completed, y = mean_income, group = 1)) +
+  geom_line(color = "steelblue", linewidth = 1.2) +
+  geom_point(color = "darkred", size = 2) +
+  labs(title = "Average Income by Highest Grade Completed",
+       x = "Highest Grade Completed",
+       y = "Average Income") +
+  scale_y_continuous(labels = label_comma()) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+```
+
+```{r aretha graphs}
+library(scales)
+nls_data_clean <- read_rds("dataset/nls_clean.rds")
+
+nls_data_clean <- nls_data_clean %>%
+  filter(!is.na(Region))
+
+# Regional Variation in Gender Income Gap
+ggplot(nls_data_clean, aes(x = Region, y = Total_Income_Prev_Year, fill = Sex)) +
+  geom_boxplot(outlier.alpha = 0.5, outlier.size = 1) +
+  labs(title = "Income Distribution by Region and Gender",
+       x = "Region", 
+       y = "Total Income (Previous Year)", 
+       fill = "Gender") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(labels = scales::comma)
+```
+##### This box plot explores the depth of the relationship between income, gender and region to examine whether there are any disparities between genders. 
+
+```{r ran graphs}
+library(scales)
+nls_data_clean <- read_rds("dataset/nls_clean.rds")
+
+nls_data_clean_filtered <- nls_data_clean %>%
+  filter(!is.na(Total_Income_Prev_Year), is.finite(Total_Income_Prev_Year))
+
+ggplot(nls_data_clean_filtered, aes(x = factor(Age_2010), y = Total_Income_Prev_Year)) + geom_boxplot() + facet_wrap(~ Sex + Race) + scale_y_continuous(labels = dollar_format(prefix = "$", suffix = "K", scale = 1/1000)) + labs(x = "Age in 2010", y = "Total Income for Year", title = "Total Income For Year 2010 Filtered by Age, Race, and Sex") + theme_minimal()
+
+```
+
