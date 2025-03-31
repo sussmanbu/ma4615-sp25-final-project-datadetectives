@@ -48,6 +48,8 @@ ggplot(income_by_grade, aes(x = Highest_Grade_Completed, y = mean_income, group 
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
+Here, we analyze the relationship between highest grade completed and average income. In order to create this plot, we had to order each grade group and calculate mean incomes for each one. Finally, we discovered the positive relationship we predicted. These variables will be useful for future data analysis when we combine our data with recession data. Hopefully, we can compare these variables to recession information and compare the relationship between them before and after. 
+
 #Aretha's Graph
 ```{r aretha graphs}
 library(scales)
@@ -67,7 +69,7 @@ ggplot(nls_data_clean, aes(x = Region, y = Total_Income_Prev_Year, fill = Sex)) 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_y_continuous(labels = scales::comma)
 ```
-##### This box plot explores the depth of the relationship between income, gender and region to examine whether there are any disparities between genders. In order to plot this graph, I had to add the 'region' column which describes which region of the US participants reside in - this usually has an impact on base salaries and living expenses. We believe this data column will become increasingly useful in further analysis as we look to add recession data as our 2nd dataset. We can potentially look how certain regions were impacted (based on income/debt) in comparison to others.
+This box plot explores the depth of the relationship between income, gender and region to examine whether there are any disparities between genders. In order to plot this graph, I had to add the 'region' column which describes which region of the US participants reside in - this usually has an impact on base salaries and living expenses. We believe this data column will become increasingly useful in further analysis as we look to add recession data as our 2nd dataset. We can potentially look how certain regions were impacted (based on income/debt) in comparison to others.
 
 #Ran's Graph
 ```{r ran graphs}
