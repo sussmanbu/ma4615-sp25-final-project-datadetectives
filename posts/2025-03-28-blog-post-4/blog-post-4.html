@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2025-03-28">
 <meta name="description" content="This is data detectives’ fourth blog post, where we do some initial exploratory data analysis on our cleaned data set.">
 
-<title>Blog Post #4 – MA 415 Data Detectives Final Project</title>
+<title>MA 415 Data Detectives Final Project - Blog Post #4</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -36,7 +36,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -120,7 +120,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -143,7 +143,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
+          <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -210,7 +210,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ✔ dplyr     1.1.4     ✔ readr     2.1.5
 ✔ forcats   1.0.0     ✔ stringr   1.5.1
 ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
-✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
 ✔ purrr     1.0.2     
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
@@ -305,25 +305,75 @@ The following object is masked from 'package:readr':
 </div>
 <p>This box plot explores the depth of the relationship between income, gender and region to examine whether there are any disparities between genders. In order to plot this graph, I had to add the ‘region’ column which describes which region of the US participants reside in - this usually has an impact on base salaries and living expenses. We believe this data column will become increasingly useful in further analysis as we look to add recession data as our 2nd dataset. We can potentially look how certain regions were impacted (based on income/debt) in comparison to others.</p>
 </section>
-<section id="rans-graph" class="level1">
-<h1>Ran’s Graph</h1>
+<section id="rans-model" class="level1">
+<h1>Ran’s Model</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>nls_data_clean <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"dataset/nls_clean.rds"</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>nls_data_clean_filtered <span class="ot">&lt;-</span> nls_data_clean <span class="sc">%&gt;%</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Total_Income_Prev_Year), <span class="fu">is.finite</span>(Total_Income_Prev_Year))</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nls_data_clean_filtered, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(Age_2010), <span class="at">y =</span> Total_Income_Prev_Year)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span> Sex <span class="sc">+</span> Race) <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">dollar_format</span>(<span class="at">prefix =</span> <span class="st">"$"</span>, <span class="at">suffix =</span> <span class="st">"K"</span>, <span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">1000</span>)) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Age in 2010"</span>, <span class="at">y =</span> <span class="st">"Total Income for Year"</span>, <span class="at">title =</span> <span class="st">"Total Income For Year 2010 Filtered by Age, Race, and Sex"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="blog-post-4_files/figure-html/ran graphs-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: carData</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'car'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    recode</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:purrr':
+
+    some</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>nls_data_clean <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"dataset/nls_clean.rds"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>nls_data_clean_filtered <span class="ot">&lt;-</span> nls_data_clean <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Total_Income_Prev_Year), <span class="fu">is.finite</span>(Total_Income_Prev_Year))</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>model <span class="ot">=</span> <span class="fu">lm</span>(Total_Income_Prev_Year <span class="sc">~</span> Race <span class="sc">+</span> Sex <span class="sc">+</span> Marital_Status, <span class="at">data =</span> nls_data_clean_filtered)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>model_data <span class="ot">=</span> <span class="fu">model.frame</span>(model)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>model_data<span class="sc">$</span>Predicted <span class="ot">=</span> <span class="fu">predict</span>(model)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Total_Income_Prev_Year ~ Race + Sex + Marital_Status, 
+    data = nls_data_clean_filtered)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-63483 -28742  -9317  14905 295913 
+
+Coefficients:
+                            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                    16411       1617  10.151  &lt; 2e-16 ***
+RaceHispanic                    3986       1670   2.387  0.01701 *  
+RaceNon-Black/Non-Hispanic     14684       1369  10.725  &lt; 2e-16 ***
+SexMale                        19741       1140  17.315  &lt; 2e-16 ***
+Marital_StatusMarried          12647       1470   8.605  &lt; 2e-16 ***
+Marital_StatusNever Married    -5821       1899  -3.066  0.00218 ** 
+Marital_StatusSeparated        -8236       2808  -2.933  0.00337 ** 
+Marital_StatusWidowed          -8836       4206  -2.101  0.03566 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 48050 on 7187 degrees of freedom
+  (3 observations deleted due to missingness)
+Multiple R-squared:  0.09739,   Adjusted R-squared:  0.09651 
+F-statistic: 110.8 on 7 and 7187 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   GVIF Df GVIF^(1/(2*Df))
+Race           1.108749  2        1.026144
+Sex            1.011891  1        1.005928
+Marital_Status 1.121768  4        1.014467</code></pre>
 </div>
 </div>
-</div>
-<p>This boxplot shows the total income for the year 2010 of people aged 45-53. Additionally, the data is split by sex and race to analyze any disparities. Firstly, there is no visible change for income depending on age. However, across all race groups, males tend to have higher incomes. Similarly, non-black and non-hispanic groups tend to have higher incomes regardless of gender. Like the other graphs, there were signficant outliers present, which likely led to the to positive skew visible in this graph.</p>
+<p>This linear model regression investigates the relationship between total income from the previous year <code>Total_Income_Prev_Year</code> and multiple covariates (<code>Race</code>, <code>Sex</code>, <code>Marital Status</code>). While several predictors show statistical significance — notably <code>Marital_StatusMarried</code>, <code>SexMale</code>, and <code>RaceNon-Black/Non-Hispanic</code> — the adj. R-squared value is only ~0.09651, indicating that this model explains just under 10% of the variance in income. The low explanatory power suggests more testing, additional variables, and transformations may be required. When using <code>plot(model)</code> earlier (not pictured here), our diagnostic plots (Q-Q plot for instance) suggested that the residuals might not be following a normal distribution, which we need to consider for our next iterations of the model. As of now, multicollinearity doesn’t seem to be an issue given VIF values close to 1, but further refinement of the model is needed before making any conclusive interpretations.</p>
 
 
 </section>
@@ -364,7 +414,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const onCopySuccess = function(e) {
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -396,29 +457,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
   });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/sussmanbu\.github\.io\/ma4615-sp25-final-project-datadetectives\/");
@@ -426,7 +465,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
