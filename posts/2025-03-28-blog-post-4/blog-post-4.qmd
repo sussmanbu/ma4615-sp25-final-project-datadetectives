@@ -51,7 +51,7 @@ ggplot(income_by_grade, aes(x = Highest_Grade_Completed, y = mean_income, group 
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
-Here, we analyze the relationship between highest grade completed and average income. In order to create this plot, we had to order each grade group and calculate mean incomes for each one. Finally, we discovered the positive relationship we predicted. These variables will be useful for future data analysis when we combine our data with recession data. Hopefully, we can compare these variables to recession information and compare the relationship between them before and after. 
+Here, we analyze the relationship between highest grade completed and average income. In order to create this plot, we had to order each grade group and calculate mean incomes for each one. Finally, we discovered the positive relationship we predicted. This data shows that the more education people completed, the higher their income. However, we also see the presence of outliers impacting the data's skew. Regardless, these variables will be useful for future data analysis when we combine our data with recession data. Hopefully, we can compare these variables to recession information and compare the relationship between them before and after. 
 
 # Aretha's Graph
 ```{r aretha graphs}
@@ -85,4 +85,6 @@ nls_data_clean_filtered <- nls_data_clean %>%
 ggplot(nls_data_clean_filtered, aes(x = factor(Age_2010), y = Total_Income_Prev_Year)) + geom_boxplot() + facet_wrap(~ Sex + Race) + scale_y_continuous(labels = dollar_format(prefix = "$", suffix = "K", scale = 1/1000)) + labs(x = "Age in 2010", y = "Total Income for Year", title = "Total Income For Year 2010 Filtered by Age, Race, and Sex") + theme_minimal()
 
 ```
+
+This boxplot shows the total income for the year 2010 of people aged 45-53. Additionally, the data is split by sex and race to analyze any disparities. Firstly, there is no visible change for income depending on age. However, across all race groups, males tend to have higher incomes. Similarly, non-black and non-hispanic groups tend to have higher incomes regardless of gender. Like the other graphs, there were signficant outliers present, which likely led to the to positive skew visible in this graph. 
 
