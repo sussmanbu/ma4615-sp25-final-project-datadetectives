@@ -11,7 +11,10 @@ draft: FALSE
 ---
 
 For this blog post some members of our team each did exploratory analysis into our Data. 
-#Chandini's Graph
+
+
+# Chandini's Graph
+
 ```{r chandini graphs}
 library(tidyverse)
 library(scales)
@@ -48,7 +51,9 @@ ggplot(income_by_grade, aes(x = Highest_Grade_Completed, y = mean_income, group 
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
-#Aretha's Graph
+Here, we analyze the relationship between highest grade completed and average income. In order to create this plot, we had to order each grade group and calculate mean incomes for each one. Finally, we discovered the positive relationship we predicted. This data shows that the more education people completed, the higher their income. However, we also see the presence of outliers impacting the data's skew. Regardless, these variables will be useful for future data analysis when we combine our data with recession data. Hopefully, we can compare these variables to recession information and compare the relationship between them before and after. 
+
+# Aretha's Graph
 ```{r aretha graphs}
 library(scales)
 nls_data_clean <- read_rds("dataset/nls_clean.rds")
@@ -67,17 +72,24 @@ ggplot(nls_data_clean, aes(x = Region, y = Total_Income_Prev_Year, fill = Sex)) 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_y_continuous(labels = scales::comma)
 ```
-##### This box plot explores the depth of the relationship between income, gender and region to examine whether there are any disparities between genders. In order to plot this graph, I had to add the 'region' column which describes which region of the US participants reside in - this usually has an impact on base salaries and living expenses. We believe this data column will become increasingly useful in further analysis as we look to add recession data as our 2nd dataset. We can potentially look how certain regions were impacted (based on income/debt) in comparison to others.
+This box plot explores the depth of the relationship between income, gender and region to examine whether there are any disparities between genders. In order to plot this graph, I had to add the 'region' column which describes which region of the US participants reside in - this usually has an impact on base salaries and living expenses. We believe this data column will become increasingly useful in further analysis as we look to add recession data as our 2nd dataset. We can potentially look how certain regions were impacted (based on income/debt) in comparison to others.
 
-#Ran's Graph
-```{r ran graphs}
+# Ran's Model
+```{r ran model}
 library(scales)
+library(car)
+
 nls_data_clean <- read_rds("dataset/nls_clean.rds")
 
 nls_data_clean_filtered <- nls_data_clean %>%
   filter(!is.na(Total_Income_Prev_Year), is.finite(Total_Income_Prev_Year))
 
-ggplot(nls_data_clean_filtered, aes(x = factor(Age_2010), y = Total_Income_Prev_Year)) + geom_boxplot() + facet_wrap(~ Sex + Race) + scale_y_continuous(labels = dollar_format(prefix = "$", suffix = "K", scale = 1/1000)) + labs(x = "Age in 2010", y = "Total Income for Year", title = "Total Income For Year 2010 Filtered by Age, Race, and Sex") + theme_minimal()
+set.seed(1234)
+model = lm(Total_Income_Prev_Year ~ Race + Sex + Marital_Status, data = nls_data_clean_filtered)
+model_data = model.frame(model)
+model_data$Predicted = predict(model)
+summary(model)
+vif(model)
 
 ```
-
+This linear model regression investigates the relationship between total income from the previous year `Total_Income_Prev_Year` and multiple covariates (`Race`, `Sex`, `Marital Status`). While several predictors show statistical significance — notably `Marital_StatusMarried`, `SexMale`, and `RaceNon-Black/Non-Hispanic` — the adj. R-squared value is only ~0.09651, indicating that this model explains just under 10% of the variance in income. The low explanatory power suggests more testing, additional variables, and transformations may be required. When using `plot(model)` earlier (not pictured here), our diagnostic plots (Q-Q plot for instance) suggested that the residuals might not be following a normal distribution, which we need to consider for our next iterations of the model. As of now,  multicollinearity doesn't seem to be an issue given VIF values close to 1, but further refinement of the model is needed before making any conclusive interpretations.  

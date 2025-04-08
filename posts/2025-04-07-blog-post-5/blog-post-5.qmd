@@ -1,0 +1,12 @@
+---
+title: "Blog Post #4"
+subtitle: "Exploratory Data Analysis"
+description:  |
+  This is data detectives' fifth blog post, where we add a new data set about interest rates.
+author: "Data Detectives"
+date: "2025-03-28"
+date-modified: "2025-03-28"
+draft: FALSE
+---
+
+For this blog post, we sought out to add a new dataset to our project. After discussing, we decided on the interest rates archive of the Department of Treasury (Link: https://home.treasury.gov/interest-rates-data-csv-archive). The data is presented daily, and to join with our existing data nicely, we thought of looking at the average interest rate each year and joining it with yearly available data in our existing NLSY data, mainly income. Up until this point, we had only looked at income data from 2010, so first we had to download income data for years 2000-2020 and expand the NLSY dataset. Then, we downloaded Daily Treasury Long-Term Rates from the website. Since these are relatively stable as long term rates, aggregating over a year and averaging should give us a good idea of the interest rate for that year. 
