@@ -9,3 +9,16 @@ date-modified: "2025-04-14"
 draft: FALSE
 ---
 
+# Blog post 6
+This is DataDetectives' sixth blog post, where we begin to load and clean our second dataset
+
+
+
+### Exploring Economic and Health Trends with the National Longitudinal Survey of Youth
+
+Loading in new set/reason for choosing
+
+R script to clean new set and store
+
+Write about loading in new columns from original set (Emir)
+
