@@ -68,7 +68,11 @@ You will
 -   Organization and cleanliness.
     -   Make sure to remove excessive warnings, hide all code, organize with sections or multiple pages, use bullets, etc.
     -   This page should be self-contained, i.e. provide a description of the relevant data.
-    
+
+## Introduction and Motivation for Analysis
+
+The goal of our analysis is to examine how macroeconomic trends affect different racial and socioeconomic groups. The following graphs explore some of the relationships between variables in our dataset to motivate this goal. 
+
 ```{r chandini graphs}
 library(scales)
 nls_data_clean <- read_rds("dataset/nls_clean.rds")
