@@ -26,21 +26,22 @@
 library(tidyverse)
 library(here)
 
-# 1. Load Data with Explicit Column Types
-nls_data <- read_csv(
-  here("dataset", "nls_w_region.csv"),
-  col_types = cols(
-    R0000100 = col_integer(),   # Case ID
-    R0173600 = col_integer(),   # Sample ID
-    R0214700 = col_integer(),   # Race
-    R0214800 = col_integer(),   # Sex
-    T2272800 = col_integer(),   # Highest Grade Completed
-    T3045300 = col_double(),    # Total Income
-    T3108400 = col_integer(),   # Marital Status
-    T3108700 = col_integer(),    # Age
-    T3108200 = col_integer()    #Region
-  )
-) %>%
+nls_data <- nls_data %>%
+  mutate(
+    R6909701 = na_if(R6909701, -1),
+    R6909701 = ifelse(R6909701 < 0, NA, R6909701),
+    R7607800 = na_if(R7607800, -1),
+    R7607800 = ifelse(R7607800 < 0, NA, R7607800),
+    R8316300 = na_if(R8316300, -1),
+    R8316300 = ifelse(R8316300 < 0, NA, R8316300),
+    T0912400 = na_if(T0912400, -1),
+    T0912400 = ifelse(T0912400 < 0, NA, T0912400),
+    T2076700 = na_if(T2076700, -1),
+    T2076700 = ifelse(T2076700 < 0, NA, T2076700),
+    T3045300 = na_if(T3045300, -1),
+    T3045300 = ifelse(T3045300 < 0, NA, T3045300)
+  ) %>%
+
   # Remove rows where any variable is -5
   filter(if_all(everything(), ~ . != -5))
 
@@ -51,9 +52,22 @@ print(dim(nls_data))
 # 2. Handle Missing Data and Negative Income
 nls_data <- nls_data %>%
   mutate(
-    T3045300 = na_if(T3045300, -1),  # Mark -1 as NA
-    T3045300 = ifelse(T3045300 < 0, NA, T3045300)  # Negative income to NA
-  )
+    R6909701 = na_if(R6909701, -1),
+    R6909701 = ifelse(R6909701 < 0, NA, R6909701),
+    R7607800 = na_if(R7607800, -1),
+    R7607800 = ifelse(R7607800 < 0, NA, R7607800),
+    R8316300 = na_if(R8316300, -1),
+    R8316300 = ifelse(R8316300 < 0, NA, R8316300),
+    T0912400 = na_if(T0912400, -1),
+    T0912400 = ifelse(T0912400 < 0, NA, T0912400),
+    T2076700 = na_if(T2076700, -1),
+    T2076700 = ifelse(T2076700 < 0, NA, T2076700),
+    T3045300 = na_if(T3045300, -1),
+    T3045300 = ifelse(T3045300 < 0, NA, T3045300)
+  ) %>%
+  filter(if_all(everything(), ~ . != -5))
+
+
 
 # Debugging Step: Check after missing value handling
 print("Handled missing data and negative income.")
@@ -126,12 +140,20 @@ nls_data_clean <- nls_data %>%
   # Remove original numeric columns
   select(-c(R0214700, R0214800, T2272800, T3108400, T3108200)) %>%
   # Rename columns
+  # Rename columns
   rename(
     Case_ID = R0000100,
     Sample_ID = R0173600,
-    Total_Income_Prev_Year = T3045300,
-    Age_2010 = T3108700
+    Age_2010 = T3108700,
+    Income_2000 = R6909701,
+    Income_2002 = R7607800,
+    Income_2004 = R8316300,
+    Income_2006 = T0912400,
+    Income_2008 = T2076700,
+    Income_2010 = T3045300
   )
+
+
 
 # Debugging Step: Check if `nls_data_clean` is successfully created
 print("nls_data_clean successfully created.")
@@ -144,3 +166,41 @@ write.csv(nls_data_clean, here("dataset", "nls_clean.csv"))
 # Verification
 print(colSums(is.na(nls_data_clean)))
 str(nls_data_clean)
+
+# Load in another library to clean second dataset
+library(lubridate)
+
+# Now we clean the second Dataset which we loaded in 
+rates <- read_csv("./dataset/long-term-rates-2000-2010.csv")
+
+# Define a mode function (returns the first mode if multiple)
+get_mode <- function(x) {
+  ux <- unique(na.omit(x))
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
+#mutate data to have proper year date format (wil be easier to compute stat summaries with)
+rates <- rates %>%
+  mutate(Date = mdy(Date),
+         Year = year(Date))
+
+interest_rates_cleaned <- rates %>%
+  group_by(Year) %>%
+  summarise(
+    mean_LT = mean(`LT COMPOSITE (>10 Yrs)`, na.rm = TRUE),
+    min_LT = min(`LT COMPOSITE (>10 Yrs)`, na.rm = TRUE),
+    max_LT = max(`LT COMPOSITE (>10 Yrs)`, na.rm = TRUE),
+    sd_LT = sd(`LT COMPOSITE (>10 Yrs)`, na.rm = TRUE),
+    median_LT = median(`LT COMPOSITE (>10 Yrs)`, na.rm = TRUE),
+    mode_LT = get_mode(`LT COMPOSITE (>10 Yrs)`),
+    
+    mean_TREASURY = mean(`TREASURY 20-Yr CMT`, na.rm = TRUE),
+    min_TREASURY = min(`TREASURY 20-Yr CMT`, na.rm = TRUE),
+    max_TREASURY = max(`TREASURY 20-Yr CMT`, na.rm = TRUE),
+    sd_TREASURY = sd(`TREASURY 20-Yr CMT`, na.rm = TRUE),
+    median_TREASURY = median(`TREASURY 20-Yr CMT`, na.rm = TRUE),
+    mode_TREASURY = get_mode(`TREASURY 20-Yr CMT`)
+  ) %>%
+  ungroup()
+
+write_csv(interest_rates_cleaned, "interest_rates_cleaned.csv")
