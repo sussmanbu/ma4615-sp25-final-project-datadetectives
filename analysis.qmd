@@ -4,6 +4,11 @@ description: Here we provide a detailed analysis using more sophisticated statis
 toc: true
 draft: false
 ---
+```{r setup, include=FALSE}
+library(here)
+library(tidyverse)  # or specific: readr, dplyr, etc.
+```
+
 
 ![](https://upload.wikimedia.org/wikipedia/commons/7/77/Pebbleswithquarzite.jpg)
 
