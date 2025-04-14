@@ -12,13 +12,17 @@ draft: FALSE
 # Blog post 6
 This is DataDetectives' sixth blog post, where we begin to load and clean our second dataset
 
+## Our Dataset
+In this analysis, we are working with "long-term-rates-2000-2010.csv". As explained in our previous blog post, this set contains daily records of U.S. long-term interest rates between 2000 and 2010. The two main variables of interest were:LT COMPOSITE (>10 Yrs) and TREASURY 20-Yr CMT
 
+## Loading and Cleaning
+We began by importing the dataset using the read_csv() function from the readr package in the tidyverse. The Date column, originally in character format, was converted to proper Date objects using lubridate::mdy(). We then extracted the year from each date to enable grouping by year. 
 
-### Exploring Economic and Health Trends with the National Longitudinal Survey of Youth
+To understand yearly trends in interest rates, we grouped the data by Year and computed a comprehensive set of summary statistics for each of the two rate columns including mean, minimum, maximum, standard deviation, median, and mode. In order to create a column for mode I created a custom get_mode() function to handle mode calculation, since R does not provide a built-in mode() for numeric data in a tidy pipeline.
 
-Loading in new set/reason for choosing
-
-R script to clean new set and store
-
+## Modifying the Original Set
 Write about loading in new columns from original set (Emir)
+
+## Future Plans
+We are considering issues with income lag due to various external factors compounding with macroeconomic factors in the US from 2008-2010. Therefore, we may also have to include R script to load and clean the same numbers for interest rates in 2011-2020. 
 
