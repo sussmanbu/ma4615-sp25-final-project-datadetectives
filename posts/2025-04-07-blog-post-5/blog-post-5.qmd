@@ -1,0 +1,12 @@
+---
+title: "Blog Post #5"
+subtitle: "Exploratory Data Analysis"
+description:  |
+  This is data detectives' fifth blog post, where we add a new data set about interest rates.
+author: "Data Detectives"
+date: "2025-04-07"
+date-modified: "2025-04-07"
+draft: FALSE
+---
+
+For this blog post, we sought out to add a new dataset to our project. After discussing, we decided on the interest rates archive of the Department of Treasury (Link: https://home.treasury.gov/interest-rates-data-csv-archive). The data is presented daily, and to join with our existing data nicely, we thought of looking at the average interest rate each year and joining it with yearly available data in our existing NLSY data, mainly income. We plan on seeing if there's any relationship between annual interest rates and income stratified by race. Up until this point, we had only looked at income data from 2010, so we will need to download income data for years 2000-2020 and expand the NLSY dataset. This should not be an issue, but we will have to slightly modify the cleaning code to account for the new years. Then, we downloaded Daily Treasury Long-Term Rates from the website. Since these are relatively stable as long term rates, aggregating over a year and averaging should give us a good idea of the interest rate for that year. Overall, this should be a good way to see if broader macroeconomic conditions impact the financial wellbeing of people different backgrounds in different ways.
