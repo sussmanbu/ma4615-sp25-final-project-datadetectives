@@ -191,6 +191,8 @@ nls_income_long <- nls_data_clean %>%
 nls_with_rates_full <- nls_income_long %>%
   left_join(mapped_rates, by = "Income_Year")
 
+write_csv(nls_with_rates_full, here("dataset", "nls_with_rates_full.csv"))
+
 income_by_race <- nls_with_rates_full %>%
   group_by(Income_Year, Race) %>%
   summarise(
