@@ -1,0 +1,17 @@
+---
+title: "Blog Post #7"
+description:  |
+  This is Data Detectives' 7th blog post, where we describe our thoughts and
+  progress on the interactive for our final project
+author: "Data Detectives"
+date: "2025-04-21"
+date-modified: "2025-04-21"
+draft: FALSE
+---
+# Blog post 7
+
+# Our Interactive - Plan 
+We plan to use an interactive map feature where we the user can select one of the regions in our data set and see an analysis on the impact of the 2008 recession on different groups of people. We plan to allow users to select one or more features like race, maritial status, income, etc. to compare. 
+
+# Our Interactive - First Steps
+
