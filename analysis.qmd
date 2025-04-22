@@ -221,24 +221,24 @@ ggplot(income_by_race, aes(x = Income_Year, y = avg_income, color = avg_interest
 
 ```{r statmod}
 
-library(scales)
-library(car)
-library(sandwich)
-library(lmtest)
-
-nls_data_tbu <- read_csv("dataset/nls_with_rates_full.csv")
-
-nls_data_modeling <- nls_data_tbu %>%
-  filter(Income_Year %in% c(2006, 2008, 2010))
-
-model = lm(Income ~ Race + Sex + Marital_Status + Age_2010 + Region + Highest_Grade_Completed + avg_LT_rate, data = filter(nls_data_modeling, Income > 0))
-
-# coeftest(model, vcov = vcovHC(model, type = "HC1"))
-
-model_data = model.frame(model)
-model_data$Predicted = predict(model)
-summary(model)
-vif(model, type = "predictor")
-# plot(model)
-
+#library(scales)
+# library(car)
+# library(sandwich)
+# library(lmtest)
+# 
+# nls_data_tbu <- read_csv("dataset/nls_with_rates_full.csv")
+# 
+# nls_data_modeling <- nls_data_tbu %>%
+#   filter(Income_Year %in% c(2006, 2008, 2010))
+# 
+# model = lm(Income ~ Race + Sex + Marital_Status + Age_2010 + Region + Highest_Grade_Completed + avg_LT_rate, data = filter(nls_data_modeling, Income > 0))
+# 
+# # coeftest(model, vcov = vcovHC(model, type = "HC1"))
+# 
+# model_data = model.frame(model)
+# model_data$Predicted = predict(model)
+# summary(model)
+# vif(model, type = "predictor")
+# # plot(model)
+###
 ```
