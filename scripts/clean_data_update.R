@@ -172,6 +172,7 @@ library(lubridate)
 
 # Now we clean the second Dataset which we loaded in 
 rates <- read_csv("./dataset/long-term-rates-2000-2010.csv")
+rates2 <- read_csv("./dataset/long-term-rates-2011-2020.csv")
 
 # Define a mode function (returns the first mode if multiple)
 get_mode <- function(x) {
@@ -179,12 +180,13 @@ get_mode <- function(x) {
   ux[which.max(tabulate(match(x, ux)))]
 }
 
-#mutate data to have proper year date format (wil be easier to compute stat summaries with)
-rates <- rates %>%
-  mutate(Date = mdy(Date),
-         Year = year(Date))
+#combine rates and rates2
+combined_rates <- bind_rows(rates1, rates2)
 
-interest_rates_cleaned <- rates %>%
+#mutate data to have proper year date format (wil be easier to compute stat summaries with)
+interest_rates_cleaned <- combined_rates %>%
+  mutate(Date = mdy(Date),
+         Year = year(Date)) %>%
   group_by(Year) %>%
   summarise(
     mean_LT = mean(`LT COMPOSITE (>10 Yrs)`, na.rm = TRUE),
