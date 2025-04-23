@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -251,142 +285,133 @@ ul.task-list li input[type="checkbox"] {
 <section id="data-cleaning---nls-national-longitudinal-survey" class="level2">
 <h2 class="anchored" data-anchor-id="data-cleaning---nls-national-longitudinal-survey">Data Cleaning - NLS National Longitudinal Survey</h2>
 <p>Our data set required significant cleaning. In order to work with our CSV file, we needed to decode the integers that served as placeholders for column names, remove “non-interview” data points that we can’t compare across years, and decode integer values representing race, grade, etc. For this process, we primarily depended on the tidyverse library and other methods discussed in lecture.</p>
-<div class="cell">
-<pre class="cleaning cell-code"><code>nls_data &lt;- nls_data %&gt;%
-  mutate(
-    R6909701 = na_if(R6909701, -1),
-    R6909701 = ifelse(R6909701 &lt; 0, NA, R6909701),
-    R7607800 = na_if(R7607800, -1),
-    R7607800 = ifelse(R7607800 &lt; 0, NA, R7607800),
-    R8316300 = na_if(R8316300, -1),
-    R8316300 = ifelse(R8316300 &lt; 0, NA, R8316300),
-    T0912400 = na_if(T0912400, -1),
-    T0912400 = ifelse(T0912400 &lt; 0, NA, T0912400),
-    T2076700 = na_if(T2076700, -1),
-    T2076700 = ifelse(T2076700 &lt; 0, NA, T2076700),
-    T3045300 = na_if(T3045300, -1),
-    T3045300 = ifelse(T3045300 &lt; 0, NA, T3045300)
-  ) %&gt;%</code></pre>
-</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>nls_data <span class="ot">&lt;-</span> nls_data <span class="sc">%&gt;%</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">R6909701 =</span> <span class="fu">na_if</span>(R6909701, <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">R6909701 =</span> <span class="fu">ifelse</span>(R6909701 <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="cn">NA</span>, R6909701),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">R7607800 =</span> <span class="fu">na_if</span>(R7607800, <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">R7607800 =</span> <span class="fu">ifelse</span>(R7607800 <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="cn">NA</span>, R7607800),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">R8316300 =</span> <span class="fu">na_if</span>(R8316300, <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">R8316300 =</span> <span class="fu">ifelse</span>(R8316300 <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="cn">NA</span>, R8316300),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">T0912400 =</span> <span class="fu">na_if</span>(T0912400, <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">T0912400 =</span> <span class="fu">ifelse</span>(T0912400 <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="cn">NA</span>, T0912400),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">T2076700 =</span> <span class="fu">na_if</span>(T2076700, <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">T2076700 =</span> <span class="fu">ifelse</span>(T2076700 <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="cn">NA</span>, T2076700),</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">T3045300 =</span> <span class="fu">na_if</span>(T3045300, <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">T3045300 =</span> <span class="fu">ifelse</span>(T3045300 <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="cn">NA</span>, T3045300)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Our next task was removing non-interview values. These rows, indicated by -5 values, imply that the interviewee either quit or was removed from the data sampling. Therefore, they may be included in earlier years and not in late years. To improve our modeling, we must remove these values. In doing so, we discovered other null values that required further debugging and cleaning.</p>
-<div class="cell">
-<pre class="cleaning cell-code"><code>  # Remove rows where any variable is -5
-  filter(if_all(everything(), ~ . != -5))</code></pre>
-</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove rows where any variable is -5</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">if_all</span>(<span class="fu">everything</span>(), <span class="sc">~</span> . <span class="sc">!=</span> <span class="sc">-</span><span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To begin with, working with integer-coded columns would have been incredibly difficult. To combat this issue, we created began with gathering all the integer codes and their String equivalents. Next, we created R scripts to rename all our selected columns based on their integer codes.</p>
-<div class="cell">
-<pre class="cleaning cell-code"><code># 3. Define Grade Labels
-grade_labels &lt;- c(
-  "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", 
-  "6th Grade", "7th Grade", "8th Grade", "9th Grade", "10th Grade", 
-  "11th Grade", "12th Grade", "1st Year College", "2nd Year College", 
-  "3rd Year College", "4th Year College", "5th Year College", "6th Year College", 
-  "7th Year College", "8th Year College or More", "UNGRADED"
-)
-</code></pre>
-</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Define Grade Labels</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>grade_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"1st Grade"</span>, <span class="st">"2nd Grade"</span>, <span class="st">"3rd Grade"</span>, <span class="st">"4th Grade"</span>, <span class="st">"5th Grade"</span>, </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"6th Grade"</span>, <span class="st">"7th Grade"</span>, <span class="st">"8th Grade"</span>, <span class="st">"9th Grade"</span>, <span class="st">"10th Grade"</span>, </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"11th Grade"</span>, <span class="st">"12th Grade"</span>, <span class="st">"1st Year College"</span>, <span class="st">"2nd Year College"</span>, </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"3rd Year College"</span>, <span class="st">"4th Year College"</span>, <span class="st">"5th Year College"</span>, <span class="st">"6th Year College"</span>, </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"7th Year College"</span>, <span class="st">"8th Year College or More"</span>, <span class="st">"UNGRADED"</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Another challenge was modifying actual data points in every row. For example, rather than listing a respondents race, the information is coded in integers (i.e.&nbsp;1 = “black”, 2 = “white”, etc.) This would be incredibly difficult to keep track of in the long term scope of our project, therefore, we decided to modify these values. Columns race, sex, highest grade completed, and marital status were all encoded using this style. Consequently, we used similar R scripts to decode all of these columns.</p>
-<div class="cell">
-<pre class="cleaning cell-code"><code># 4. Create Cleaned Dataset
-nls_data_clean &lt;- nls_data %&gt;%
-  mutate(
-    Race = case_when(
-      R0214700 == 1 ~ "Hispanic",
-      R0214700 == 2 ~ "Black",
-      R0214700 == 3 ~ "Non-Black/Non-Hispanic",
-      TRUE ~ NA_character_
-    ),
-    Sex = case_when(
-      R0214800 == 1 ~ "Male",
-      R0214800 == 2 ~ "Female",
-      TRUE ~ NA_character_
-    ),
-      Highest_Grade_Completed = case_when(
-        T2272800 == 1 ~ "1ST GRADE", 
-        T2272800 == 2 ~ "2ND GRADE", 
-        T2272800 == 3 ~ "3RD GRADE",
-        T2272800 == 4 ~ "4TH GRADE", 
-        T2272800 == 5 ~ "5TH GRADE", 
-        T2272800 == 6 ~ "6TH GRADE", 
-        T2272800 == 7 ~ "7TH GRADE", 
-        T2272800 == 8 ~ "8TH GRADE", 
-        T2272800 == 9 ~ "9TH GRADE", 
-        T2272800 == 10 ~ "10TH GRADE", 
-        T2272800 == 11 ~ "11TH GRADE", 
-        T2272800 == 12 ~ "12TH GRADE", 
-        T2272800 == 13 ~ "1ST YEAR COLLEGE", 
-        T2272800 == 14 ~ "2ND YEAR COLLEGE", 
-        T2272800 == 15 ~ "3RD YEAR COLLEGE", 
-        T2272800 == 16 ~ "4TH YEAR COLLEGE", 
-        T2272800 == 17 ~ "5TH YEAR COLLEGE", 
-        T2272800 == 18 ~ "6TH YEAR COLLEGE", 
-        T2272800 == 19 ~ "7TH YEAR COLLEGE", 
-        T2272800 == 20 ~ "8TH YEAR COLLEGE OR MORE", 
-        T2272800 == 95 ~ "UNGRADED",
-        TRUE ~ NA_character_
-      ),
-  Marital_Status = case_when(
-      T3108400 == 0 ~ "Never Married",
-      T3108400 == 1 ~ "Married",
-      T3108400 == 2 ~ "Separated",
-      T3108400 == 3 ~ "Divorced",
-      T3108400 == 6 ~ "Widowed",
-      TRUE ~ NA_character_
-    ),
-  Region = case_when(
-    T3108200 == 1 ~ "Northeast",
-    T3108200 == 2 ~ "North Central",
-    T3108200 == 3 ~ "South",
-    T3108200 == 4 ~ "West",
-    TRUE ~ NA_character_
-  )
-  ) %&gt;%
-  # Convert categorical variables to factors
-  mutate(across(c(Race, Sex, Highest_Grade_Completed, Marital_Status, Region), as.factor)) %&gt;%
-  # Remove original numeric columns
-  select(-c(R0214700, R0214800, T2272800, T3108400, T3108200)) %&gt;%
-  # Rename columns
-  # Rename columns
-  rename(
-    Case_ID = R0000100,
-    Sample_ID = R0173600,
-    Age_2010 = T3108700,
-    Income_2000 = R6909701,
-    Income_2002 = R7607800,
-    Income_2004 = R8316300,
-    Income_2006 = T0912400,
-    Income_2008 = T2076700,
-    Income_2010 = T3045300
-  )</code></pre>
-</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Create Cleaned Dataset</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>nls_data_clean <span class="ot">&lt;-</span> nls_data <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Race =</span> <span class="fu">case_when</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      R0214700 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Hispanic"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      R0214700 <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"Black"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      R0214700 <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"Non-Black/Non-Hispanic"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Sex =</span> <span class="fu">case_when</span>(</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>      R0214800 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Male"</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>      R0214800 <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"Female"</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">Highest_Grade_Completed =</span> <span class="fu">case_when</span>(</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"1ST GRADE"</span>, </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"2ND GRADE"</span>, </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"3RD GRADE"</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"4TH GRADE"</span>, </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">"5TH GRADE"</span>, </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">"6TH GRADE"</span>, </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">7</span> <span class="sc">~</span> <span class="st">"7TH GRADE"</span>, </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">"8TH GRADE"</span>, </span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">9</span> <span class="sc">~</span> <span class="st">"9TH GRADE"</span>, </span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">10</span> <span class="sc">~</span> <span class="st">"10TH GRADE"</span>, </span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">11</span> <span class="sc">~</span> <span class="st">"11TH GRADE"</span>, </span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">12</span> <span class="sc">~</span> <span class="st">"12TH GRADE"</span>, </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">13</span> <span class="sc">~</span> <span class="st">"1ST YEAR COLLEGE"</span>, </span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">14</span> <span class="sc">~</span> <span class="st">"2ND YEAR COLLEGE"</span>, </span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">15</span> <span class="sc">~</span> <span class="st">"3RD YEAR COLLEGE"</span>, </span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">16</span> <span class="sc">~</span> <span class="st">"4TH YEAR COLLEGE"</span>, </span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">17</span> <span class="sc">~</span> <span class="st">"5TH YEAR COLLEGE"</span>, </span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">18</span> <span class="sc">~</span> <span class="st">"6TH YEAR COLLEGE"</span>, </span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">19</span> <span class="sc">~</span> <span class="st">"7TH YEAR COLLEGE"</span>, </span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">20</span> <span class="sc">~</span> <span class="st">"8TH YEAR COLLEGE OR MORE"</span>, </span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>        T2272800 <span class="sc">==</span> <span class="dv">95</span> <span class="sc">~</span> <span class="st">"UNGRADED"</span>,</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>        <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">Marital_Status =</span> <span class="fu">case_when</span>(</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>      T3108400 <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"Never Married"</span>,</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>      T3108400 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Married"</span>,</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>      T3108400 <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"Separated"</span>,</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>      T3108400 <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"Divorced"</span>,</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>      T3108400 <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">"Widowed"</span>,</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>  <span class="at">Region =</span> <span class="fu">case_when</span>(</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    T3108200 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Northeast"</span>,</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    T3108200 <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"North Central"</span>,</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>    T3108200 <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"South"</span>,</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>    T3108200 <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"West"</span>,</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert categorical variables to factors</span></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(Race, Sex, Highest_Grade_Completed, Marital_Status, Region), as.factor)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove original numeric columns</span></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(R0214700, R0214800, T2272800, T3108400, T3108200)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Rename columns</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Rename columns</span></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">Case_ID =</span> R0000100,</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">Sample_ID =</span> R0173600,</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">Age_2010 =</span> T3108700,</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">Income_2000 =</span> R6909701,</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">Income_2002 =</span> R7607800,</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">Income_2004 =</span> R8316300,</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">Income_2006 =</span> T0912400,</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">Income_2008 =</span> T2076700,</span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>    <span class="at">Income_2010 =</span> T3045300</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 <p>TODO: show a histogram or bar chart for a particularly important variable can provide a quick overview of the values that variable tends to take. - better figures, describe each figure</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/participation-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/dataset1 vars-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/participation-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/dataset1 vars-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/participation-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/dataset1 vars-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/participation-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/dataset1 vars-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -396,14 +421,14 @@ nls_data_clean &lt;- nls_data %&gt;%
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/participation-5.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/dataset1 vars-5.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/participation-6.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/dataset1 vars-6.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -495,48 +520,45 @@ nls_data_clean &lt;- nls_data %&gt;%
 </section>
 <section id="data-cleaning---interest-rates-by-year" class="level2">
 <h2 class="anchored" data-anchor-id="data-cleaning---interest-rates-by-year">Data Cleaning - Interest Rates by Year</h2>
-<div class="cell">
-<pre class="datacleaning cell-code"><code># Load in another library to clean second dataset
-library(lubridate)
-
-# Now we clean the second Dataset which we loaded in 
-rates &lt;- read_csv("./dataset/long-term-rates-2000-2010.csv")
-rates2 &lt;- read_csv("./dataset/long-term-rates-2011-2020.csv")
-
-# Define a mode function (returns the first mode if multiple)
-get_mode &lt;- function(x) {
-  ux &lt;- unique(na.omit(x))
-  ux[which.max(tabulate(match(x, ux)))]
-}
-
-#combine rates and rates2
-combined_rates &lt;- bind_rows(rates1, rates2)
-
-#mutate data to have proper year date format (wil be easier to compute stat summaries with)
-interest_rates_cleaned &lt;- combined_rates %&gt;%
-  mutate(Date = mdy(Date),
-         Year = year(Date)) %&gt;%
-  group_by(Year) %&gt;%
-  summarise(
-    mean_LT = mean(`LT COMPOSITE (&gt;10 Yrs)`, na.rm = TRUE),
-    min_LT = min(`LT COMPOSITE (&gt;10 Yrs)`, na.rm = TRUE),
-    max_LT = max(`LT COMPOSITE (&gt;10 Yrs)`, na.rm = TRUE),
-    sd_LT = sd(`LT COMPOSITE (&gt;10 Yrs)`, na.rm = TRUE),
-    median_LT = median(`LT COMPOSITE (&gt;10 Yrs)`, na.rm = TRUE),
-    mode_LT = get_mode(`LT COMPOSITE (&gt;10 Yrs)`),
-    
-    mean_TREASURY = mean(`TREASURY 20-Yr CMT`, na.rm = TRUE),
-    min_TREASURY = min(`TREASURY 20-Yr CMT`, na.rm = TRUE),
-    max_TREASURY = max(`TREASURY 20-Yr CMT`, na.rm = TRUE),
-    sd_TREASURY = sd(`TREASURY 20-Yr CMT`, na.rm = TRUE),
-    median_TREASURY = median(`TREASURY 20-Yr CMT`, na.rm = TRUE),
-    mode_TREASURY = get_mode(`TREASURY 20-Yr CMT`)
-  ) %&gt;%
-  ungroup()
-
-write_csv(interest_rates_cleaned, "interest_rates_cleaned.csv")
-</code></pre>
-</div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load in another library to clean second dataset</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we clean the second Dataset which we loaded in </span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>rates <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"./dataset/long-term-rates-2000-2010.csv"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>rates2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"./dataset/long-term-rates-2011-2020.csv"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a mode function (returns the first mode if multiple)</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>get_mode <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  ux <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">na.omit</span>(x))</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  ux[<span class="fu">which.max</span>(<span class="fu">tabulate</span>(<span class="fu">match</span>(x, ux)))]</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#combine rates and rates2</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>combined_rates <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(rates1, rates2)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#mutate data to have proper year date format (wil be easier to compute stat summaries with)</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>interest_rates_cleaned <span class="ot">&lt;-</span> combined_rates <span class="sc">%&gt;%</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Date =</span> <span class="fu">mdy</span>(Date),</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">Year =</span> <span class="fu">year</span>(Date)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">%&gt;%</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_LT =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">min_LT =</span> <span class="fu">min</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_LT =</span> <span class="fu">max</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_LT =</span> <span class="fu">sd</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_LT =</span> <span class="fu">median</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">mode_LT =</span> <span class="fu">get_mode</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>),</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_TREASURY =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">min_TREASURY =</span> <span class="fu">min</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_TREASURY =</span> <span class="fu">max</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_TREASURY =</span> <span class="fu">sd</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_TREASURY =</span> <span class="fu">median</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">mode_TREASURY =</span> <span class="fu">get_mode</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>)</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(interest_rates_cleaned, <span class="st">"interest_rates_cleaned.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>TODO: show a histogram or bar chart for a particularly important variable can provide a quick overview of the values that variable tends to take. - better figures, describe each figure</p>
 </section>
 <section id="data-combination" class="level2">
