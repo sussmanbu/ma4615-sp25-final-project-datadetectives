@@ -25,10 +25,13 @@ All the R scripts we used to load and clean this dataset can be found [here](/sc
 #load in tidyverse
 library(tidyverse)
 library(scales)
+library(dplyr)
+library(ggplot2)
 
 #read in dataset from csv
 nls <- read_csv("dataset/nls_clean.csv", show_col_types = FALSE) %>%
   select(-`...1`)
+
 ```
 
 ```{r nls vars, echo= FALSE}
@@ -245,10 +248,6 @@ nls %>%
 This cleaned dataset can be found [here](/dataset/interest_rates_cleaned.csv). 
 
 ***
-
-* Describe the different data files used and what each variable means. 
-  * If you have many variables then only describe the most relevant ones, possibly grouping together variables that are similar, and summarize the rest.
-  
   
 ```{r dataset2 vars, echo= FALSE}
 # Load the data
@@ -283,6 +282,8 @@ knitr::kable(variable_descriptions, caption = "Interest Rate Variable Descriptio
 
 ## Data Cleaning - Interest Rates by Year
 
+We began by importing the dataset using the read_csv() function from the readr package in the tidyverse. Then, we first added additional income years to cover 2000-2010 as opposed to just 2010. Afterwards, we joined the interest rate average of each year with the corresponding two years - so 2001 and 2002 went into 2002, 2003 and 2004 went into 2004, and so on. By doing this, we were able to join the interest rate data into our survey data in an efficient and complementary way.
+
 ```r
 # Load in another library to clean second dataset
 library(lubridate)
@@ -291,15 +292,20 @@ library(lubridate)
 rates <- read_csv("./dataset/long-term-rates-2000-2010.csv")
 rates2 <- read_csv("./dataset/long-term-rates-2011-2020.csv")
 
+#combine rates and rates2
+combined_rates <- bind_rows(rates1, rates2)
+```
+
+Additionally, defining a custom get_mode() function, made it easy to handle mode calculation, since R does not provide a built-in mode() for numeric data in a tidy pipeline.
+```r
 # Define a mode function (returns the first mode if multiple)
 get_mode <- function(x) {
   ux <- unique(na.omit(x))
   ux[which.max(tabulate(match(x, ux)))]
 }
-
-#combine rates and rates2
-combined_rates <- bind_rows(rates1, rates2)
-
+```
+The Date column, originally in character format, was converted to proper Date objects using lubridate::mdy(). We then extracted the year from each date to enable grouping by year. To understand yearly trends in interest rates, we grouped the data by Year and computed a comprehensive set of summary statistics for each of the two rate columns including mean, minimum, maximum, standard deviation, median, and mode.
+```r
 #mutate data to have proper year date format (wil be easier to compute stat summaries with)
 interest_rates_cleaned <- combined_rates %>%
   mutate(Date = mdy(Date),
@@ -321,13 +327,43 @@ interest_rates_cleaned <- combined_rates %>%
     mode_TREASURY = get_mode(`TREASURY 20-Yr CMT`)
   ) %>%
   ungroup()
-
+```
+Finally, the dataset is written on to a CSV file for later use. 
+```r
 write_csv(interest_rates_cleaned, "interest_rates_cleaned.csv")
 
 ```
 
+```{r dataset2 distributions, echo= FALSE}
 
-TODO:  show a histogram or bar chart for a particularly important variable can provide a quick overview of the values that variable tends to take. - better figures, describe each figure
+#LT stats
+lt_long <- df %>%
+  select(starts_with("mean_LT"), starts_with("min_LT"), starts_with("max_LT"),
+         starts_with("sd_LT"), starts_with("median_LT"), starts_with("mode_LT")) %>%
+  pivot_longer(everything(), names_to = "Metric", values_to = "Value")
+
+#LT histogram
+ggplot(lt_long, aes(x = Metric, y = Value)) +
+  geom_boxplot(fill = "lightblue") +
+  labs(title = "Boxplot of Long-Term Interest Rate Metrics", x = "Metric", y = "Value") +
+  theme_minimal()
+
+ggplot(df, aes(x = mean_LT)) +
+  geom_histogram(binwidth = 0.2, fill = "steelblue", color = "black") +
+  labs(
+    title = "Distribution of Mean Long-Term Interest Rates",
+    x = "Mean LT Rate (%)",
+    y = "Count"
+  ) +
+  theme_minimal()
+
+#treasury histogram
+ggplot(df, aes(x = mean_TREASURY)) +
+  geom_histogram(binwidth = 0.2, fill = "orange", color = "black") +
+  labs(title = "Distribution of Mean Treasury Rates", x = "Mean Treasury Rate", y = "Frequency") +
+  theme_minimal()
+  
+```
   
 ## Data Combination
 
