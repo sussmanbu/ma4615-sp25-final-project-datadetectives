@@ -158,7 +158,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#example-of-loading-data" id="toc-example-of-loading-data" class="nav-link active" data-scroll-target="#example-of-loading-data">Example of loading data</a></li>
   <li><a href="#note-on-attribution" id="toc-note-on-attribution" class="nav-link" data-scroll-target="#note-on-attribution">Note on Attribution</a></li>
   <li><a href="#rubric-on-this-page" id="toc-rubric-on-this-page" class="nav-link" data-scroll-target="#rubric-on-this-page">Rubric: On this page</a></li>
-  <li><a href="#introduction-and-motivation-for-analysis" id="toc-introduction-and-motivation-for-analysis" class="nav-link" data-scroll-target="#introduction-and-motivation-for-analysis">Introduction and Motivation for Analysis</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#objective-and-research-questions" id="toc-objective-and-research-questions" class="nav-link" data-scroll-target="#objective-and-research-questions">Objective and Research Questions</a></li>
+  <li><a href="#motivating-figures-and-tables" id="toc-motivating-figures-and-tables" class="nav-link" data-scroll-target="#motivating-figures-and-tables">Motivating Figures and Tables</a></li>
+  <li><a href="#now-we-look-at-interest-rates." id="toc-now-we-look-at-interest-rates." class="nav-link" data-scroll-target="#now-we-look-at-interest-rates.">Now, we look at interest rates.</a></li>
+  </ul></li>
+  <li><a href="#modeling-and-inference" id="toc-modeling-and-inference" class="nav-link" data-scroll-target="#modeling-and-inference">Modeling and Inference</a></li>
+  <li><a href="#results-limitations-and-conclusion" id="toc-results-limitations-and-conclusion" class="nav-link" data-scroll-target="#results-limitations-and-conclusion">Results, Limitations, and Conclusion</a></li>
   </ul>
 </nav>
     </div>
@@ -255,9 +262,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 </ul>
 </section>
-<section id="introduction-and-motivation-for-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="introduction-and-motivation-for-analysis">Introduction and Motivation for Analysis</h2>
-<p>The goal of our analysis is to examine how macroeconomic trends affect different racial and socioeconomic groups. The following graphs explore some of the relationships between variables in our dataset to motivate this goal.</p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="objective-and-research-questions" class="level3">
+<h3 class="anchored" data-anchor-id="objective-and-research-questions">Objective and Research Questions</h3>
+<p>The goal of our analysis is to examine how macroeconomic trends in the aftermath of the 2008 recession, such as shifting interest rates, affected different racial and socioeconomic groups in the United States. We aim to answer some of the following research questions:</p>
+<ul>
+<li>What factors contribute to upward economic mobility?</li>
+<li>How do income and employment differ across gender, race, and education levels?</li>
+<li>Are there persistent racial disparities in long-term wealth accumulation?</li>
+</ul>
+</section>
+<section id="motivating-figures-and-tables" class="level3">
+<h3 class="anchored" data-anchor-id="motivating-figures-and-tables">Motivating Figures and Tables</h3>
+<p>The following graphs explore some of the relationships between variables in our data to motivate this goal.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -276,7 +294,7 @@ Attaching package: 'scales'</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>nls_data_clean <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"dataset/nls_clean.rds"</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#define correct order of education levels(neeeded for next query)</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#define correct order of education levels(needed for next query)</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>education_levels <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"1ST GRADE"</span>, <span class="st">"2ND GRADE"</span>, <span class="st">"3RD GRADE"</span>, <span class="st">"4TH GRADE"</span>, <span class="st">"5TH GRADE"</span>, <span class="st">"6TH GRADE"</span>, </span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"7TH GRADE"</span>, <span class="st">"8TH GRADE"</span>, <span class="st">"9TH GRADE"</span>, <span class="st">"10TH GRADE"</span>, <span class="st">"11TH GRADE"</span>, <span class="st">"12TH GRADE"</span>, </span>
@@ -357,7 +375,10 @@ Attaching package: 'scales'</code></pre>
 </div>
 </div>
 </div>
-<p>###Now, we look at interest rates.</p>
+</section>
+</section>
+<section id="now-we-look-at-interest-rates." class="level3">
+<h3 class="anchored" data-anchor-id="now-we-look-at-interest-rates.">Now, we look at interest rates.</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -450,6 +471,10 @@ dbl (13): Year, mean_LT, min_LT, max_LT, sd_LT, median_LT, mode_LT, mean_TRE...
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="modeling-and-inference" class="level2">
+<h2 class="anchored" data-anchor-id="modeling-and-inference">Modeling and Inference</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#library(scales)</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(car)</span></span>
@@ -472,9 +497,11 @@ dbl (13): Year, mean_LT, min_LT, max_LT, sd_LT, median_LT, mode_LT, mean_TRE...
 <span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="co"># # plot(model)</span></span>
 <span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="do">###</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-
-
 </section>
+<section id="results-limitations-and-conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="results-limitations-and-conclusion">Results, Limitations, and Conclusion</h2>
+
+
 </section>
 
 </main> <!-- /main -->

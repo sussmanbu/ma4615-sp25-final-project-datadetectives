@@ -21,40 +21,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -155,18 +121,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-makes-a-good-data-set" id="toc-what-makes-a-good-data-set" class="nav-link active" data-scroll-target="#what-makes-a-good-data-set">What makes a good data set?</a></li>
-  <li><a href="#where-to-keep-data" id="toc-where-to-keep-data" class="nav-link" data-scroll-target="#where-to-keep-data">Where to keep data?</a>
+  <li><a href="#wherehow-to-find-data" id="toc-wherehow-to-find-data" class="nav-link active" data-scroll-target="#wherehow-to-find-data">Where/How to find Data</a>
   <ul class="collapse">
-  <li><a href="#sharing-your-data" id="toc-sharing-your-data" class="nav-link" data-scroll-target="#sharing-your-data">Sharing your data</a></li>
-  <li><a href="#clean-data-script" id="toc-clean-data-script" class="nav-link" data-scroll-target="#clean-data-script">Clean data script</a></li>
+  <li><a href="#dataset-1---nls-national-longitudinal-survey" id="toc-dataset-1---nls-national-longitudinal-survey" class="nav-link" data-scroll-target="#dataset-1---nls-national-longitudinal-survey">DataSet #1 - NLS National Longitudinal Survey</a></li>
   </ul></li>
-  <li><a href="#rubric-on-this-page" id="toc-rubric-on-this-page" class="nav-link" data-scroll-target="#rubric-on-this-page">Rubric: On this page</a>
+  <li><a href="#data-cleaning---nls-national-longitudinal-survey" id="toc-data-cleaning---nls-national-longitudinal-survey" class="nav-link" data-scroll-target="#data-cleaning---nls-national-longitudinal-survey">Data Cleaning - NLS National Longitudinal Survey</a>
   <ul class="collapse">
-  <li><a href="#describe-wherehow-to-find-data." id="toc-describe-wherehow-to-find-data." class="nav-link" data-scroll-target="#describe-wherehow-to-find-data.">Describe where/how to find data.</a></li>
+  <li><a href="#dataset-2---interest-rates-by-year" id="toc-dataset-2---interest-rates-by-year" class="nav-link" data-scroll-target="#dataset-2---interest-rates-by-year">DataSet #2 - Interest Rates by Year</a></li>
   </ul></li>
-  <li><a href="#our-dataset" id="toc-our-dataset" class="nav-link" data-scroll-target="#our-dataset">Our DataSet</a></li>
-  <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning">Data Cleaning</a></li>
+  <li><a href="#data-cleaning---interest-rates-by-year" id="toc-data-cleaning---interest-rates-by-year" class="nav-link" data-scroll-target="#data-cleaning---interest-rates-by-year">Data Cleaning - Interest Rates by Year</a></li>
   <li><a href="#data-combination" id="toc-data-combination" class="nav-link" data-scroll-target="#data-combination">Data Combination</a></li>
   </ul>
 </nav>
@@ -198,125 +161,383 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><img src="images/data-import-cheatsheet-thumbs.png" class="img-fluid"></p>
-<p>This comes from the file <code>data.qmd</code>.</p>
-<p>Your first steps in this project will be to find data to work on.</p>
-<p>I recommend trying to find data that interests you and that you are knowledgeable about. A bad example would be if you have no interest in video games but your data set is about video games. I also recommend finding data that is related to current events, social justice, and other areas that have an impact.</p>
-<p>Initially, you will study <em>one dataset</em> but later you will need to combine that data with another dataset. For this reason, I recommend finding data that has some date and/or location components. These types of data are conducive to interesting visualizations and analysis and you can also combine this data with other data that also has a date or location variable. Data from the census, weather data, economic data, are all relatively easy to combine with other data with time/location components.</p>
-<section id="what-makes-a-good-data-set" class="level2">
-<h2 class="anchored" data-anchor-id="what-makes-a-good-data-set">What makes a good data set?</h2>
+<p><img src="images/dataqmd.png" class="img-fluid"></p>
+<section id="wherehow-to-find-data" class="level2">
+<h2 class="anchored" data-anchor-id="wherehow-to-find-data">Where/How to find Data</h2>
+<p>The original dataset is the NLS National Longitudinal Survey, which can be found <a href="https://www.bls.gov/nls/nlsy79.htm">here</a>. This data has been collected by the U.S. Bureau of Labor Statistics from 1970 - 2020 as part of a longitudinal study to better understand trends of labor force participation, education, and employment experiences evolving over time (with considerations of the effects of certain miscellaneous factors like race, gender, and socioeconomic status). This information will help paint a picture of the impacts the 2008 recession had on different racial and wealth groups in the United States of America.</p>
+<p>To further explore recession disparities, the NLS dataset was to be combined with the interest rates archive of the Department of Treasury, which can be found <a href="https://home.treasury.gov/interest-rates-data-csv-archive">here</a>. The data is presented daily, can join average interest rate each year with yearly available data in our existing NLSY data, mainly income. This will highlight any relationships between annual interest rates and income stratified by race. All-in-all, analyzing this datset, in combination with the NLS dataset, will provide a clear picture of macroeconomic trends, and how they effect different race groups in America.</p>
+<section id="dataset-1---nls-national-longitudinal-survey" class="level3">
+<h3 class="anchored" data-anchor-id="dataset-1---nls-national-longitudinal-survey">DataSet #1 - NLS National Longitudinal Survey</h3>
+<hr>
+<p>All the R scripts we used to load and clean this dataset can be found <a href="./scripts/clean_data_update.R">here</a>. Our cleaned dataset can be found <a href="./dataset/nls_clean.csv">here</a>.</p>
+<hr>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>NLS Variable Descriptions</caption>
+<colgroup>
+<col style="width: 30%">
+<col style="width: 69%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Case_ID</td>
+<td style="text-align: left;">Unique identifier for each case or respondent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sample_ID</td>
+<td style="text-align: left;">ID representing the respondent’s sample group</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Income_2000</td>
+<td style="text-align: left;">Reported personal income in the year 2000 (in USD)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Income_2002</td>
+<td style="text-align: left;">Reported personal income in the year 2002 (in USD)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Income_2004</td>
+<td style="text-align: left;">Reported personal income in the year 2004 (in USD)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Income_2006</td>
+<td style="text-align: left;">Reported personal income in the year 2006 (in USD)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Income_2008</td>
+<td style="text-align: left;">Reported personal income in the year 2008 (in USD)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Income_2010</td>
+<td style="text-align: left;">Reported personal income in the year 2010 (in USD)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Age_2010</td>
+<td style="text-align: left;">Respondent’s age as of the year 2010</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Race</td>
+<td style="text-align: left;">Self-reported race/ethnicity of the respondent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sex</td>
+<td style="text-align: left;">Sex of the respondent (e.g., Male/Female)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Highest_Grade_Completed</td>
+<td style="text-align: left;">Highest level of education or grade completed by 2010</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Marital_Status</td>
+<td style="text-align: left;">Marital status of the respondent in 2010</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Region</td>
+<td style="text-align: left;">Geographical region of residence in 2010</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="data-cleaning---nls-national-longitudinal-survey" class="level2">
+<h2 class="anchored" data-anchor-id="data-cleaning---nls-national-longitudinal-survey">Data Cleaning - NLS National Longitudinal Survey</h2>
+<p>Our data set required significant cleaning. In order to work with our CSV file, we needed to decode the integers that served as placeholders for column names, remove “non-interview” data points that we can’t compare across years, and decode integer values representing race, grade, etc. For this process, we primarily depended on the tidyverse library and other methods discussed in lecture.</p>
+<div class="cell">
+<pre class="cleaning cell-code"><code>nls_data &lt;- nls_data %&gt;%
+  mutate(
+    R6909701 = na_if(R6909701, -1),
+    R6909701 = ifelse(R6909701 &lt; 0, NA, R6909701),
+    R7607800 = na_if(R7607800, -1),
+    R7607800 = ifelse(R7607800 &lt; 0, NA, R7607800),
+    R8316300 = na_if(R8316300, -1),
+    R8316300 = ifelse(R8316300 &lt; 0, NA, R8316300),
+    T0912400 = na_if(T0912400, -1),
+    T0912400 = ifelse(T0912400 &lt; 0, NA, T0912400),
+    T2076700 = na_if(T2076700, -1),
+    T2076700 = ifelse(T2076700 &lt; 0, NA, T2076700),
+    T3045300 = na_if(T3045300, -1),
+    T3045300 = ifelse(T3045300 &lt; 0, NA, T3045300)
+  ) %&gt;%</code></pre>
+</div>
+<p>Our next task was removing non-interview values. These rows, indicated by -5 values, imply that the interviewee either quit or was removed from the data sampling. Therefore, they may be included in earlier years and not in late years. To improve our modeling, we must remove these values. In doing so, we discovered other null values that required further debugging and cleaning.</p>
+<div class="cell">
+<pre class="cleaning cell-code"><code>  # Remove rows where any variable is -5
+  filter(if_all(everything(), ~ . != -5))</code></pre>
+</div>
+<p>To begin with, working with integer-coded columns would have been incredibly difficult. To combat this issue, we created began with gathering all the integer codes and their String equivalents. Next, we created R scripts to rename all our selected columns based on their integer codes.</p>
+<div class="cell">
+<pre class="cleaning cell-code"><code># 3. Define Grade Labels
+grade_labels &lt;- c(
+  "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", 
+  "6th Grade", "7th Grade", "8th Grade", "9th Grade", "10th Grade", 
+  "11th Grade", "12th Grade", "1st Year College", "2nd Year College", 
+  "3rd Year College", "4th Year College", "5th Year College", "6th Year College", 
+  "7th Year College", "8th Year College or More", "UNGRADED"
+)
+</code></pre>
+</div>
+<p>Another challenge was modifying actual data points in every row. For example, rather than listing a respondents race, the information is coded in integers (i.e.&nbsp;1 = “black”, 2 = “white”, etc.) This would be incredibly difficult to keep track of in the long term scope of our project, therefore, we decided to modify these values. Columns race, sex, highest grade completed, and marital status were all encoded using this style. Consequently, we used similar R scripts to decode all of these columns.</p>
+<div class="cell">
+<pre class="cleaning cell-code"><code># 4. Create Cleaned Dataset
+nls_data_clean &lt;- nls_data %&gt;%
+  mutate(
+    Race = case_when(
+      R0214700 == 1 ~ "Hispanic",
+      R0214700 == 2 ~ "Black",
+      R0214700 == 3 ~ "Non-Black/Non-Hispanic",
+      TRUE ~ NA_character_
+    ),
+    Sex = case_when(
+      R0214800 == 1 ~ "Male",
+      R0214800 == 2 ~ "Female",
+      TRUE ~ NA_character_
+    ),
+      Highest_Grade_Completed = case_when(
+        T2272800 == 1 ~ "1ST GRADE", 
+        T2272800 == 2 ~ "2ND GRADE", 
+        T2272800 == 3 ~ "3RD GRADE",
+        T2272800 == 4 ~ "4TH GRADE", 
+        T2272800 == 5 ~ "5TH GRADE", 
+        T2272800 == 6 ~ "6TH GRADE", 
+        T2272800 == 7 ~ "7TH GRADE", 
+        T2272800 == 8 ~ "8TH GRADE", 
+        T2272800 == 9 ~ "9TH GRADE", 
+        T2272800 == 10 ~ "10TH GRADE", 
+        T2272800 == 11 ~ "11TH GRADE", 
+        T2272800 == 12 ~ "12TH GRADE", 
+        T2272800 == 13 ~ "1ST YEAR COLLEGE", 
+        T2272800 == 14 ~ "2ND YEAR COLLEGE", 
+        T2272800 == 15 ~ "3RD YEAR COLLEGE", 
+        T2272800 == 16 ~ "4TH YEAR COLLEGE", 
+        T2272800 == 17 ~ "5TH YEAR COLLEGE", 
+        T2272800 == 18 ~ "6TH YEAR COLLEGE", 
+        T2272800 == 19 ~ "7TH YEAR COLLEGE", 
+        T2272800 == 20 ~ "8TH YEAR COLLEGE OR MORE", 
+        T2272800 == 95 ~ "UNGRADED",
+        TRUE ~ NA_character_
+      ),
+  Marital_Status = case_when(
+      T3108400 == 0 ~ "Never Married",
+      T3108400 == 1 ~ "Married",
+      T3108400 == 2 ~ "Separated",
+      T3108400 == 3 ~ "Divorced",
+      T3108400 == 6 ~ "Widowed",
+      TRUE ~ NA_character_
+    ),
+  Region = case_when(
+    T3108200 == 1 ~ "Northeast",
+    T3108200 == 2 ~ "North Central",
+    T3108200 == 3 ~ "South",
+    T3108200 == 4 ~ "West",
+    TRUE ~ NA_character_
+  )
+  ) %&gt;%
+  # Convert categorical variables to factors
+  mutate(across(c(Race, Sex, Highest_Grade_Completed, Marital_Status, Region), as.factor)) %&gt;%
+  # Remove original numeric columns
+  select(-c(R0214700, R0214800, T2272800, T3108400, T3108200)) %&gt;%
+  # Rename columns
+  # Rename columns
+  rename(
+    Case_ID = R0000100,
+    Sample_ID = R0173600,
+    Age_2010 = T3108700,
+    Income_2000 = R6909701,
+    Income_2002 = R7607800,
+    Income_2004 = R8316300,
+    Income_2006 = T0912400,
+    Income_2008 = T2076700,
+    Income_2010 = T3045300
+  )</code></pre>
+</div>
+<hr>
+<p>TODO: show a histogram or bar chart for a particularly important variable can provide a quick overview of the values that variable tends to take. - better figures, describe each figure</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_files/figure-html/participation-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_files/figure-html/participation-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_files/figure-html/participation-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_files/figure-html/participation-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_files/figure-html/participation-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_files/figure-html/participation-6.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="dataset-2---interest-rates-by-year" class="level3">
+<h3 class="anchored" data-anchor-id="dataset-2---interest-rates-by-year">DataSet #2 - Interest Rates by Year</h3>
+<hr>
+<p>This cleaned dataset can be found <a href="./dataset/interest_rates_cleaned.csv">here</a>.</p>
+<hr>
 <ul>
-<li>Data you are interested in and care about.</li>
-<li>Data where there are a lot of potential questions that you can explore.</li>
-<li>A data set that isn’t completely cleaned already.</li>
-<li>Multiple sources for data that you can combine.</li>
-<li>Some type of time and/or location component.</li>
+<li>Describe the different data files used and what each variable means.
+<ul>
+<li>If you have many variables then only describe the most relevant ones, possibly grouping together variables that are similar, and summarize the rest.</li>
+</ul></li>
 </ul>
-</section>
-<section id="where-to-keep-data" class="level2">
-<h2 class="anchored" data-anchor-id="where-to-keep-data">Where to keep data?</h2>
-<p>Below 50mb: In <code>dataset</code> folder</p>
-<p>Above 50mb: In <code>dataset-ignore</code> folder which you will have to create manually. This folder will be ignored by <code>git</code> so you’ll have to manually sync these files across your team.</p>
-<section id="sharing-your-data" class="level3">
-<h3 class="anchored" data-anchor-id="sharing-your-data">Sharing your data</h3>
-<p>For small datasets (&lt;50mb), you can use the <code>dataset</code> folder that is tracked by github. Stage and commit the files just like you would any other file.</p>
-<p>For larger datasets, you’ll need to create a new folder in the project root directory named <code>dataset-ignore</code>. This will be ignored by git (based off the <code>.gitignore</code> file in the project root directory) which will help you avoid issues with Github’s size limits. Your team will have to manually make sure the data files in <code>dataset-ignore</code> are synced across team members.</p>
-<p>Your <a href="./scripts/clean_data.R">clean_data.R</a> file in the <code>scripts</code> folder is the file where you will import the raw data that you download, clean it, and write <code>.rds</code> file(s) (using <code>write_rds</code>) that you’ll load in your analysis page. If desirable, you can have multiple scripts that produce different derived data sets, just make sure to link to them on this page.</p>
-<p>You should never use absolute paths (eg. <code>/Users/danielsussman/path/to/project/</code> or <code>C:\MA415\\Final_Project\</code>). Instead, use the <code>here</code> function from the <a href="https://here.r-lib.org/articles/here.html"><code>here</code> package</a> to avoid path problems.</p>
-</section>
-<section id="clean-data-script" class="level3">
-<h3 class="anchored" data-anchor-id="clean-data-script">Clean data script</h3>
-<p>The idea behind this file is that someone coming to your website could largely replicate your analyses after running this script on the original data sets to clean them. This file might create a derivative data set that you then use for your subsequent analysis. Note that you don’t need to run this script from every post/page. Instead, you can load in the results of this script, which will usually be <code>.rds</code> files. In your data page you’ll describe how these results were created. If you have a very large data set, you might save smaller data sets that you can use for exploration purposes. To link to this file, you can use <code>[cleaning script](/scripts/clean_data.R)</code> wich appears as <a href="./scripts/clean_data.R">cleaning script</a>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Interest Rate Variable Descriptions</caption>
+<colgroup>
+<col style="width: 21%">
+<col style="width: 78%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Year</td>
+<td style="text-align: left;">Year the data was collected</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mean_LT</td>
+<td style="text-align: left;">Mean of long-term interest rates (&gt;10 years)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">min_LT</td>
+<td style="text-align: left;">Minimum of long-term interest rates (&gt;10 years)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">max_LT</td>
+<td style="text-align: left;">Maximum of long-term interest rates (&gt;10 years)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sd_LT</td>
+<td style="text-align: left;">Standard deviation of long-term interest rates (&gt;10 years)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">median_LT</td>
+<td style="text-align: left;">Median of long-term interest rates (&gt;10 years)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">mode_LT</td>
+<td style="text-align: left;">Mode of long-term interest rates (&gt;10 years)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mean_TREASURY</td>
+<td style="text-align: left;">Mean of mortgage interest rates</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">min_TREASURY</td>
+<td style="text-align: left;">Minimum of mortgage interest rates</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">max_TREASURY</td>
+<td style="text-align: left;">Maximum of mortgage interest rates</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sd_TREASURY</td>
+<td style="text-align: left;">Standard deviation of mortgage interest rates</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">median_TREASURY</td>
+<td style="text-align: left;">Median of mortgage interest rates</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">mode_TREASURY</td>
+<td style="text-align: left;">Mode of mortgage interest rates</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <hr>
 </section>
 </section>
-<section id="rubric-on-this-page" class="level2">
-<h2 class="anchored" data-anchor-id="rubric-on-this-page">Rubric: On this page</h2>
-<p>You will</p>
-<section id="describe-wherehow-to-find-data." class="level3">
-<h3 class="anchored" data-anchor-id="describe-wherehow-to-find-data.">Describe where/how to find data.</h3>
-<ul>
-<li>You must include a link to the original data source(s). Make sure to provide attribution to those who collected the data.</li>
-<li>Why was the data collected/curated? Who put it together? (This is important, if you don’t know why it was collected then that might not be a good dataset to look at.</li>
-<li>Describe the different data files used and what each variable means.
-<ul>
-<li>If you have many variables then only describe the most relevant ones, possibly grouping together variables that are similar, and summarize the rest.</li>
-<li>Use figures or tables to help explain the data. For example, showing a histogram or bar chart for a particularly important variable can provide a quick overview of the values that variable tends to take.</li>
-</ul></li>
-<li>Describe any cleaning you had to do for your data.
-<ul>
-<li>You <em>must</em> include a link to your <code>clean_data.R</code> file.</li>
-<li>Rename variables and recode factors to make data more clear.</li>
-<li>Also, describe any additional R packages you used outside of those covered in class.</li>
-<li>Describe and show code for how you combined multiple data files and any cleaning that was necessary for that.</li>
-<li>Some repetition of what you do in your <code>clean_data.R</code> file is fine and encouraged if it helps explain what you did.</li>
-</ul></li>
-<li>Organization, clarity, cleanliness of the page
-<ul>
-<li>Make sure to remove excessive warnings, use clean easy-to-read code (without side scrolling), organize with sections, use bullets and other organization tools, etc.</li>
-<li>This page should be self-contained.</li>
-</ul></li>
-</ul>
-</section>
-</section>
-<section id="our-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="our-dataset">Our DataSet</h2>
-<p>The original dataset we started with was the BLS National Longitudinal Survey, which can be found <a href="https://www.bls.gov/nls/nlsy79.htm">here</a>. This data has been collected by the U.S. Bureau of Labor Statistics from 1970 - 2020 as part of a longitudinal study to better understand trends of labor force participation, education, and employment experiences evolving over time (with considerations of the effects of certain miscellaneous factors like race, gender, and socioeconomic status).</p>
-<ul>
-<li>Describe the different data files used and what each variable means.
-<ul>
-<li>If you have many variables then only describe the most relevant ones, possibly grouping together variables that are similar, and summarize the rest.</li>
-</ul></li>
-</ul>
-</section>
-<section id="data-cleaning" class="level2">
-<h2 class="anchored" data-anchor-id="data-cleaning">Data Cleaning</h2>
-<p>TODO: show a histogram or bar chart for a particularly important variable can provide a quick overview of the values that variable tends to take. - add more</p>
-<p>Here are some basic figures we created after cleaning, these are meant to show a quick breakdown of some of the variables we cleaned.</p>
+<section id="data-cleaning---interest-rates-by-year" class="level2">
+<h2 class="anchored" data-anchor-id="data-cleaning---interest-rates-by-year">Data Cleaning - Interest Rates by Year</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.1     ✔ tibble    3.2.1
-✔ lubridate 1.9.4     ✔ tidyr     1.3.1
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<pre class="datacleaning cell-code"><code># Load in another library to clean second dataset
+library(lubridate)
+
+# Now we clean the second Dataset which we loaded in 
+rates &lt;- read_csv("./dataset/long-term-rates-2000-2010.csv")
+rates2 &lt;- read_csv("./dataset/long-term-rates-2011-2020.csv")
+
+# Define a mode function (returns the first mode if multiple)
+get_mode &lt;- function(x) {
+  ux &lt;- unique(na.omit(x))
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
+#combine rates and rates2
+combined_rates &lt;- bind_rows(rates1, rates2)
+
+#mutate data to have proper year date format (wil be easier to compute stat summaries with)
+interest_rates_cleaned &lt;- combined_rates %&gt;%
+  mutate(Date = mdy(Date),
+         Year = year(Date)) %&gt;%
+  group_by(Year) %&gt;%
+  summarise(
+    mean_LT = mean(`LT COMPOSITE (&gt;10 Yrs)`, na.rm = TRUE),
+    min_LT = min(`LT COMPOSITE (&gt;10 Yrs)`, na.rm = TRUE),
+    max_LT = max(`LT COMPOSITE (&gt;10 Yrs)`, na.rm = TRUE),
+    sd_LT = sd(`LT COMPOSITE (&gt;10 Yrs)`, na.rm = TRUE),
+    median_LT = median(`LT COMPOSITE (&gt;10 Yrs)`, na.rm = TRUE),
+    mode_LT = get_mode(`LT COMPOSITE (&gt;10 Yrs)`),
+    
+    mean_TREASURY = mean(`TREASURY 20-Yr CMT`, na.rm = TRUE),
+    min_TREASURY = min(`TREASURY 20-Yr CMT`, na.rm = TRUE),
+    max_TREASURY = max(`TREASURY 20-Yr CMT`, na.rm = TRUE),
+    sd_TREASURY = sd(`TREASURY 20-Yr CMT`, na.rm = TRUE),
+    median_TREASURY = median(`TREASURY 20-Yr CMT`, na.rm = TRUE),
+    mode_TREASURY = get_mode(`TREASURY 20-Yr CMT`)
+  ) %&gt;%
+  ungroup()
+
+write_csv(interest_rates_cleaned, "interest_rates_cleaned.csv")
+</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>nls_data_clean <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"dataset/nls_clean.rds"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#count of races that participated </span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nls_data_clean, <span class="fu">aes</span>(<span class="at">x =</span> Race, <span class="at">fill =</span> Sex)) <span class="sc">+</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Participant Count by Race and Sex"</span>, <span class="at">x =</span> <span class="st">"Race"</span>, <span class="at">y =</span> <span class="st">"Count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="data_files/figure-html/datacleaning-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#count of different marital statuses found in survey</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nls_data_clean, <span class="fu">aes</span>(<span class="at">x =</span> Marital_Status)) <span class="sc">+</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"orchid"</span>) <span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Marital Status Distribution"</span>, <span class="at">x =</span> <span class="st">"Marital Status"</span>, <span class="at">y =</span> <span class="st">"Count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="data_files/figure-html/datacleaning-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>TODO: link clean_data.R in placeholder</p>
-<p>Our data set required significant cleaning. In order to work with our CSV file, we needed to decode the integers that served as placeholders for column names, remove “non-interview” data points that we can’t compare across years, and decode integer values representing race, grade, etc. All the R scripts we used to load and clean the data can be found <a href="./scripts/clean_data_update.R">here</a>. For this process, we primarily depended on the tidyverse library and other methods discussed in lecture.</p>
-<p>To begin with, working with integer-coded columns would have been incredibly difficult. To combat this issue, we created began with gathering all the integer codes and their String equivalents. Next, we created R scripts to rename all our selected columns based on their integer codes.</p>
-<p>Our next task was removing non-interview values. These rows, indicated by -5 values, imply that the interviewee either quit or was removed from the data sampling. Therefore, they may be included in earlier years and not in late years. To improve our modeling, we must remove these values. In doing so, we discovered other null values that required further debugging and cleaning.</p>
-<p>Another challenge was modifying actual data points in every row. For example, rather than listing a respondents race, the information is coded in integers (i.e.&nbsp;1 = “black”, 2 = “white”, etc.) This would be incredibly difficult to keep track of in the long term scope of our project, therefore, we decided to modify these values. Columns race, sex, highest grade completed, and marital status were all encoded using this style. Consequently, we used similar R scripts to decode all of these columns.</p>
+<p>TODO: show a histogram or bar chart for a particularly important variable can provide a quick overview of the values that variable tends to take. - better figures, describe each figure</p>
 </section>
 <section id="data-combination" class="level2">
 <h2 class="anchored" data-anchor-id="data-combination">Data Combination</h2>

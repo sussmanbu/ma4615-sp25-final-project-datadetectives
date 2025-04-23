@@ -206,3 +206,6 @@ interest_rates_cleaned <- combined_rates %>%
   ungroup()
 
 write_csv(interest_rates_cleaned, "interest_rates_cleaned.csv")
+
+
+
