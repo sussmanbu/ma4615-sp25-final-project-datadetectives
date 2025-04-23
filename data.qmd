@@ -9,28 +9,62 @@ draft: false
 
 ## Where/How to find Data 
 
-  The original dataset we started with was the BLS National Longitudinal Survey, which can be found [here](https://www.bls.gov/nls/nlsy79.htm). This data has been collected by the U.S. Bureau of Labor Statistics from 1970 - 2020 as part of a longitudinal study to better understand trends of labor force participation, education, and employment experiences evolving over time (with considerations of the effects of certain miscellaneous factors like race, gender, and socioeconomic status). This information will help paint a picture of the impacts the 2008 recession had on different racial and wealth groups in the United States of America. 
+  The original dataset is the NLS National Longitudinal Survey, which can be found [here](https://www.bls.gov/nls/nlsy79.htm). This data has been collected by the U.S. Bureau of Labor Statistics from 1970 - 2020 as part of a longitudinal study to better understand trends of labor force participation, education, and employment experiences evolving over time (with considerations of the effects of certain miscellaneous factors like race, gender, and socioeconomic status). This information will help paint a picture of the impacts the 2008 recession had on different racial and wealth groups in the United States of America. 
   
-TODO: write another about second dataset
+To further explore recession disparities, the NLS dataset was to be combined with the interest rates archive of the Department of Treasury, which can be found  [here](https://home.treasury.gov/interest-rates-data-csv-archive). The data is presented daily, can join average interest rate each year with yearly available data in our existing NLSY data, mainly income. This will highlight any relationships between annual interest rates and income stratified by race. All-in-all, analyzing this datset, in combination with the NLS dataset, will provide a clear picture of macroeconomic trends, and how they effect different race groups in America. 
 
-### DataSet #1 - BLS National Longitudinal Survey
+
+### DataSet #1 - NLS National Longitudinal Survey
   
 ***
 All the R scripts we used to load and clean this dataset can be found [here](/scripts/clean_data_update.R). Our cleaned dataset can be found [here](/dataset/nls_clean.csv). 
 
 ***
-
-* Describe the different data files used and what each variable means. 
-  * If you have many variables then only describe the most relevant ones, possibly grouping together variables that are similar, and summarize the rest.
   
-## Data Cleaning - BLS National Longitudinal Survey
+```{r libs, message=FALSE, warning=FALSE, echo= FALSE}
+#load in tidyverse
+library(tidyverse)
+library(scales)
+
+#read in dataset from csv
+nls <- read_csv("dataset/nls_clean.csv", show_col_types = FALSE) %>%
+  select(-`...1`)
+```
+
+```{r nls vars, echo= FALSE}
+
+# Create a variable dictionary based on the column names
+nls_descriptions <- tibble(
+  Variable = names(nls),
+  Description = c(
+    "Unique identifier for each case or respondent",
+    "ID representing the respondent's sample group",
+    "Reported personal income in the year 2000 (in USD)",
+    "Reported personal income in the year 2002 (in USD)",
+    "Reported personal income in the year 2004 (in USD)",
+    "Reported personal income in the year 2006 (in USD)",
+    "Reported personal income in the year 2008 (in USD)",
+    "Reported personal income in the year 2010 (in USD)",
+    "Respondent's age as of the year 2010",
+    "Self-reported race/ethnicity of the respondent",
+    "Sex of the respondent (e.g., Male/Female)",
+    "Highest level of education or grade completed by 2010",
+    "Marital status of the respondent in 2010",
+    "Geographical region of residence in 2010"
+  )
+  )
+
+# Print the table
+knitr::kable(nls_descriptions, caption = "NLS Variable Descriptions")
+
+```
+  
+  
+## Data Cleaning - NLS National Longitudinal Survey
 
 Our data set required significant cleaning. In order to work with our CSV file, we needed to decode the integers that served as placeholders for column names, remove "non-interview" data points that we can't compare across years, and decode integer values representing race, grade, etc. For this process, we primarily depended on the tidyverse library and other methods discussed in lecture. 
 
 ```{cleaning snippet1}
-library(tidyverse)
-library(here)
-
 nls_data <- nls_data %>%
   mutate(
     R6909701 = na_if(R6909701, -1),
@@ -46,14 +80,16 @@ nls_data <- nls_data %>%
     T3045300 = na_if(T3045300, -1),
     T3045300 = ifelse(T3045300 < 0, NA, T3045300)
   ) %>%
+```
 
+Our next task was removing non-interview values. These rows, indicated by -5 values, imply that the interviewee either quit or was removed from the data sampling. Therefore, they may be included in earlier years and not in late years. To improve our modeling, we must remove these values. In doing so, we discovered other null values that required further debugging and cleaning.
+```{cleaning snippet2}
   # Remove rows where any variable is -5
   filter(if_all(everything(), ~ . != -5))
 ```
 
 To begin with, working with integer-coded columns would have been incredibly difficult. To combat this issue, we created began with gathering all the integer codes and their String equivalents. Next, we created R scripts to rename all our selected columns based on their integer codes.  
-
-```{cleaning snippet2}
+```{cleaning snippet3}
 # 3. Define Grade Labels
 grade_labels <- c(
   "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", 
@@ -65,11 +101,10 @@ grade_labels <- c(
 
 ```
 
-Our next task was removing non-interview values. These rows, indicated by -5 values, imply that the interviewee either quit or was removed from the data sampling. Therefore, they may be included in earlier years and not in late years. To improve our modeling, we must remove these values. In doing so, we discovered other null values that required further debugging and cleaning.
 
 Another challenge was modifying actual data points in every row. For example, rather than listing a respondents race, the information is coded in integers (i.e. 1 = "black", 2 = "white", etc.) This would be incredibly difficult to keep track of in the long term scope of our project, therefore, we decided to modify these values. Columns race, sex, highest grade completed, and marital status were all encoded using this style. Consequently, we used similar R scripts to decode all of these columns.
 
-```{cleaning snippet3}
+```{cleaning snippet4}
 # 4. Create Cleaned Dataset
 nls_data_clean <- nls_data %>%
   mutate(
@@ -143,27 +178,65 @@ nls_data_clean <- nls_data %>%
   )
 ```
 
-
 ***
 
 TODO:  show a histogram or bar chart for a particularly important variable can provide a quick overview of the values that variable tends to take. - better figures, describe each figure
 
-```{r datacleaning, echo= FALSE}
-
-library(tidyverse)
+```{r participation, echo= FALSE}
 nls_data_clean <- read_rds("dataset/nls_clean.rds")
 
-#count of races that participated 
-ggplot(nls_data_clean, aes(x = Race, fill = Sex)) +
-  geom_bar(position = "dodge") +
-  labs(title = "Participant Count by Race and Sex", x = "Race", y = "Count")
+#personal income
+nls %>%
+  pivot_longer(cols = starts_with("Income_"), names_to = "Year", values_to = "Income") %>%
+  ggplot(aes(x = Year, y = Income)) +
+  geom_boxplot(fill = "yellow") +
+  scale_y_continuous(labels = label_comma()) +  # Avoid exponential notation
+  labs(title = "Distribution of Personal Income by Year", x = "Year", y = "Income (USD)") +
+  theme_minimal()
 
+#age
+ggplot(nls, aes(x = Age_2010)) +
+  geom_histogram(binwidth = 2, fill = "maroon", color = "black") +
+  labs(title = "Age Distribution in 2010", x = "Age", y = "Count") +
+  theme_minimal()
 
-#count of different marital statuses found in survey
-ggplot(nls_data_clean, aes(x = Marital_Status)) +
-  geom_bar(fill = "orchid") +
-  labs(title = "Marital Status Distribution", x = "Marital Status", y = "Count")
+#race
+nls %>%
+  count(Race) %>%
+  ggplot(aes(x = fct_reorder(Race, n), y = n)) +
+  geom_col(fill = "darkgreen") +
+  coord_flip() +
+  labs(title = "Race Distribution", x = "Race", y = "Count") +
+  theme_minimal()
 
+#sex
+nls %>%
+  count(Sex) %>%
+  ggplot(aes(x = "", y = n, fill = Sex)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y") +
+  scale_fill_manual(values = c("Male" = "#D2691E",  
+                               "Female" = "#FF8C00"))
+  labs(title = "Sex Distribution") +
+  theme_void()
+
+#highest grade
+nls %>%
+  count(Highest_Grade_Completed) %>%
+  ggplot(aes(x = fct_reorder(Highest_Grade_Completed, n), y = n)) +
+  geom_col(fill = "brown") +
+  coord_flip() +
+  labs(title = "Education Levels", x = "Education", y = "Count") +
+  theme_minimal()
+
+#marital status
+nls %>%
+  count(Marital_Status) %>%
+  ggplot(aes(x = fct_reorder(Marital_Status, n), y = n)) +
+  geom_col(fill = "yellow") +
+  coord_flip() +
+  labs(title = "Marital Status Distribution", x = "Marital Status", y = "Count") +
+  theme_minimal()
 ```
 
 ### DataSet #2 - Interest Rates by Year
@@ -175,6 +248,36 @@ This cleaned dataset can be found [here](/dataset/interest_rates_cleaned.csv).
 
 * Describe the different data files used and what each variable means. 
   * If you have many variables then only describe the most relevant ones, possibly grouping together variables that are similar, and summarize the rest.
+  
+  
+```{r dataset2 vars, echo= FALSE}
+# Load the data
+df <- read_csv("dataset/interest_rates_cleaned.csv",show_col_types= FALSE)
+
+# Create a variable description table with empty descriptions for now
+variable_descriptions <- tibble::tibble(
+  Variable = names(df),
+  Description = c(
+    "Year the data was collected",
+    "Mean of long-term interest rates (>10 years)",
+    "Minimum of long-term interest rates (>10 years)",
+    "Maximum of long-term interest rates (>10 years)",
+    "Standard deviation of long-term interest rates (>10 years)",
+    "Median of long-term interest rates (>10 years)",
+    "Mode of long-term interest rates (>10 years)",
+    "Mean of mortgage interest rates",
+    "Minimum of mortgage interest rates",
+    "Maximum of mortgage interest rates",
+    "Standard deviation of mortgage interest rates",
+    "Median of mortgage interest rates",
+    "Mode of mortgage interest rates"
+  )
+)
+
+# View the skeleton of your data dictionary
+knitr::kable(variable_descriptions, caption = "Interest Rate Variable Descriptions")
+
+```
 
 ***
 
@@ -233,3 +336,6 @@ TODO:  show a histogram or bar chart for a particularly important variable can p
 * Organization, clarity, cleanliness of the page
   * Make sure to remove excessive warnings, use clean easy-to-read code (without side scrolling), organize with sections, use bullets and other organization tools, etc.
   * This page should be self-contained.
+  
+  
+
