@@ -183,8 +183,6 @@ nls_data_clean <- nls_data %>%
 
 ***
 
-TODO:  show a histogram or bar chart for a particularly important variable can provide a quick overview of the values that variable tends to take. - better figures, describe each figure
-
 ```{r dataset1 vars, echo= FALSE}
 nls_data_clean <- read_rds("dataset/nls_clean.rds")
 
