@@ -5,115 +5,363 @@ toc: true
 draft: false
 ---
 
-![](images/data-import-cheatsheet-thumbs.png)
+![](images/dataqmd)
 
+## Where/How to find Data 
 
-This comes from the file `data.qmd`.
-
-Your first steps in this project will be to find data to work on.
-
-I recommend trying to find data that interests you and that you are knowledgeable about. A bad example would be if you have no interest in video games but your data set is about video games. I also recommend finding data that is related to current events, social justice, and other areas that have an impact.
-
-
-Initially, you will study _one dataset_ but later you will need to combine that data with another dataset. For this reason, I recommend finding data that has some date and/or location components. These types of data are conducive to interesting visualizations and analysis and you can also combine this data with other data that also has a date or location variable.
-Data from the census, weather data, economic data, are all relatively easy to combine with other data with time/location components.
-
-
-## What makes a good data set?
-
-* Data you are interested in and care about.
-* Data where there are a lot of potential questions that you can explore.
-* A data set that isn't completely cleaned already.
-* Multiple sources for data that you can combine.
-* Some type of time and/or location component.
-
-
-## Where to keep data?
-
-Below 50mb: In `dataset` folder
-
-Above 50mb: In `dataset-ignore` folder which you will have to create manually. This folder will be ignored by `git` so you'll have to manually sync these files across your team.
-
-### Sharing your data
-
-For small datasets (<50mb), you can use the `dataset` folder that is tracked by github. Stage and commit the files just like you would any other file.
-
-For larger datasets, you'll need to create a new folder in the project root directory named `dataset-ignore`. This will be ignored by git (based off the `.gitignore` file in the project root directory) which will help you avoid issues with Github's size limits. Your team will have to manually make sure the data files in `dataset-ignore` are synced across team members.
-
-Your [clean_data.R](/scripts/clean_data.R) file in the `scripts` folder is the file where you will import the raw data that you download, clean it, and write `.rds` file(s) (using `write_rds`) that you'll load in your analysis page. If desirable, you can have multiple scripts that produce different derived data sets, just make sure to link to them on this page.
-
-You should never use absolute paths (eg. `/Users/danielsussman/path/to/project/` or `C:\MA415\\Final_Project\`).
-Instead, use the `here` function from the [`here` package](https://here.r-lib.org/articles/here.html) to avoid path problems.
-
-### Clean data script
-
-The idea behind this file is that someone coming to your website could largely replicate your analyses after running this script on the original data sets to clean them.
-This file might create a derivative data set that you then use for your subsequent analysis.
-Note that you don't need to run this script from every post/page.
-Instead, you can load in the results of this script, which will usually be `.rds` files. In your data page you'll describe how these results were created. If you have a very large data set, you might save smaller data sets that you can use for exploration purposes.
-To link to this file, you can use `[cleaning script](/scripts/clean_data.R)` wich appears as [cleaning script](/scripts/clean_data.R). 
-
-----
-
-## Rubric: On this page
-
-You will
-
-### Describe where/how to find data.
-  * You must include a link to the original data source(s). Make sure to provide attribution to those who collected the data.
-  * Why was the data collected/curated? Who put it together? (This is important, if you don't know why it was collected then that might not be a good dataset to look at.
-* Describe the different data files used and what each variable means. 
-  * If you have many variables then only describe the most relevant ones, possibly grouping together variables that are similar, and summarize the rest.
-  * Use figures or tables to help explain the data. For example, showing a histogram or bar chart for a particularly important variable can provide a quick overview of the values that variable tends to take.
-* Describe any cleaning you had to do for your data.
-  * You *must* include a link to your `clean_data.R` file.
-  * Rename variables and recode factors to make data more clear.
-  * Also, describe any additional R packages you used outside of those covered in class.
-  * Describe and show code for how you combined multiple data files and any cleaning that was necessary for that.
-  * Some repetition of what you do in your `clean_data.R` file is fine and encouraged if it helps explain what you did.
-* Organization, clarity, cleanliness of the page
-  * Make sure to remove excessive warnings, use clean easy-to-read code (without side scrolling), organize with sections, use bullets and other organization tools, etc.
-  * This page should be self-contained.
+  The original dataset is the NLS National Longitudinal Survey, which can be found [here](https://www.bls.gov/nls/nlsy79.htm). This data has been collected by the U.S. Bureau of Labor Statistics from 1970 - 2020 as part of a longitudinal study to better understand trends of labor force participation, education, and employment experiences evolving over time (with considerations of the effects of certain miscellaneous factors like race, gender, and socioeconomic status). This information will help paint a picture of the impacts the 2008 recession had on different racial and wealth groups in the United States of America. 
   
+To further explore recession disparities, the NLS dataset was to be combined with the interest rates archive of the Department of Treasury, which can be found  [here](https://home.treasury.gov/interest-rates-data-csv-archive). The data is presented daily, can join average interest rate each year with yearly available data in our existing NLSY data, mainly income. This will highlight any relationships between annual interest rates and income stratified by race. All-in-all, analyzing this datset, in combination with the NLS dataset, will provide a clear picture of macroeconomic trends, and how they effect different race groups in America. 
 
-## Our DataSet 
-* Describe where/how to find data.
-  * You must include a link to the original data source(s). Make sure to provide attribution to those who collected the data. The original dataset can be found [here](https://www.bls.gov/nls/nlsy79.htm).
-  * Why was the data collected/curated? Who put it together? (This is important, if you don't know why it was collected then that might not be a good dataset to look at.
-* Describe the different data files used and what each variable means. 
-  * If you have many variables then only describe the most relevant ones, possibly grouping together variables that are similar, and summarize the rest.
+
+### DataSet #1 - NLS National Longitudinal Survey
   
-## Data Cleaning
-TODO:  show a histogram or bar chart for a particularly important variable can provide a quick overview of the values that variable tends to take. - add more
+***
+All the R scripts we used to load and clean this dataset can be found [here](/scripts/clean_data_update.R). Our cleaned dataset can be found [here](/dataset/nls_clean.csv). 
 
-Here are some basic figures we created after cleaning, these are meant to show a quick breakdown of some of the variables we cleaned. 
-
-```{r datacleaning}
+***
+  
+```{r libs, message=FALSE, warning=FALSE, echo= FALSE}
+#load in tidyverse
 library(tidyverse)
-nls_data_clean <- read_rds("dataset/nls_clean.rds")
+library(scales)
+library(dplyr)
+library(ggplot2)
 
-#count of races that participated 
-ggplot(nls_data_clean, aes(x = Race, fill = Sex)) +
-  geom_bar(position = "dodge") +
-  labs(title = "Participant Count by Race and Sex", x = "Race", y = "Count")
-
-
-#count of different marital statuses found in survey
-ggplot(nls_data_clean, aes(x = Marital_Status)) +
-  geom_bar(fill = "orchid") +
-  labs(title = "Marital Status Distribution", x = "Marital Status", y = "Count")
+#read in dataset from csv
+nls <- read_csv("dataset/nls_clean.csv", show_col_types = FALSE) %>%
+  select(-`...1`)
 
 ```
-TODO: link clean_data.R in placeholder
 
-Our data set required significant cleaning. In order to work with our CSV file, we needed to decode the integers that served as placeholders for column names, remove "non-interview" data points that we can't compare across years, and decode integer values representing race, grade, etc. All the R scripts we used to load and clean the data can be found [here](/scripts/clean_data_update.R). For this process, we primarily depended on the tidyverse library and other methods discussed in lecture. 
+```{r nls vars, echo= FALSE}
 
-To begin with, working with integer-coded columns would have been incredibly difficult. To combat this issue, we created began with gathering all the integer codes and their String equivalents. Next, we created R scripts to rename all our selected columns based on their integer codes.  
+# Create a variable dictionary based on the column names
+nls_descriptions <- tibble(
+  Variable = names(nls),
+  Description = c(
+    "Unique identifier for each case or respondent",
+    "ID representing the respondent's sample group",
+    "Reported personal income in the year 2000 (in USD)",
+    "Reported personal income in the year 2002 (in USD)",
+    "Reported personal income in the year 2004 (in USD)",
+    "Reported personal income in the year 2006 (in USD)",
+    "Reported personal income in the year 2008 (in USD)",
+    "Reported personal income in the year 2010 (in USD)",
+    "Respondent's age as of the year 2010",
+    "Self-reported race/ethnicity of the respondent",
+    "Sex of the respondent (e.g., Male/Female)",
+    "Highest level of education or grade completed by 2010",
+    "Marital status of the respondent in 2010",
+    "Geographical region of residence in 2010"
+  )
+  )
+
+# Print the table
+knitr::kable(nls_descriptions, caption = "NLS Variable Descriptions")
+
+```
+  
+  
+## Data Cleaning - NLS National Longitudinal Survey
+
+Our data set required significant cleaning. In order to work with our CSV file, we needed to decode the integers that served as placeholders for column names, remove "non-interview" data points that we can't compare across years, and decode integer values representing race, grade, etc. For this process, we primarily depended on the tidyverse library and other methods discussed in lecture. 
+
+```r
+nls_data <- nls_data %>%
+  mutate(
+    R6909701 = na_if(R6909701, -1),
+    R6909701 = ifelse(R6909701 < 0, NA, R6909701),
+    R7607800 = na_if(R7607800, -1),
+    R7607800 = ifelse(R7607800 < 0, NA, R7607800),
+    R8316300 = na_if(R8316300, -1),
+    R8316300 = ifelse(R8316300 < 0, NA, R8316300),
+    T0912400 = na_if(T0912400, -1),
+    T0912400 = ifelse(T0912400 < 0, NA, T0912400),
+    T2076700 = na_if(T2076700, -1),
+    T2076700 = ifelse(T2076700 < 0, NA, T2076700),
+    T3045300 = na_if(T3045300, -1),
+    T3045300 = ifelse(T3045300 < 0, NA, T3045300)
+  ) %>%
+```
 
 Our next task was removing non-interview values. These rows, indicated by -5 values, imply that the interviewee either quit or was removed from the data sampling. Therefore, they may be included in earlier years and not in late years. To improve our modeling, we must remove these values. In doing so, we discovered other null values that required further debugging and cleaning.
+```r
+  # Remove rows where any variable is -5
+  filter(if_all(everything(), ~ . != -5))
+```
+
+To begin with, working with integer-coded columns would have been incredibly difficult. To combat this issue, we created began with gathering all the integer codes and their String equivalents. Next, we created R scripts to rename all our selected columns based on their integer codes.  
+```r
+# 3. Define Grade Labels
+grade_labels <- c(
+  "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", 
+  "6th Grade", "7th Grade", "8th Grade", "9th Grade", "10th Grade", 
+  "11th Grade", "12th Grade", "1st Year College", "2nd Year College", 
+  "3rd Year College", "4th Year College", "5th Year College", "6th Year College", 
+  "7th Year College", "8th Year College or More", "UNGRADED"
+)
+
+```
+
 
 Another challenge was modifying actual data points in every row. For example, rather than listing a respondents race, the information is coded in integers (i.e. 1 = "black", 2 = "white", etc.) This would be incredibly difficult to keep track of in the long term scope of our project, therefore, we decided to modify these values. Columns race, sex, highest grade completed, and marital status were all encoded using this style. Consequently, we used similar R scripts to decode all of these columns.
 
+```r
+# 4. Create Cleaned Dataset
+nls_data_clean <- nls_data %>%
+  mutate(
+    Race = case_when(
+      R0214700 == 1 ~ "Hispanic",
+      R0214700 == 2 ~ "Black",
+      R0214700 == 3 ~ "Non-Black/Non-Hispanic",
+      TRUE ~ NA_character_
+    ),
+    Sex = case_when(
+      R0214800 == 1 ~ "Male",
+      R0214800 == 2 ~ "Female",
+      TRUE ~ NA_character_
+    ),
+      Highest_Grade_Completed = case_when(
+        T2272800 == 1 ~ "1ST GRADE", 
+        T2272800 == 2 ~ "2ND GRADE", 
+        T2272800 == 3 ~ "3RD GRADE",
+        T2272800 == 4 ~ "4TH GRADE", 
+        T2272800 == 5 ~ "5TH GRADE", 
+        T2272800 == 6 ~ "6TH GRADE", 
+        T2272800 == 7 ~ "7TH GRADE", 
+        T2272800 == 8 ~ "8TH GRADE", 
+        T2272800 == 9 ~ "9TH GRADE", 
+        T2272800 == 10 ~ "10TH GRADE", 
+        T2272800 == 11 ~ "11TH GRADE", 
+        T2272800 == 12 ~ "12TH GRADE", 
+        T2272800 == 13 ~ "1ST YEAR COLLEGE", 
+        T2272800 == 14 ~ "2ND YEAR COLLEGE", 
+        T2272800 == 15 ~ "3RD YEAR COLLEGE", 
+        T2272800 == 16 ~ "4TH YEAR COLLEGE", 
+        T2272800 == 17 ~ "5TH YEAR COLLEGE", 
+        T2272800 == 18 ~ "6TH YEAR COLLEGE", 
+        T2272800 == 19 ~ "7TH YEAR COLLEGE", 
+        T2272800 == 20 ~ "8TH YEAR COLLEGE OR MORE", 
+        T2272800 == 95 ~ "UNGRADED",
+        TRUE ~ NA_character_
+      ),
+  Marital_Status = case_when(
+      T3108400 == 0 ~ "Never Married",
+      T3108400 == 1 ~ "Married",
+      T3108400 == 2 ~ "Separated",
+      T3108400 == 3 ~ "Divorced",
+      T3108400 == 6 ~ "Widowed",
+      TRUE ~ NA_character_
+    ),
+  Region = case_when(
+    T3108200 == 1 ~ "Northeast",
+    T3108200 == 2 ~ "North Central",
+    T3108200 == 3 ~ "South",
+    T3108200 == 4 ~ "West",
+    TRUE ~ NA_character_
+  )
+  ) %>%
+  # Convert categorical variables to factors
+  mutate(across(c(Race, Sex, Highest_Grade_Completed, Marital_Status, Region), as.factor)) %>%
+  # Remove original numeric columns
+  select(-c(R0214700, R0214800, T2272800, T3108400, T3108200)) %>%
+  # Rename columns
+  # Rename columns
+  rename(
+    Case_ID = R0000100,
+    Sample_ID = R0173600,
+    Age_2010 = T3108700,
+    Income_2000 = R6909701,
+    Income_2002 = R7607800,
+    Income_2004 = R8316300,
+    Income_2006 = T0912400,
+    Income_2008 = T2076700,
+    Income_2010 = T3045300
+  )
+```
+
+***
+
+```{r dataset1 vars, echo= FALSE}
+nls_data_clean <- read_rds("dataset/nls_clean.rds")
+
+#personal income
+nls %>%
+  pivot_longer(cols = starts_with("Income_"), names_to = "Year", values_to = "Income") %>%
+  ggplot(aes(x = Year, y = Income)) +
+  geom_boxplot(fill = "yellow") +
+  scale_y_continuous(labels = label_comma()) +  # Avoid exponential notation
+  labs(title = "Distribution of Personal Income by Year", x = "Year", y = "Income (USD)") +
+  theme_minimal()
+
+#age
+ggplot(nls, aes(x = Age_2010)) +
+  geom_histogram(binwidth = 2, fill = "maroon", color = "black") +
+  labs(title = "Age Distribution in 2010", x = "Age", y = "Count") +
+  theme_minimal()
+
+#race
+nls %>%
+  count(Race) %>%
+  ggplot(aes(x = fct_reorder(Race, n), y = n)) +
+  geom_col(fill = "darkgreen") +
+  coord_flip() +
+  labs(title = "Race Distribution", x = "Race", y = "Count") +
+  theme_minimal()
+
+#sex
+nls %>%
+  count(Sex) %>%
+  ggplot(aes(x = "", y = n, fill = Sex)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y") +
+  scale_fill_manual(values = c("Male" = "#D2691E",  
+                               "Female" = "#FF8C00"))
+  labs(title = "Sex Distribution") +
+  theme_void()
+
+#highest grade
+nls %>%
+  count(Highest_Grade_Completed) %>%
+  ggplot(aes(x = fct_reorder(Highest_Grade_Completed, n), y = n)) +
+  geom_col(fill = "brown") +
+  coord_flip() +
+  labs(title = "Education Levels", x = "Education", y = "Count") +
+  theme_minimal()
+
+#marital status
+nls %>%
+  count(Marital_Status) %>%
+  ggplot(aes(x = fct_reorder(Marital_Status, n), y = n)) +
+  geom_col(fill = "yellow") +
+  coord_flip() +
+  labs(title = "Marital Status Distribution", x = "Marital Status", y = "Count") +
+  theme_minimal()
+```
+
+### DataSet #2 - Interest Rates by Year
+  
+***
+This cleaned dataset can be found [here](/dataset/interest_rates_cleaned.csv). 
+
+***
+  
+```{r dataset2 vars, echo= FALSE}
+# Load the data
+df <- read_csv("dataset/interest_rates_cleaned.csv",show_col_types= FALSE)
+
+# Create a variable description table with empty descriptions for now
+variable_descriptions <- tibble::tibble(
+  Variable = names(df),
+  Description = c(
+    "Year the data was collected",
+    "Mean of long-term interest rates (>10 years)",
+    "Minimum of long-term interest rates (>10 years)",
+    "Maximum of long-term interest rates (>10 years)",
+    "Standard deviation of long-term interest rates (>10 years)",
+    "Median of long-term interest rates (>10 years)",
+    "Mode of long-term interest rates (>10 years)",
+    "Mean of mortgage interest rates",
+    "Minimum of mortgage interest rates",
+    "Maximum of mortgage interest rates",
+    "Standard deviation of mortgage interest rates",
+    "Median of mortgage interest rates",
+    "Mode of mortgage interest rates"
+  )
+)
+
+# View the skeleton of your data dictionary
+knitr::kable(variable_descriptions, caption = "Interest Rate Variable Descriptions")
+
+```
+
+***
+
+## Data Cleaning - Interest Rates by Year
+
+We began by importing the dataset using the read_csv() function from the readr package in the tidyverse. Then, we first added additional income years to cover 2000-2010 as opposed to just 2010. Afterwards, we joined the interest rate average of each year with the corresponding two years - so 2001 and 2002 went into 2002, 2003 and 2004 went into 2004, and so on. By doing this, we were able to join the interest rate data into our survey data in an efficient and complementary way.
+
+```r
+# Load in another library to clean second dataset
+library(lubridate)
+
+# Now we clean the second Dataset which we loaded in 
+rates <- read_csv("./dataset/long-term-rates-2000-2010.csv")
+rates2 <- read_csv("./dataset/long-term-rates-2011-2020.csv")
+
+#combine rates and rates2
+combined_rates <- bind_rows(rates1, rates2)
+```
+
+Additionally, defining a custom get_mode() function, made it easy to handle mode calculation, since R does not provide a built-in mode() for numeric data in a tidy pipeline.
+```r
+# Define a mode function (returns the first mode if multiple)
+get_mode <- function(x) {
+  ux <- unique(na.omit(x))
+  ux[which.max(tabulate(match(x, ux)))]
+}
+```
+The Date column, originally in character format, was converted to proper Date objects using lubridate::mdy(). We then extracted the year from each date to enable grouping by year. To understand yearly trends in interest rates, we grouped the data by Year and computed a comprehensive set of summary statistics for each of the two rate columns including mean, minimum, maximum, standard deviation, median, and mode.
+```r
+#mutate data to have proper year date format (wil be easier to compute stat summaries with)
+interest_rates_cleaned <- combined_rates %>%
+  mutate(Date = mdy(Date),
+         Year = year(Date)) %>%
+  group_by(Year) %>%
+  summarise(
+    mean_LT = mean(`LT COMPOSITE (>10 Yrs)`, na.rm = TRUE),
+    min_LT = min(`LT COMPOSITE (>10 Yrs)`, na.rm = TRUE),
+    max_LT = max(`LT COMPOSITE (>10 Yrs)`, na.rm = TRUE),
+    sd_LT = sd(`LT COMPOSITE (>10 Yrs)`, na.rm = TRUE),
+    median_LT = median(`LT COMPOSITE (>10 Yrs)`, na.rm = TRUE),
+    mode_LT = get_mode(`LT COMPOSITE (>10 Yrs)`),
+    
+    mean_TREASURY = mean(`TREASURY 20-Yr CMT`, na.rm = TRUE),
+    min_TREASURY = min(`TREASURY 20-Yr CMT`, na.rm = TRUE),
+    max_TREASURY = max(`TREASURY 20-Yr CMT`, na.rm = TRUE),
+    sd_TREASURY = sd(`TREASURY 20-Yr CMT`, na.rm = TRUE),
+    median_TREASURY = median(`TREASURY 20-Yr CMT`, na.rm = TRUE),
+    mode_TREASURY = get_mode(`TREASURY 20-Yr CMT`)
+  ) %>%
+  ungroup()
+```
+Finally, the dataset is written on to a CSV file for later use. 
+```r
+write_csv(interest_rates_cleaned, "interest_rates_cleaned.csv")
+
+```
+
+```{r dataset2 distributions, echo= FALSE}
+
+#LT stats
+lt_long <- df %>%
+  select(starts_with("mean_LT"), starts_with("min_LT"), starts_with("max_LT"),
+         starts_with("sd_LT"), starts_with("median_LT"), starts_with("mode_LT")) %>%
+  pivot_longer(everything(), names_to = "Metric", values_to = "Value")
+
+#LT histogram
+ggplot(lt_long, aes(x = Metric, y = Value)) +
+  geom_boxplot(fill = "lightblue") +
+  labs(title = "Boxplot of Long-Term Interest Rate Metrics", x = "Metric", y = "Value") +
+  theme_minimal()
+
+ggplot(df, aes(x = mean_LT)) +
+  geom_histogram(binwidth = 0.2, fill = "steelblue", color = "black") +
+  labs(
+    title = "Distribution of Mean Long-Term Interest Rates",
+    x = "Mean LT Rate (%)",
+    y = "Count"
+  ) +
+  theme_minimal()
+
+#treasury histogram
+ggplot(df, aes(x = mean_TREASURY)) +
+  geom_histogram(binwidth = 0.2, fill = "orange", color = "black") +
+  labs(title = "Distribution of Mean Treasury Rates", x = "Mean Treasury Rate", y = "Frequency") +
+  theme_minimal()
+  
+```
   
 ## Data Combination
 
@@ -122,3 +370,6 @@ Another challenge was modifying actual data points in every row. For example, ra
 * Organization, clarity, cleanliness of the page
   * Make sure to remove excessive warnings, use clean easy-to-read code (without side scrolling), organize with sections, use bullets and other organization tools, etc.
   * This page should be self-contained.
+  
+  
+

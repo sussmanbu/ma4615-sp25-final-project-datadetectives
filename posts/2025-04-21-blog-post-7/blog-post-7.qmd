@@ -1,0 +1,32 @@
+---
+title: "Blog Post #7"
+description:  |
+  This is Data Detectives' 7th blog post, where we describe our thoughts and
+  progress on the interactive for our final project
+author: "Data Detectives"
+date: "2025-04-21"
+date-modified: "2025-04-21"
+draft: FALSE
+---
+# Blog post 7
+
+# Our Interactive - Design Goals
+We plan to use an interactive to analyze the impact of the 2008 recession on different groups of people. We plan to allow users to select one or more features like race, marital status, income, etc. to compare. 
+
+One idea--  a user can start by viewing a line chart showing income trends across education levels from 2000 to 2010, then zoom into subgroups defined by race, gender, or marital status. We can include tooltips, highlighted callouts, brief annotations, or even letting users "find themselves" with their own information. 
+
+Another idea-- we can create two maps graphics with identical statistics that the user changes, but one from 2008 and another from 2010. This way, the user can see the impact of the recession on different racial groups in different US regions. 
+
+# Our Interactive - Progress so Far
+
+So far, most of our intial data cleaning and combining is finally complete. From last week, we combined our two datasets to create a more holistic view of the macroeconomic trends in America during the 2008 recession. 
+
+Now, we plan on using these datasets to create the interactive feature using shiny or quarto::interactive().
+
+# Our Interactive - Next Steps
+
+Step 1: Finalize the UI design and incorporate dropdowns for user selection.
+Step 2: Implement components to adjust plots/statistics based on user input with R script. This step will liekly take the longest and involve the most debugging. 
+Step 3: Write captions and annotations to help guide interpretation.
+Step 4: Test the app with users to ensure it’s intuitive and engaging.
+

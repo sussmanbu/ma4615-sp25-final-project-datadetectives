@@ -6,15 +6,16 @@ about:
 ---
 
 
-This comes from the file `about.qmd`.
 
-This is a website for the final project for MA[46]15 Data Science with R by Team Data Detectives.
+This is a website for the final project for MA415 Data Science with R by Team Data Detectives.
 
 The members of this team are below:
 
 ## Chandini Toleti
 
 Chandini is majoring in Mathematics and Computer Science at Boston University, Class of 2026'
+
+[Github](https://github.com/toletich311)
 
 ## Ranbir
 

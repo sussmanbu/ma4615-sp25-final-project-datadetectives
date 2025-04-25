@@ -4,11 +4,11 @@ description: Here we provide a detailed analysis using more sophisticated statis
 toc: true
 draft: false
 ---
+
 ```{r setup, include=FALSE}
 library(here)
 library(tidyverse)  # or specific: readr, dplyr, etc.
 ```
-
 
 ![](https://upload.wikimedia.org/wikipedia/commons/7/77/Pebbleswithquarzite.jpg)
 
@@ -16,14 +16,11 @@ This comes from the file `analysis.qmd`.
 
 We describe here our detailed data analysis. This page will provide an overview of what questions you addressed, illustrations of relevant aspects of the data with tables and figures, and a statistical model that attempts to answer part of the question. You'll also reflect on next steps and further analysis.
 
-The audience for this page is someone like your class mates, so you can expect that they have some level of statistical and quantitative sophistication and understand ideas like linear and logistic regression, coefficients, confidence intervals, overfitting, etc. 
+The audience for this page is someone like your class mates, so you can expect that they have some level of statistical and quantitative sophistication and understand ideas like linear and logistic regression, coefficients, confidence intervals, overfitting, etc.
 
-While the exact number of figures and tables will vary and depend on your analysis, you should target around 5 to 6. An overly long analysis could lead to losing points.
-If you want you can link back to your blog posts or create separate pages with more details.
+While the exact number of figures and tables will vary and depend on your analysis, you should target around 5 to 6. An overly long analysis could lead to losing points. If you want you can link back to your blog posts or create separate pages with more details.
 
-The style of this paper should aim to be that of an academic paper. 
-I don't expect this to be of publication quality but you should keep that aim in mind.
-Avoid using "we" too frequently, for example "We also found that ...". Describe your methodology and your findings but don't describe your whole process.
+The style of this paper should aim to be that of an academic paper. I don't expect this to be of publication quality but you should keep that aim in mind. Avoid using "we" too frequently, for example "We also found that ...". Describe your methodology and your findings but don't describe your whole process.
 
 ### Example of loading data
 
@@ -32,7 +29,6 @@ The code below shows an example of loading the loan refusal data set (which you 
 ```{r}
 library(tidyverse)
 print(getwd())
-#data <- read_rds(here::here("dataset/loan_refusal_clean.rds"))
 ```
 
 ## Note on Attribution
@@ -74,15 +70,25 @@ You will
     -   Make sure to remove excessive warnings, hide all code, organize with sections or multiple pages, use bullets, etc.
     -   This page should be self-contained, i.e. provide a description of the relevant data.
 
-## Introduction and Motivation for Analysis
+## Introduction
 
-The goal of our analysis is to examine how macroeconomic trends affect different racial and socioeconomic groups. The following graphs explore some of the relationships between variables in our dataset to motivate this goal. 
+### Objective and Research Questions
 
-```{r chandini graphs}
+The goal of our analysis is to examine how macroeconomic trends in the aftermath of the 2008 recession, such as shifting interest rates, affected different racial and socioeconomic groups in the United States. We aim to answer some of the following research questions:
+
+-   What factors contribute to upward economic mobility?
+-   How do income and employment differ across gender, race, and education levels?
+-   Are there persistent racial disparities in long-term wealth accumulation?
+
+### Motivating Figures and Tables
+
+The following graphs explore some of the relationships between variables in our data to motivate this goal.
+
+```{r chandini graphs, echo= FALSE}
 library(scales)
 nls_data_clean <- read_rds("dataset/nls_clean.rds")
 
-#define correct order of education levels(neeeded for next query)
+#define correct order of education levels(needed for next query)
 education_levels <- c(
   "1ST GRADE", "2ND GRADE", "3RD GRADE", "4TH GRADE", "5TH GRADE", "6TH GRADE", 
   "7TH GRADE", "8TH GRADE", "9TH GRADE", "10TH GRADE", "11TH GRADE", "12TH GRADE", 
@@ -114,7 +120,7 @@ ggplot(income_by_grade, aes(x = Highest_Grade_Completed, y = mean_income, group 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
 
-```{r aretha graphs}
+```{r aretha graphs, echo= FALSE}
 library(scales)
 nls_data_clean <- read_rds("dataset/nls_clean.rds")
 
@@ -132,9 +138,10 @@ ggplot(nls_data_clean, aes(x = Region, y = Income_2010, fill = Sex)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_y_continuous(labels = scales::comma)
 ```
-##### This box plot explores the depth of the relationship between income, gender and region to examine whether there are any disparities between genders. 
 
-```{r ran graphs}
+##### This box plot explores the depth of the relationship between income, gender and region to examine whether there are any disparities between genders.
+
+```{r ran graphs, echo= FALSE}
 library(scales)
 nls_data_clean <- read_rds("dataset/nls_clean.rds")
 
@@ -145,9 +152,9 @@ ggplot(nls_data_clean_filtered, aes(x = factor(Age_2010), y = Income_2010)) + ge
 
 ```
 
-###Now, we look at interest rates. 
+### Now, we look at interest rates.
 
-```{r}
+```{r datacombination, echo= FALSE}
 
 library(tidyverse)
 
@@ -219,5 +226,30 @@ ggplot(income_by_race, aes(x = Income_Year, y = avg_income, color = avg_interest
 
 ```
 
+## Modeling and Inference
 
+```{r statmod}
 
+#library(scales)
+# library(car)
+# library(sandwich)
+# library(lmtest)
+# 
+# nls_data_tbu <- read_csv("dataset/nls_with_rates_full.csv")
+# 
+# nls_data_modeling <- nls_data_tbu %>%
+#   filter(Income_Year %in% c(2006, 2008, 2010))
+# 
+# model = lm(Income ~ Race + Sex + Marital_Status + Age_2010 + Region + Highest_Grade_Completed + avg_LT_rate, data = filter(nls_data_modeling, Income > 0))
+# 
+# # coeftest(model, vcov = vcovHC(model, type = "HC1"))
+# 
+# model_data = model.frame(model)
+# model_data$Predicted = predict(model)
+# summary(model)
+# vif(model, type = "predictor")
+# # plot(model)
+###
+```
+
+## Results, Limitations, and Conclusion
