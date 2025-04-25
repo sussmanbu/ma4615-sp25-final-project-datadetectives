@@ -363,14 +363,14 @@ ggplot(df, aes(x = mean_TREASURY)) +
   
 ```
   
-## Data Combination
-
- * Describe and show code for how you combined multiple data files and any cleaning that was necessary for that.
-  * Some repetition of what you do in your `clean_data.R` file is fine and encouraged if it helps explain what you did.
-* Organization, clarity, cleanliness of the page
-  * Make sure to remove excessive warnings, use clean easy-to-read code (without side scrolling), organize with sections, use bullets and other organization tools, etc.
-  * This page should be self-contained.
+### Data Combination
   
+***
+This cleaned dataset can be found [here](/dataset/nls-with-more-years.csv). 
+
+***
+  
+ * Describe and show code for how you combined multiple data
   
 ```r
 
@@ -417,30 +417,6 @@ nls_with_rates_full <- nls_income_long %>%
   left_join(mapped_rates, by = "Income_Year")
 
 write_csv(nls_with_rates_full, here("dataset", "nls_with_rates_full.csv"))
-
-income_by_race <- nls_with_rates_full %>%
-  group_by(Income_Year, Race) %>%
-  summarise(
-    avg_income = mean(Income, na.rm = TRUE),
-    avg_interest = mean(avg_LT_rate, na.rm = TRUE)
-  ) %>%
-  ungroup()
-library(ggplot2)
-
-ggplot(income_by_race, aes(x = Income_Year, y = avg_income, color = avg_interest)) +
-  geom_line(aes(group = Race), size = 1.2) +
-  geom_point(aes(shape = Race), size = 2) +
-  facet_wrap(~ Race) +
-  scale_color_viridis_c(option = "magma") +
-  labs(
-    title = "Average Income Over Time by Race (Colored by Interest Rate)",
-    x = "Year",
-    y = "Average Income",
-    color = "Interest Rate",
-    shape = "Race"
-  ) +
-  theme_minimal() +
-  theme(legend.position = "bottom")
 
 ```
   
