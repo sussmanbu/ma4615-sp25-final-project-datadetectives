@@ -372,4 +372,77 @@ ggplot(df, aes(x = mean_TREASURY)) +
   * This page should be self-contained.
   
   
+```r
+
+library(tidyverse)
+
+# Load the cleaned interest rate data
+interest_rates <- read_csv(here("dataset", "interest_rates_cleaned.csv"))
+
+# Map rate years to income years
+rate_to_income <- tribble(
+  ~Year, ~Income_Year,
+  2000, 2000,
+  2001, 2002,
+  2002, 2002,
+  2003, 2004,
+  2004, 2004,
+  2005, 2006,
+  2006, 2006,
+  2007, 2008,
+  2008, 2008,
+  2009, 2010,
+  2010, 2010
+)
+
+# Join and average interest rates by income year
+mapped_rates <- rate_to_income %>%
+  left_join(interest_rates, by = "Year") %>%
+  group_by(Income_Year) %>%
+  summarise(avg_LT_rate = mean(mean_LT, na.rm = TRUE)) %>%
+  ungroup()
+
+# Step 1: Pivot NLS data to long format while keeping demographic columns
+nls_income_long <- nls_data_clean %>%
+  pivot_longer(
+    cols = starts_with("Income_"),
+    names_to = "Income_Year",
+    names_prefix = "Income_",
+    values_to = "Income"
+  ) %>%
+  mutate(Income_Year = as.integer(Income_Year))
+
+# Step 2: Join average interest rates by income year
+nls_with_rates_full <- nls_income_long %>%
+  left_join(mapped_rates, by = "Income_Year")
+
+write_csv(nls_with_rates_full, here("dataset", "nls_with_rates_full.csv"))
+
+income_by_race <- nls_with_rates_full %>%
+  group_by(Income_Year, Race) %>%
+  summarise(
+    avg_income = mean(Income, na.rm = TRUE),
+    avg_interest = mean(avg_LT_rate, na.rm = TRUE)
+  ) %>%
+  ungroup()
+library(ggplot2)
+
+ggplot(income_by_race, aes(x = Income_Year, y = avg_income, color = avg_interest)) +
+  geom_line(aes(group = Race), size = 1.2) +
+  geom_point(aes(shape = Race), size = 2) +
+  facet_wrap(~ Race) +
+  scale_color_viridis_c(option = "magma") +
+  labs(
+    title = "Average Income Over Time by Race (Colored by Interest Rate)",
+    x = "Year",
+    y = "Average Income",
+    color = "Interest Rate",
+    shape = "Race"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+```
+  
+  
 
