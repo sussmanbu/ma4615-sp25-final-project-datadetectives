@@ -370,7 +370,7 @@ This cleaned dataset can be found [here](/dataset/nls-with-more-years.csv).
 
 ***
   
- * Describe and show code for how you combined multiple data
+We begin by loading our cleaned second dataset. Since the interest rates were available annually but the NLS income data was collected biennially, we created a mapping table (rate_to_income) that associates each available rate year with the closest corresponding income year.
   
 ```r
 
@@ -394,14 +394,19 @@ rate_to_income <- tribble(
   2009, 2010,
   2010, 2010
 )
+```
+Using the mapping, we joined the interest rates to their matched income years. Then, we grouped the data by Income_Year and computed the mean of the long-term interest rates (avg_LT_rate) for each income year.
 
+```r
 # Join and average interest rates by income year
 mapped_rates <- rate_to_income %>%
   left_join(interest_rates, by = "Year") %>%
   group_by(Income_Year) %>%
   summarise(avg_LT_rate = mean(mean_LT, na.rm = TRUE)) %>%
   ungroup()
-
+```
+The NLS dataset was originally wide, with separate columns for each year's income. We reshaped it into a long format where each row represents an individual-year combination, keeping demographic variables unchanged. The income year was extracted from the column names and converted into an integer for proper joining.
+```r
 # Step 1: Pivot NLS data to long format while keeping demographic columns
 nls_income_long <- nls_data_clean %>%
   pivot_longer(
@@ -411,6 +416,9 @@ nls_income_long <- nls_data_clean %>%
     values_to = "Income"
   ) %>%
   mutate(Income_Year = as.integer(Income_Year))
+```
+We then merged the long-format NLS income data with the mapped interest rates using Income_Year as the key. This appended the relevant avg_LT_rate to each income record. Finally, we saved the fully combined dataset (nls_with_rates_full.csv) for future modeling and analysis.
+```r
 
 # Step 2: Join average interest rates by income year
 nls_with_rates_full <- nls_income_long %>%
