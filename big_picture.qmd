@@ -1,18 +1,23 @@
 ---
-title: "Big Picture"
-description: "A 538/Upshot style article about the data."
+title: "Boom, Bust and Balance - Between The Lines of Income and Interest Rates"
+description: "Exploring the 2008 Crisis ."
 toc: true
 draft: FALSE
 filters:
   - shinylive
 ---
 
-![](images/The_Big_Picture_2.jpeg)
+![](images/bigpic-tightrope.png)
 
 This comes from the file `big_picture.qmd`.
 
-Think of this page as your 538/Upshot style article. This means that you should try to tell a story through the data and your analysis. Read articles from those sites and similar sites to get a feeling for what they are like. Try to write in the style of a news or popular article. Importantly, this page should be geared towards the general public. You shouldn't assume the reader understands how to interpret a linear regression or a complicated plot. Focus on interpretation and visualizations.
+### Introduction
+Picture this — you’re approaching a major crossroads in life. Maybe you’re saving for retirement, helping your kids through college, or finally feeling financially secure after decades of hard work. Then, almost overnight, the economy crumbles. Home values plummet, jobs vanish, and uncertainty becomes the new normal.
 
+This was the reality for members of the 1979 National Longitudinal Survey of Youth cohort, who found themselves navigating one of the most severe economic downturns in modern history right at a critical point in their financial lives.
+
+How did the Great Recession of 2008 impact their incomes? How did falling interest rates shape their financial decisions and opportunities?
+In the analysis ahead, we dive into these questions — using regression models to uncover how income and interest rate dynamics shifted from 2006 to 2010. Join us as we explore the lasting financial ripples of the crisis and the stories hidden within the numbers.
 
 
 ---
@@ -22,7 +27,232 @@ Think of this page as your 538/Upshot style article. This means that you should 
 
 Your Big Data page should also include a small interactive dashboard. The dashboard should be created either using Shinylive, as below. This interactive component should in some way support your thesis from your big picture page. Good interactives often provide both high-level understanding of the data while allowing a user to investigate specific scenarios, observations, subgroups, etc.
 
+```{r shinymap}
+library(shiny)
+library(tidyverse)
+library(sf)
+library(leaflet)
+library(shinydashboard)
 
+# Load cleaned data
+nls_data_clean <- read_csv("dataset/nls_clean.csv")
+interest_rates_cleaned <- read_csv("dataset/interest_rates_cleaned.csv")
+
+# Load US states shapefile
+us_states <- st_as_sf(maps::map("state", plot = FALSE, fill = TRUE))
+
+# Create regions mapping (using your dataset's region names)
+region_lookup <- tibble(
+  ID = tolower(state.name),
+  Map_Region = case_when(
+    ID %in% c("maine", "new hampshire", "vermont", "massachusetts", 
+              "rhode island", "connecticut", "new york", 
+              "new jersey", "pennsylvania") ~ "North East",
+    ID %in% c("ohio", "indiana", "illinois", "michigan", "wisconsin",
+              "minnesota", "iowa", "missouri", "north dakota",
+              "south dakota", "nebraska", "kansas") ~ "Central",
+    ID %in% c("delaware", "maryland", "virginia", "west virginia",
+              "north carolina", "south carolina", "georgia",
+              "florida", "kentucky", "tennessee", "alabama",
+              "mississippi", "arkansas", "louisiana", "oklahoma",
+              "texas") ~ "South",
+    TRUE ~ "West"
+  ),
+  Data_Region = case_when(
+    Map_Region == "North East" ~ "Northeast",
+    Map_Region == "Central" ~ "North Central",
+    Map_Region == "South" ~ "South",
+    Map_Region == "West" ~ "West"
+  )
+)
+
+# Merge shapefile with region info
+us_states <- left_join(us_states, region_lookup, by = "ID")
+
+# UI
+ui <- fluidPage(
+  titlePanel("Recession Impact Map By Region"),
+  sidebarLayout(
+    sidebarPanel(
+      radioButtons("filter", "Filter Result Cards By:",
+                   choices = c("Income by year", "Interest rate by year"), 
+                   selected = "Income by year")
+    ),
+    mainPanel(
+      leafletOutput("map", height = 600),
+      fluidRow(
+        valueBoxOutput("card2006"),
+        valueBoxOutput("card2008"),
+        valueBoxOutput("card2010")
+      )
+    )
+  )
+)
+
+# Server
+server <- function(input, output, session) {
+  # Reactive value to store clicked region (using map region names)
+  clicked_region <- reactiveVal(NULL)
+  
+  output$map <- renderLeaflet({
+    leaflet(us_states) %>%
+      addTiles() %>%
+      addPolygons(
+        fillColor = ~case_when(
+          Map_Region == "North East" ~ "#1f77b4",
+          Map_Region == "Central" ~ "#2ca02c",
+          Map_Region == "South" ~ "#ff7f0e",
+          Map_Region == "West" ~ "#d62728"
+        ),
+        fillOpacity = 0.7,
+        color = "white",
+        weight = 1,
+        label = ~Map_Region,
+        layerId = ~Map_Region,  # Use map region names for click ID
+        highlightOptions = highlightOptions(
+          weight = 3,
+          color = "black",
+          bringToFront = TRUE
+        )
+      )
+  })
+  
+  # Observe map clicks
+  observeEvent(input$map_shape_click, {
+    click <- input$map_shape_click
+    if (!is.null(click$id)) {
+      clicked_region(click$id)
+    }
+  })
+  
+  # Function to get corresponding data region name
+  get_data_region <- function(map_region) {
+    if (is.null(map_region)) return(NULL)
+    region_lookup %>% 
+      filter(Map_Region == map_region) %>% 
+      pull(Data_Region) %>% 
+      first()
+  }
+  
+  # Function to calculate mean income or interest rate
+  get_mean_value <- function(year, type) {
+    if (is.null(clicked_region())) {
+      # If no region selected, return overall mean
+      if (type == "Income by year") {
+        mean(nls_data_clean[[paste0("Income_", year)]], na.rm = TRUE)
+      } else {
+        interest_rates_cleaned %>% 
+          filter(Year == year) %>% 
+          pull(Interest_Rate) %>% 
+          mean(na.rm = TRUE)
+      }
+    } else {
+      # Get the corresponding data region name
+      data_region <- get_data_region(clicked_region())
+      
+      if (type == "Income by year") {
+        nls_data_clean %>% 
+          filter(Region == data_region) %>% 
+          pull(paste0("Income_", year)) %>% 
+          mean(na.rm = TRUE)
+      } else {
+        interest_rates_cleaned %>% 
+          filter(Year == year,
+                 Region == data_region) %>% 
+          pull(Interest_Rate) %>% 
+          mean(na.rm = TRUE)
+      }
+    }
+  }
+  
+  # Render value boxes
+  output$card2006 <- renderValueBox({
+    value <- if (input$filter == "Income by year") {
+      scales::dollar(round(get_mean_value(2006, input$filter)))
+    } else {
+      round(get_mean_value(2006, input$filter), 2)
+    }
+    
+    subtitle <- if (input$filter == "Income by year") {
+      if (!is.null(clicked_region())) {
+        paste("Avg Income 2006 -", clicked_region())
+      } else {
+        "Average Income 2006 (All Regions)"
+      }
+    } else {
+      if (!is.null(clicked_region())) {
+        paste("Avg Interest Rate 2006 -", clicked_region())
+      } else {
+        "Average Interest Rate 2006 (All Regions)"
+      }
+    }
+    
+    valueBox(
+      value = value,
+      subtitle = subtitle,
+      color = "blue"
+    )
+  })
+  
+  output$card2008 <- renderValueBox({
+    value <- if (input$filter == "Income by year") {
+      scales::dollar(round(get_mean_value(2008, input$filter)))
+    } else {
+      round(get_mean_value(2008, input$filter), 2)
+    }
+    
+    subtitle <- if (input$filter == "Income by year") {
+      if (!is.null(clicked_region())) {
+        paste("Avg Income 2008 -", clicked_region())
+      } else {
+        "Average Income 2008 (All Regions)"
+      }
+    } else {
+      if (!is.null(clicked_region())) {
+        paste("Avg Interest Rate 2008 -", clicked_region())
+      } else {
+        "Average Interest Rate 2008 (All Regions)"
+      }
+    }
+    
+    valueBox(
+      value = value,
+      subtitle = subtitle,
+      color = "green"
+    )
+  })
+  
+  output$card2010 <- renderValueBox({
+    value <- if (input$filter == "Income by year") {
+      scales::dollar(round(get_mean_value(2010, input$filter)))
+    } else {
+      round(get_mean_value(2010, input$filter), 2)
+    }
+    
+    subtitle <- if (input$filter == "Income by year") {
+      if (!is.null(clicked_region())) {
+        paste("Avg Income 2010 -", clicked_region())
+      } else {
+        "Average Income 2010 (All Regions)"
+      }
+    } else {
+      if (!is.null(clicked_region())) {
+        paste("Avg Interest Rate 2010 -", clicked_region())
+      } else {
+        "Average Interest Rate 2010 (All Regions)"
+      }
+    }
+    
+    valueBox(
+      value = value,
+      subtitle = subtitle,
+      color = "red"
+    )
+  })
+}
+
+shinyApp(ui, server)
+```
 
 
 ```{r}
