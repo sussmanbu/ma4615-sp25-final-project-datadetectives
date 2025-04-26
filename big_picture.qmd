@@ -27,7 +27,7 @@ In the analysis ahead, we dive into these questions — using regression models 
 
 Your Big Data page should also include a small interactive dashboard. The dashboard should be created either using Shinylive, as below. This interactive component should in some way support your thesis from your big picture page. Good interactives often provide both high-level understanding of the data while allowing a user to investigate specific scenarios, observations, subgroups, etc.
 
-```{r shinymap}
+```{r shinymap, echo= FALSE, message=FALSE}
 library(shiny)
 library(tidyverse)
 library(sf)
@@ -255,7 +255,7 @@ shinyApp(ui, server)
 ```
 
 
-```{r}
+```{r, echo= FALSE, message=FALSE}
 #| eval: false
 #| standalone: true
 #| viewerHeight: 640 # You will have to adjust this to fit everything
