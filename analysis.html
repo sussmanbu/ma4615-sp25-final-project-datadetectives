@@ -129,7 +129,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./big_picture.html"> 
-<span class="menu-text">Big Picture</span></a>
+<span class="menu-text">Boom, Bust and Balance - Between The Lines of Income and Interest Rates</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link active" href="./analysis.html" aria-current="page"> 
@@ -211,7 +211,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "/Users/chandinitoleti/Ma415/finalProject"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#data &lt;- read_rds(here::here("dataset/loan_refusal_clean.rds"))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="note-on-attribution" class="level2">
@@ -277,7 +276,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="motivating-figures-and-tables">Motivating Figures and Tables</h3>
 <p>The following graphs explore some of the relationships between variables in our data to motivate this goal.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Attaching package: 'scales'</code></pre>
@@ -292,38 +290,6 @@ Attaching package: 'scales'</code></pre>
 
     col_factor</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>nls_data_clean <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"dataset/nls_clean.rds"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#define correct order of education levels(needed for next query)</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>education_levels <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"1ST GRADE"</span>, <span class="st">"2ND GRADE"</span>, <span class="st">"3RD GRADE"</span>, <span class="st">"4TH GRADE"</span>, <span class="st">"5TH GRADE"</span>, <span class="st">"6TH GRADE"</span>, </span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"7TH GRADE"</span>, <span class="st">"8TH GRADE"</span>, <span class="st">"9TH GRADE"</span>, <span class="st">"10TH GRADE"</span>, <span class="st">"11TH GRADE"</span>, <span class="st">"12TH GRADE"</span>, </span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"1ST YEAR COLLEGE"</span>, <span class="st">"2ND YEAR COLLEGE"</span>, <span class="st">"3RD YEAR COLLEGE"</span>, <span class="st">"4TH YEAR COLLEGE"</span>, </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"5TH YEAR COLLEGE"</span>, <span class="st">"6TH YEAR COLLEGE"</span>, <span class="st">"7TH YEAR COLLEGE"</span>, <span class="st">"8TH YEAR COLLEGE OR MORE"</span>,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"UNGRADED"</span>, <span class="cn">NA</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#mutate to order based on most education completed </span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>nls_data_clean <span class="ot">&lt;-</span> nls_data_clean <span class="sc">%&gt;%</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Highest_Grade_Completed =</span> <span class="fu">factor</span>(Highest_Grade_Completed, </span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">levels =</span> education_levels,</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">ordered =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#Calcualte average mean_income for each grade category</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>income_by_grade <span class="ot">&lt;-</span> nls_data_clean <span class="sc">%&gt;%</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Highest_Grade_Completed) <span class="sc">%&gt;%</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_income =</span> <span class="fu">mean</span>(Income_2010, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Highest_Grade_Completed))</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#income vs highest grade plotted with ggplot</span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(income_by_grade, <span class="fu">aes</span>(<span class="at">x =</span> Highest_Grade_Completed, <span class="at">y =</span> mean_income, <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"darkred"</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Average Income by Highest Grade Completed"</span>,</span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Highest Grade Completed"</span>,</span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Average Income"</span>) <span class="sc">+</span></span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_comma</span>()) <span class="sc">+</span></span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -333,22 +299,6 @@ Attaching package: 'scales'</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>nls_data_clean <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"dataset/nls_clean.rds"</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>nls_data_clean <span class="ot">&lt;-</span> nls_data_clean <span class="sc">%&gt;%</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Region))</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Regional Variation in Gender Income Gap</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nls_data_clean, <span class="fu">aes</span>(<span class="at">x =</span> Region, <span class="at">y =</span> Income_2010, <span class="at">fill =</span> Sex)) <span class="sc">+</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.alpha =</span> <span class="fl">0.5</span>, <span class="at">outlier.size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Income Distribution by Region and Gender"</span>,</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Region"</span>, </span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Total Income (Previous Year)"</span>, </span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Gender"</span>) <span class="sc">+</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -360,13 +310,6 @@ Attaching package: 'scales'</code></pre>
 <section id="this-box-plot-explores-the-depth-of-the-relationship-between-income-gender-and-region-to-examine-whether-there-are-any-disparities-between-genders." class="level5">
 <h5 class="anchored" data-anchor-id="this-box-plot-explores-the-depth-of-the-relationship-between-income-gender-and-region-to-examine-whether-there-are-any-disparities-between-genders.">This box plot explores the depth of the relationship between income, gender and region to examine whether there are any disparities between genders.</h5>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>nls_data_clean <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"dataset/nls_clean.rds"</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>nls_data_clean_filtered <span class="ot">&lt;-</span> nls_data_clean <span class="sc">%&gt;%</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Income_2010), <span class="fu">is.finite</span>(Income_2010))</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nls_data_clean_filtered, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(Age_2010), <span class="at">y =</span> Income_2010)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span> Sex <span class="sc">+</span> Race) <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">dollar_format</span>(<span class="at">prefix =</span> <span class="st">"$"</span>, <span class="at">suffix =</span> <span class="st">"K"</span>, <span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">1000</span>)) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Age in 2010"</span>, <span class="at">y =</span> <span class="st">"Total Income for Year"</span>, <span class="at">title =</span> <span class="st">"Total Income For Year 2010 Filtered by Age, Race, and Sex"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -380,85 +323,17 @@ Attaching package: 'scales'</code></pre>
 <section id="now-we-look-at-interest-rates." class="level3">
 <h3 class="anchored" data-anchor-id="now-we-look-at-interest-rates.">Now, we look at interest rates.</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the cleaned interest rate data</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>interest_rates <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"dataset"</span>, <span class="st">"interest_rates_cleaned.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Rows: 11 Columns: 13
+<pre><code>Rows: 31206 Columns: 11
 ── Column specification ────────────────────────────────────────────────────────
 Delimiter: ","
-dbl (13): Year, mean_LT, min_LT, max_LT, sd_LT, median_LT, mode_LT, mean_TRE...
+chr (5): Race, Sex, Highest_Grade_Completed, Marital_Status, Region
+dbl (6): Case_ID, Sample_ID, Age_2010, Income_Year, Income, avg_LT_rate
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+`summarise()` has grouped output by 'Income_Year'. You can override using the `.groups` argument.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Map rate years to income years</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>rate_to_income <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Year, <span class="sc">~</span>Income_Year,</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2000</span>, <span class="dv">2000</span>,</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2001</span>, <span class="dv">2002</span>,</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2002</span>, <span class="dv">2002</span>,</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2003</span>, <span class="dv">2004</span>,</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2004</span>, <span class="dv">2004</span>,</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2005</span>, <span class="dv">2006</span>,</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2006</span>, <span class="dv">2006</span>,</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2007</span>, <span class="dv">2008</span>,</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2008</span>, <span class="dv">2008</span>,</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2009</span>, <span class="dv">2010</span>,</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2010</span>, <span class="dv">2010</span></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Join and average interest rates by income year</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>mapped_rates <span class="ot">&lt;-</span> rate_to_income <span class="sc">%&gt;%</span></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(interest_rates, <span class="at">by =</span> <span class="st">"Year"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Income_Year) <span class="sc">%&gt;%</span></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_LT_rate =</span> <span class="fu">mean</span>(mean_LT, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Pivot NLS data to long format while keeping demographic columns</span></span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>nls_income_long <span class="ot">&lt;-</span> nls_data_clean <span class="sc">%&gt;%</span></span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"Income_"</span>),</span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Income_Year"</span>,</span>
-<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_prefix =</span> <span class="st">"Income_"</span>,</span>
-<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Income"</span></span>
-<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Income_Year =</span> <span class="fu">as.integer</span>(Income_Year))</span>
-<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Join average interest rates by income year</span></span>
-<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>nls_with_rates_full <span class="ot">&lt;-</span> nls_income_long <span class="sc">%&gt;%</span></span>
-<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(mapped_rates, <span class="at">by =</span> <span class="st">"Income_Year"</span>)</span>
-<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(nls_with_rates_full, <span class="fu">here</span>(<span class="st">"dataset"</span>, <span class="st">"nls_with_rates_full.csv"</span>))</span>
-<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>income_by_race <span class="ot">&lt;-</span> nls_with_rates_full <span class="sc">%&gt;%</span></span>
-<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Income_Year, Race) <span class="sc">%&gt;%</span></span>
-<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_income =</span> <span class="fu">mean</span>(Income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_interest =</span> <span class="fu">mean</span>(avg_LT_rate, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'Income_Year'. You can override using the
-`.groups` argument.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(income_by_race, <span class="fu">aes</span>(<span class="at">x =</span> Income_Year, <span class="at">y =</span> avg_income, <span class="at">color =</span> avg_interest)) <span class="sc">+</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">group =</span> Race), <span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">shape =</span> Race), <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Race) <span class="sc">+</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">option =</span> <span class="st">"magma"</span>) <span class="sc">+</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Average Income Over Time by Race (Colored by Interest Rate)"</span>,</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Year"</span>,</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Average Income"</span>,</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Interest Rate"</span>,</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">"Race"</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
 ℹ Please use `linewidth` instead.</code></pre>
@@ -466,7 +341,7 @@ dbl (13): Year, mean_LT, min_LT, max_LT, sd_LT, median_LT, mode_LT, mean_TRE...
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="analysis_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="analysis_files/figure-html/datacombination-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -476,26 +351,189 @@ dbl (13): Year, mean_LT, min_LT, max_LT, sd_LT, median_LT, mode_LT, mean_TRE...
 <section id="modeling-and-inference" class="level2">
 <h2 class="anchored" data-anchor-id="modeling-and-inference">Modeling and Inference</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#library(scales)</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(car)</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># library(sandwich)</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># library(lmtest)</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># nls_data_tbu &lt;- read_csv("dataset/nls_with_rates_full.csv")</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co"># nls_data_modeling &lt;- nls_data_tbu %&gt;%</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(Income_Year %in% c(2006, 2008, 2010))</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co"># model = lm(Income ~ Race + Sex + Marital_Status + Age_2010 + Region + Highest_Grade_Completed + avg_LT_rate, data = filter(nls_data_modeling, Income &gt; 0))</span></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co"># # coeftest(model, vcov = vcovHC(model, type = "HC1"))</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co"># model_data = model.frame(model)</span></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co"># model_data$Predicted = predict(model)</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(model)</span></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="co"># vif(model, type = "predictor")</span></span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="co"># # plot(model)</span></span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="do">###</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: carData</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'car'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    recode</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:purrr':
+
+    some</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sandwich)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>nls_data_tbu <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"dataset/nls_no_outliers.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 24762 Columns: 12</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (6): Race, Sex, Highest_Grade_Completed, Marital_Status, Region, income_...
+dbl (6): Case_ID, Sample_ID, Age_2010, Income_Year, Income, avg_LT_rate
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>nls_data_modeling <span class="ot">&lt;-</span> nls_data_tbu <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">filter</span>(Income_Year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2006</span>, <span class="dv">2008</span>, <span class="dv">2010</span>))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>model <span class="ot">=</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Race <span class="sc">+</span> Sex <span class="sc">+</span> Marital_Status <span class="sc">+</span> Age_2010 <span class="sc">+</span> Region <span class="sc">+</span> Highest_Grade_Completed <span class="sc">+</span> avg_LT_rate, <span class="at">data =</span> <span class="fu">filter</span>(nls_data_modeling, Income <span class="sc">&gt;</span> <span class="dv">0</span>))</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># coeftest(model, vcov = vcovHC(model, type = "HC1"))</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>model_data <span class="ot">=</span> <span class="fu">model.frame</span>(model)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>model_data<span class="sc">$</span>Predicted <span class="ot">=</span> <span class="fu">predict</span>(model)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Income ~ Race + Sex + Marital_Status + Age_2010 + 
+    Region + Highest_Grade_Completed + avg_LT_rate, data = filter(nls_data_modeling, 
+    Income &gt; 0))
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-69506 -14653  -2070  12953  78491 
+
+Coefficients:
+                                                Estimate Std. Error t value
+(Intercept)                                     26165.42    5240.98   4.992
+RaceHispanic                                     3275.46     670.10   4.888
+RaceNon-Black/Non-Hispanic                       2820.26     506.16   5.572
+SexMale                                         14598.40     409.11  35.684
+Marital_StatusMarried                            2173.43     522.38   4.161
+Marital_StatusNever Married                     -4350.62     718.71  -6.053
+Marital_StatusSeparated                         -5725.37    1099.70  -5.206
+Marital_StatusWidowed                           -4564.88    1598.06  -2.857
+Age_2010                                           14.93      91.02   0.164
+RegionNortheast                                  3910.85     675.84   5.787
+RegionSouth                                       571.03     526.53   1.085
+RegionWest                                       2791.81     645.68   4.324
+Highest_Grade_Completed11TH GRADE                2666.74    1534.04   1.738
+Highest_Grade_Completed12TH GRADE                8853.67    1248.16   7.093
+Highest_Grade_Completed1ST GRADE                -7792.04   12711.36  -0.613
+Highest_Grade_Completed1ST YEAR COLLEGE         11943.28    1412.01   8.458
+Highest_Grade_Completed2ND GRADE                  382.93   12724.00   0.030
+Highest_Grade_Completed2ND YEAR COLLEGE         16549.15    1314.50  12.590
+Highest_Grade_Completed3RD GRADE                -9699.49    6001.61  -1.616
+Highest_Grade_Completed3RD YEAR COLLEGE         15008.54    1708.21   8.786
+Highest_Grade_Completed4TH GRADE                -3026.79    8387.43  -0.361
+Highest_Grade_Completed4TH YEAR COLLEGE         24295.49    1315.56  18.468
+Highest_Grade_Completed5TH GRADE                -7841.64    7846.02  -0.999
+Highest_Grade_Completed5TH YEAR COLLEGE         22417.36    2008.54  11.161
+Highest_Grade_Completed6TH GRADE                   87.04    4475.35   0.019
+Highest_Grade_Completed6TH YEAR COLLEGE         30377.44    1496.30  20.302
+Highest_Grade_Completed7TH GRADE                -3504.77    4175.86  -0.839
+Highest_Grade_Completed7TH YEAR COLLEGE         30600.11    2177.95  14.050
+Highest_Grade_Completed8TH GRADE                -4225.57    2538.12  -1.665
+Highest_Grade_Completed8TH YEAR COLLEGE OR MORE 30094.24    1964.78  15.317
+Highest_Grade_Completed9TH GRADE                 -554.84    1969.97  -0.282
+Highest_Grade_CompletedUNGRADED                  6296.43    8361.79   0.753
+avg_LT_rate                                     -2492.56     563.71  -4.422
+                                                Pr(&gt;|t|)    
+(Intercept)                                     6.05e-07 ***
+RaceHispanic                                    1.03e-06 ***
+RaceNon-Black/Non-Hispanic                      2.57e-08 ***
+SexMale                                          &lt; 2e-16 ***
+Marital_StatusMarried                           3.20e-05 ***
+Marital_StatusNever Married                     1.46e-09 ***
+Marital_StatusSeparated                         1.96e-07 ***
+Marital_StatusWidowed                            0.00429 ** 
+Age_2010                                         0.86968    
+RegionNortheast                                 7.36e-09 ***
+RegionSouth                                      0.27816    
+RegionWest                                      1.55e-05 ***
+Highest_Grade_Completed11TH GRADE                0.08217 .  
+Highest_Grade_Completed12TH GRADE               1.38e-12 ***
+Highest_Grade_Completed1ST GRADE                 0.53989    
+Highest_Grade_Completed1ST YEAR COLLEGE          &lt; 2e-16 ***
+Highest_Grade_Completed2ND GRADE                 0.97599    
+Highest_Grade_Completed2ND YEAR COLLEGE          &lt; 2e-16 ***
+Highest_Grade_Completed3RD GRADE                 0.10609    
+Highest_Grade_Completed3RD YEAR COLLEGE          &lt; 2e-16 ***
+Highest_Grade_Completed4TH GRADE                 0.71820    
+Highest_Grade_Completed4TH YEAR COLLEGE          &lt; 2e-16 ***
+Highest_Grade_Completed5TH GRADE                 0.31760    
+Highest_Grade_Completed5TH YEAR COLLEGE          &lt; 2e-16 ***
+Highest_Grade_Completed6TH GRADE                 0.98448    
+Highest_Grade_Completed6TH YEAR COLLEGE          &lt; 2e-16 ***
+Highest_Grade_Completed7TH GRADE                 0.40132    
+Highest_Grade_Completed7TH YEAR COLLEGE          &lt; 2e-16 ***
+Highest_Grade_Completed8TH GRADE                 0.09597 .  
+Highest_Grade_Completed8TH YEAR COLLEGE OR MORE  &lt; 2e-16 ***
+Highest_Grade_Completed9TH GRADE                 0.77822    
+Highest_Grade_CompletedUNGRADED                  0.45146    
+avg_LT_rate                                     9.88e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 21870 on 11854 degrees of freedom
+  (72 observations deleted due to missingness)
+Multiple R-squared:  0.2137,    Adjusted R-squared:  0.2116 
+F-statistic: 100.7 on 32 and 11854 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(model, <span class="at">type =</span> <span class="st">"predictor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>GVIFs computed for predictors</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                            GVIF Df GVIF^(1/(2*Df)) Interacts With
+Race                    1.374493  2        1.082768           --  
+Sex                     1.038698  1        1.019165           --  
+Marital_Status          1.134508  4        1.015900           --  
+Age_2010                1.008508  1        1.004245           --  
+Region                  1.258937  3        1.039124           --  
+Highest_Grade_Completed 1.166015 20        1.003847           --  
+avg_LT_rate             1.000403  1        1.000201           --  
+                                                                                    Other Predictors
+Race                     Sex, Marital_Status, Age_2010, Region, Highest_Grade_Completed, avg_LT_rate
+Sex                     Race, Marital_Status, Age_2010, Region, Highest_Grade_Completed, avg_LT_rate
+Marital_Status                     Race, Sex, Age_2010, Region, Highest_Grade_Completed, avg_LT_rate
+Age_2010                     Race, Sex, Marital_Status, Region, Highest_Grade_Completed, avg_LT_rate
+Region                     Race, Sex, Marital_Status, Age_2010, Highest_Grade_Completed, avg_LT_rate
+Highest_Grade_Completed                     Race, Sex, Marital_Status, Age_2010, Region, avg_LT_rate
+avg_LT_rate                     Race, Sex, Marital_Status, Age_2010, Region, Highest_Grade_Completed</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analysis_files/figure-html/statmod-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analysis_files/figure-html/statmod-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analysis_files/figure-html/statmod-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analysis_files/figure-html/statmod-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 </section>
 <section id="results-limitations-and-conclusion" class="level2">

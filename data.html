@@ -129,7 +129,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./big_picture.html"> 
-<span class="menu-text">Big Picture</span></a>
+<span class="menu-text">Boom, Bust and Balance - Between The Lines of Income and Interest Rates</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./analysis.html"> 
@@ -163,8 +163,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#dataset-2---interest-rates-by-year" id="toc-dataset-2---interest-rates-by-year" class="nav-link" data-scroll-target="#dataset-2---interest-rates-by-year">DataSet #2 - Interest Rates by Year</a></li>
   </ul></li>
-  <li><a href="#data-cleaning---interest-rates-by-year" id="toc-data-cleaning---interest-rates-by-year" class="nav-link" data-scroll-target="#data-cleaning---interest-rates-by-year">Data Cleaning - Interest Rates by Year</a></li>
+  <li><a href="#data-cleaning---interest-rates-by-year" id="toc-data-cleaning---interest-rates-by-year" class="nav-link" data-scroll-target="#data-cleaning---interest-rates-by-year">Data Cleaning - Interest Rates by Year</a>
+  <ul class="collapse">
   <li><a href="#data-combination" id="toc-data-combination" class="nav-link" data-scroll-target="#data-combination">Data Combination</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -576,20 +578,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<section id="data-combination" class="level3">
+<h3 class="anchored" data-anchor-id="data-combination">Data Combination</h3>
+<hr>
+<p>This cleaned dataset can be found <a href="./dataset/nls-with-more-years.csv">here</a>.</p>
+<hr>
+<p>We begin by loading our cleaned second dataset. Since the interest rates were available annually but the NLS income data was collected biennially, we created a mapping table (rate_to_income) that associates each available rate year with the closest corresponding income year.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the cleaned interest rate data</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>interest_rates <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"dataset"</span>, <span class="st">"interest_rates_cleaned.csv"</span>))</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Map rate years to income years</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>rate_to_income <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Year, <span class="sc">~</span>Income_Year,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2000</span>, <span class="dv">2000</span>,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2001</span>, <span class="dv">2002</span>,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2002</span>, <span class="dv">2002</span>,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2003</span>, <span class="dv">2004</span>,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2004</span>, <span class="dv">2004</span>,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2005</span>, <span class="dv">2006</span>,</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2006</span>, <span class="dv">2006</span>,</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2007</span>, <span class="dv">2008</span>,</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2008</span>, <span class="dv">2008</span>,</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2009</span>, <span class="dv">2010</span>,</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2010</span>, <span class="dv">2010</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Using the mapping, we joined the interest rates to their matched income years. Then, we grouped the data by Income_Year and computed the mean of the long-term interest rates (avg_LT_rate) for each income year.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join and average interest rates by income year</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>mapped_rates <span class="ot">&lt;-</span> rate_to_income <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(interest_rates, <span class="at">by =</span> <span class="st">"Year"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Income_Year) <span class="sc">%&gt;%</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_LT_rate =</span> <span class="fu">mean</span>(mean_LT, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The NLS dataset was originally wide, with separate columns for each year’s income. We reshaped it into a long format where each row represents an individual-year combination, keeping demographic variables unchanged. The income year was extracted from the column names and converted into an integer for proper joining.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Pivot NLS data to long format while keeping demographic columns</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>nls_income_long <span class="ot">&lt;-</span> nls_data_clean <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"Income_"</span>),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Income_Year"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_prefix =</span> <span class="st">"Income_"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Income"</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Income_Year =</span> <span class="fu">as.integer</span>(Income_Year))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We then merged the long-format NLS income data with the mapped interest rates using Income_Year as the key. This appended the relevant avg_LT_rate to each income record. Finally, we saved the fully combined dataset (nls_with_rates_full.csv) for future modeling and analysis.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Join average interest rates by income year</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>nls_with_rates_full <span class="ot">&lt;-</span> nls_income_long <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(mapped_rates, <span class="at">by =</span> <span class="st">"Income_Year"</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(nls_with_rates_full, <span class="fu">here</span>(<span class="st">"dataset"</span>, <span class="st">"nls_with_rates_full.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+
 </section>
-<section id="data-combination" class="level2">
-<h2 class="anchored" data-anchor-id="data-combination">Data Combination</h2>
-<ul>
-<li>Describe and show code for how you combined multiple data files and any cleaning that was necessary for that.</li>
-<li>Some repetition of what you do in your <code>clean_data.R</code> file is fine and encouraged if it helps explain what you did.</li>
-<li>Organization, clarity, cleanliness of the page
-<ul>
-<li>Make sure to remove excessive warnings, use clean easy-to-read code (without side scrolling), organize with sections, use bullets and other organization tools, etc.</li>
-<li>This page should be self-contained.</li>
-</ul></li>
-</ul>
-
-
 </section>
 
 </main> <!-- /main -->
