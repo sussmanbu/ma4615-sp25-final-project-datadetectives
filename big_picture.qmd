@@ -30,52 +30,64 @@ Your Big Data page should also include a small interactive dashboard. The dashbo
 ```{r shinymap, echo= FALSE, message=FALSE}
 library(shiny)
 library(tidyverse)
-library(sf)
 library(leaflet)
+library(geojsonio)
 library(shinydashboard)
 
-# Load cleaned data
+#load datasets
 nls_data_clean <- read_csv("dataset/nls_clean.csv")
 interest_rates_cleaned <- read_csv("dataset/interest_rates_cleaned.csv")
 
-# Load US states shapefile
-us_states <- st_as_sf(maps::map("state", plot = FALSE, fill = TRUE))
 
-# Create regions mapping (using your dataset's region names)
+# Load US states GeoJSON properly
+us_states <- geojson_read(
+  "https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json",
+  what = "sp"
+)
+names(us_states@data)
+
+# Create region lookup
 region_lookup <- tibble(
-  ID = tolower(state.name),
-  Map_Region = case_when(
-    ID %in% c("maine", "new hampshire", "vermont", "massachusetts", 
-              "rhode island", "connecticut", "new york", 
-              "new jersey", "pennsylvania") ~ "North East",
-    ID %in% c("ohio", "indiana", "illinois", "michigan", "wisconsin",
-              "minnesota", "iowa", "missouri", "north dakota",
-              "south dakota", "nebraska", "kansas") ~ "Central",
-    ID %in% c("delaware", "maryland", "virginia", "west virginia",
-              "north carolina", "south carolina", "georgia",
-              "florida", "kentucky", "tennessee", "alabama",
-              "mississippi", "arkansas", "louisiana", "oklahoma",
-              "texas") ~ "South",
-    TRUE ~ "West"
-  ),
-  Data_Region = case_when(
-    Map_Region == "North East" ~ "Northeast",
-    Map_Region == "Central" ~ "North Central",
-    Map_Region == "South" ~ "South",
-    Map_Region == "West" ~ "West"
+  state = tolower(c("maine", "new hampshire", "vermont", "massachusetts", 
+                    "rhode island", "connecticut", "new york", "new jersey",
+                    "pennsylvania", "ohio", "indiana", "illinois", "michigan",
+                    "wisconsin", "minnesota", "iowa", "missouri", "north dakota",
+                    "south dakota", "nebraska", "kansas", "delaware", "maryland",
+                    "virginia", "west virginia", "north carolina", "south carolina",
+                    "georgia", "florida", "kentucky", "tennessee", "alabama",
+                    "mississippi", "arkansas", "louisiana", "oklahoma", "texas",
+                    "montana", "wyoming", "colorado", "new mexico", "idaho",
+                    "utah", "arizona", "washington", "oregon", "nevada",
+                    "california", "alaska", "hawaii")),   # << ADD
+  region = case_when(
+    state %in% tolower(c("maine", "new hampshire", "vermont", "massachusetts", 
+                         "rhode island", "connecticut", "new york", 
+                         "new jersey", "pennsylvania")) ~ "North East",
+    state %in% tolower(c("ohio", "indiana", "illinois", "michigan", "wisconsin",
+                         "minnesota", "iowa", "missouri", "north dakota",
+                         "south dakota", "nebraska", "kansas")) ~ "Central",
+    state %in% tolower(c("delaware", "maryland", "virginia", "west virginia",
+                         "north carolina", "south carolina", "georgia",
+                         "florida", "kentucky", "tennessee", "alabama",
+                         "mississippi", "arkansas", "louisiana", "oklahoma",
+                         "texas")) ~ "South",
+    TRUE ~ "West"  # ← West for Alaska, Hawaii, West Coast
   )
 )
 
-# Merge shapefile with region info
-us_states <- left_join(us_states, region_lookup, by = "ID")
+
+# Map state to region
+state_to_region <- region_lookup$region
+names(state_to_region) <- region_lookup$state
+
 
 # UI
 ui <- fluidPage(
-  titlePanel("Recession Impact Map By Region"),
+  titlePanel("Recession Impact Map (GeoJSON)"),
   sidebarLayout(
     sidebarPanel(
       radioButtons("filter", "Filter Result Cards By:",
-                   choices = c("Income by year", "Interest rate by year"), 
+                   choices = c("Income by year", "Interest rate by year"),
                    selected = "Income by year")
     ),
     mainPanel(
@@ -91,107 +103,81 @@ ui <- fluidPage(
 
 # Server
 server <- function(input, output, session) {
-  # Reactive value to store clicked region (using map region names)
-  clicked_region <- reactiveVal(NULL)
+  
+  selected_region <- reactiveVal(NULL)
+  
+  get_mean_value <- function(year, type) {
+  region_name <- selected_region()
+  if (is.null(region_name)) return(NA)
+  
+  if (type == "Income by year") {
+    nls_data_clean %>%
+      filter(Region == region_name) %>%
+      pull(paste0("Income_", year)) %>%
+      mean(na.rm = TRUE)
+  } else {
+    row <- interest_rates_cleaned %>%
+      filter(Year == year)
+    
+    if (nrow(row) == 0) return(NA)  # no matching year found
+
+    value <- row[[region_name]]  # pull value from column
+    if (is.null(value)) return(NA) # no matching region column found
+    
+    value
+  }
+}
+
   
   output$map <- renderLeaflet({
-    leaflet(us_states) %>%
-      addTiles() %>%
-      addPolygons(
-        fillColor = ~case_when(
-          Map_Region == "North East" ~ "#1f77b4",
-          Map_Region == "Central" ~ "#2ca02c",
-          Map_Region == "South" ~ "#ff7f0e",
-          Map_Region == "West" ~ "#d62728"
-        ),
-        fillOpacity = 0.7,
-        color = "white",
-        weight = 1,
-        label = ~Map_Region,
-        layerId = ~Map_Region,  # Use map region names for click ID
-        highlightOptions = highlightOptions(
-          weight = 3,
-          color = "black",
-          bringToFront = TRUE
-        )
+  leaflet(us_states) %>%
+    addTiles() %>%
+    addPolygons(
+      fillColor = ~case_when(
+        state_to_region[tolower(name)] == "North East" ~ "#1f77b4",
+        state_to_region[tolower(name)] == "Central" ~ "#2ca02c",
+        state_to_region[tolower(name)] == "South" ~ "#ff7f0e",
+        state_to_region[tolower(name)] == "West" ~ "#d62728",
+        TRUE ~ "gray"
+      ),
+      fillOpacity = 0.7,
+      color = "white",
+      weight = 1,
+      label = ~name,
+      layerId = ~name,
+      highlightOptions = highlightOptions(
+        weight = 3,
+        color = "black",
+        bringToFront = TRUE
       )
-  })
+    )
+})
+
   
-  # Observe map clicks
   observeEvent(input$map_shape_click, {
-    click <- input$map_shape_click
-    if (!is.null(click$id)) {
-      clicked_region(click$id)
+    click_name <- input$map_shape_click$id
+    if (!is.null(click_name)) {
+      region_clicked <- state_to_region[tolower(click_name)]
+
+# Fix region mapping for data
+data_region <- case_when(
+  region_clicked == "North East" ~ "Northeast",
+  region_clicked == "Central" ~ "North Central",
+  TRUE ~ region_clicked  # "South" and "West" are same
+)
+
+selected_region(data_region)
     }
   })
   
-  # Function to get corresponding data region name
-  get_data_region <- function(map_region) {
-    if (is.null(map_region)) return(NULL)
-    region_lookup %>% 
-      filter(Map_Region == map_region) %>% 
-      pull(Data_Region) %>% 
-      first()
-  }
-  
-  # Function to calculate mean income or interest rate
-  get_mean_value <- function(year, type) {
-    if (is.null(clicked_region())) {
-      # If no region selected, return overall mean
-      if (type == "Income by year") {
-        mean(nls_data_clean[[paste0("Income_", year)]], na.rm = TRUE)
-      } else {
-        interest_rates_cleaned %>% 
-          filter(Year == year) %>% 
-          pull(Interest_Rate) %>% 
-          mean(na.rm = TRUE)
-      }
-    } else {
-      # Get the corresponding data region name
-      data_region <- get_data_region(clicked_region())
-      
-      if (type == "Income by year") {
-        nls_data_clean %>% 
-          filter(Region == data_region) %>% 
-          pull(paste0("Income_", year)) %>% 
-          mean(na.rm = TRUE)
-      } else {
-        interest_rates_cleaned %>% 
-          filter(Year == year,
-                 Region == data_region) %>% 
-          pull(Interest_Rate) %>% 
-          mean(na.rm = TRUE)
-      }
-    }
-  }
-  
-  # Render value boxes
   output$card2006 <- renderValueBox({
     value <- if (input$filter == "Income by year") {
       scales::dollar(round(get_mean_value(2006, input$filter)))
     } else {
       round(get_mean_value(2006, input$filter), 2)
     }
-    
-    subtitle <- if (input$filter == "Income by year") {
-      if (!is.null(clicked_region())) {
-        paste("Avg Income 2006 -", clicked_region())
-      } else {
-        "Average Income 2006 (All Regions)"
-      }
-    } else {
-      if (!is.null(clicked_region())) {
-        paste("Avg Interest Rate 2006 -", clicked_region())
-      } else {
-        "Average Interest Rate 2006 (All Regions)"
-      }
-    }
-    
-    valueBox(
-      value = value,
-      subtitle = subtitle,
-      color = "blue"
-    )
+    subtitle <- paste(input$filter, "2006 -", selected_region())
+    valueBox(value, subtitle, color = "blue")
   })
   
   output$card2008 <- renderValueBox({
@@ -200,26 +186,8 @@ server <- function(input, output, session) {
     } else {
       round(get_mean_value(2008, input$filter), 2)
     }
-    
-    subtitle <- if (input$filter == "Income by year") {
-      if (!is.null(clicked_region())) {
-        paste("Avg Income 2008 -", clicked_region())
-      } else {
-        "Average Income 2008 (All Regions)"
-      }
-    } else {
-      if (!is.null(clicked_region())) {
-        paste("Avg Interest Rate 2008 -", clicked_region())
-      } else {
-        "Average Interest Rate 2008 (All Regions)"
-      }
-    }
-    
-    valueBox(
-      value = value,
-      subtitle = subtitle,
-      color = "green"
-    )
+    subtitle <- paste(input$filter, "2008 -", selected_region())
+    valueBox(value, subtitle, color = "green")
   })
   
   output$card2010 <- renderValueBox({
@@ -228,30 +196,15 @@ server <- function(input, output, session) {
     } else {
       round(get_mean_value(2010, input$filter), 2)
     }
-    
-    subtitle <- if (input$filter == "Income by year") {
-      if (!is.null(clicked_region())) {
-        paste("Avg Income 2010 -", clicked_region())
-      } else {
-        "Average Income 2010 (All Regions)"
-      }
-    } else {
-      if (!is.null(clicked_region())) {
-        paste("Avg Interest Rate 2010 -", clicked_region())
-      } else {
-        "Average Interest Rate 2010 (All Regions)"
-      }
-    }
-    
-    valueBox(
-      value = value,
-      subtitle = subtitle,
-      color = "red"
-    )
+    subtitle <- paste(input$filter, "2010 -", selected_region())
+    valueBox(value, subtitle, color = "red")
   })
 }
 
 shinyApp(ui, server)
+
+
+
 ```
 
 
