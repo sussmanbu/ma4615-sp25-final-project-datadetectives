@@ -35,8 +35,20 @@ library(geojsonio)
 library(shinydashboard)
 library(sf)
 
+# Load nls_no_outliers
+nls_no_outliers <- read_csv("dataset/nls_no_outliers.csv")
+
+# Pivot from long to wide format
+nls_no_outliers_wide <- nls_no_outliers %>%
+  pivot_wider(
+    id_cols = c(Case_ID, Sample_ID, Race, Sex, Highest_Grade_Completed, Marital_Status, Region, Age_2010),
+    names_from = Income_Year,
+    values_from = Income,
+    names_prefix = "Income_"
+  )
+
 # Load data
-nls_data_clean <- read_csv("dataset/nls_clean.csv")
+nls_data_clean <- nls_no_outliers_wide
 
 # Load US states GeoJSON
 us_states <- geojson_read(
@@ -103,7 +115,7 @@ ui <- fluidPage(
     mainPanel(
   leafletOutput("map", height = 400),
   br(),
-  h4("Overall Region Income"),
+  h4("Overall Country Income"),
   fluidRow(
     column(3, valueBoxOutput("card2006", width = 12)),
     column(1, div(style = "font-size: 30px; text-align: center;", icon("arrow-right"))),
