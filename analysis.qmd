@@ -241,26 +241,37 @@ nls_no_outliers <- nls_with_rates %>%
 write_csv(nls_no_outliers, "dataset/nls_no_outliers.csv")
 ```
 
-```{r statmod}
-
-library(scales)
+```{r statisticsmod}
 library(car)
 library(sandwich)
- 
+library(lmtest)
+
 nls_data_tbu <- read_csv("dataset/nls_no_outliers.csv")
- 
 nls_data_modeling <- nls_data_tbu %>%
-   filter(Income_Year %in% c(2006, 2008, 2010))
+   filter(Income_Year %in% c(2006, 2008, 2010)) %>%
+   mutate(edu_bin = case_when(
+     Highest_Grade_Completed %in% c(
+       "UNGRADED", "1ST GRADE",  "2ND GRADE",  "3RD GRADE", "4TH GRADE",  
+        "5TH GRADE",  "6TH GRADE", "7TH GRADE",  "8TH GRADE") ~ "Less than HS",
+      Highest_Grade_Completed %in% c("9TH GRADE", "10TH GRADE",
+                                     "11TH GRADE", "12TH GRADE") ~ "High School",
+      Highest_Grade_Completed %in% c("1ST YEAR COLLEGE", "2ND YEAR COLLEGE", "3RD YEAR COLLEGE"
+      ) ~ "Some College",
+      Highest_Grade_Completed %in% c("4TH YEAR COLLEGE", "5TH YEAR COLLEGE", "6TH YEAR COLLEGE",
+        "7TH YEAR COLLEGE", "8TH YEAR COLLEGE OR MORE") ~ "College+",
+      TRUE ~ NA_character_)) %>%
+  filter(!is.na(edu_bin)) %>%
+  mutate(edu_bin = factor(edu_bin, levels = c("Less than HS", "High School", "Some College", "College+"))) %>% na.omit()
  
-model = lm(Income ~ Race + Sex + Marital_Status + Age_2010 + Region + Highest_Grade_Completed + avg_LT_rate, data = filter(nls_data_modeling, Income > 0))
- 
-# coeftest(model, vcov = vcovHC(model, type = "HC1"))
+model = lm(Income ~ Race + Sex + Marital_Status + Age_2010 + Region + edu_bin + avg_LT_rate, data = filter(nls_data_modeling))
+plot(model, which=c(1))
+plot(model, which=c(2))
  
 model_data = model.frame(model)
 model_data$Predicted = predict(model)
 summary(model)
 vif(model, type = "predictor")
-plot(model)
+coeftest(model, vcov = vcovHC(model, type = "HC1"))
 
 ```
 
