@@ -186,6 +186,61 @@ ggplot(income_by_race, aes(x = Income_Year, y = avg_income, color = avg_interest
 
 ## Modeling and Inference
 
+First tried with outliers and had bad figures, and we determined there were severe outliers impacting our model. 
+
+```{r outliers, echo= FALSE}
+library(tidyverse)
+
+# Load the data
+nls_with_rates <- read_csv("dataset/nls_with_rates_full.csv")
+
+
+# Calculate IQR and bounds
+Q1 <- quantile(nls_with_rates$Income, 0.25, na.rm = TRUE)
+Q3 <- quantile(nls_with_rates$Income, 0.75, na.rm = TRUE)
+IQR_value <- Q3 - Q1
+
+lower_bound <- Q1 - .20 * IQR_value
+upper_bound <- Q3 + 1.75 * IQR_value
+
+# Plot histogram with cutoff lines
+ggplot(nls_with_rates, aes(x = Income)) +
+  geom_histogram(binwidth = 5000, color = "black", fill = "lightblue") +
+  geom_vline(xintercept = lower_bound, color = "red", linetype = "dashed", size = 1) +
+  geom_vline(xintercept = upper_bound, color = "red", linetype = "dashed", size = 1) +
+  annotate("text", x = lower_bound, y = 3000, label = "Lower Bound", angle = 90, vjust = -0.5, color = "red") +
+  annotate("text", x = upper_bound, y = 3000, label = "Upper Bound", angle = 90, vjust = -0.5, color = "red") +
+  labs(title = "Histogram of Income with Outlier Cutoff Lines",
+       subtitle = "Red dashed lines indicate outlier thresholds",
+       x = "Income",
+       y = "Count") +
+  theme_minimal()
+
+```
+We therefore used R script like below to remove these and create a new dataset specifically for modeling. 
+
+```r
+library(tidyverse)
+
+# Load  merged dataset
+nls_with_rates <- read_csv("dataset/nls_with_rates_full.csv")
+
+# Step 1: Calculate IQR boundaries
+Q1 <- quantile(nls_with_rates$Income, 0.25, na.rm = TRUE)
+Q3 <- quantile(nls_with_rates$Income, 0.75, na.rm = TRUE)
+IQR_value <- Q3 - Q1
+
+lower_bound <- Q1 - 0.24 * IQR_value #lots of 0 (n/a) data
+upper_bound <- Q3 + 1.5 * IQR_value
+
+# Step 2: Filter out the outliers
+nls_no_outliers <- nls_with_rates %>%
+  filter(Income >= lower_bound & Income <= upper_bound)
+
+# Step 3: Save it
+write_csv(nls_no_outliers, "dataset/nls_no_outliers.csv")
+```
+
 ```{r statmod}
 
 library(scales)
