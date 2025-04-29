@@ -68,6 +68,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -123,11 +152,21 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#interactive" id="toc-interactive" class="nav-link" data-scroll-target="#interactive">Interactive</a></li>
+  <li><a href="#load-nls_no_outliers" id="toc-load-nls_no_outliers" class="nav-link" data-scroll-target="#load-nls_no_outliers">Load nls_no_outliers</a></li>
+  <li><a href="#pivot-from-long-to-wide-format" id="toc-pivot-from-long-to-wide-format" class="nav-link" data-scroll-target="#pivot-from-long-to-wide-format">Pivot from long to wide format</a></li>
+  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data">Load data</a></li>
+  <li><a href="#load-us-states-geojson" id="toc-load-us-states-geojson" class="nav-link" data-scroll-target="#load-us-states-geojson">Load US states GeoJSON</a></li>
+  <li><a href="#create-region-lookup" id="toc-create-region-lookup" class="nav-link" data-scroll-target="#create-region-lookup">Create region lookup</a></li>
+  <li><a href="#ui" id="toc-ui" class="nav-link" data-scroll-target="#ui">— UI —</a></li>
+  <li><a href="#server" id="toc-server" class="nav-link" data-scroll-target="#server">— Server —</a></li>
+  <li><a href="#run-the-app" id="toc-run-the-app" class="nav-link" data-scroll-target="#run-the-app">Run the app</a>
+  <ul class="collapse">
   <li><a href="#rubric-on-this-page" id="toc-rubric-on-this-page" class="nav-link" data-scroll-target="#rubric-on-this-page">Rubric: On this page</a></li>
   <li><a href="#rubric-other-components" id="toc-rubric-other-components" class="nav-link" data-scroll-target="#rubric-other-components">Rubric: Other components</a>
   <ul class="collapse">
   <li><a href="#video-recording" id="toc-video-recording" class="nav-link" data-scroll-target="#video-recording">Video Recording</a></li>
   <li><a href="#rest-of-the-site" id="toc-rest-of-the-site" class="nav-link" data-scroll-target="#rest-of-the-site">Rest of the Site</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -171,222 +210,94 @@ ul.task-list li input[type="checkbox"] {
 <section id="interactive" class="level3">
 <h3 class="anchored" data-anchor-id="interactive">Interactive</h3>
 <p>Your Big Data page should also include a small interactive dashboard. The dashboard should be created either using Shinylive, as below. This interactive component should in some way support your thesis from your big picture page. Good interactives often provide both high-level understanding of the data while allowing a user to investigate specific scenarios, observations, subgroups, etc.</p>
-<pre class="{shinylive-r, #| echo:FALSE}"><code>library(shiny)
-library(tidyverse)
-library(leaflet)
-library(geojsonio)
-library(shinydashboard)
-library(sf)
-
-# Load nls_no_outliers
-nls_no_outliers &lt;- read_rds("https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/scripts/nls_no_outliers_shiny_dataset.rds")
-
-# Pivot from long to wide format
-nls_no_outliers_wide &lt;- nls_no_outliers %&gt;%
-  pivot_wider(
-    id_cols = c(Case_ID, Sample_ID, Race, Sex, Highest_Grade_Completed, Marital_Status, Region, Age_2010),
-    names_from = Income_Year,
-    values_from = Income,
-    names_prefix = "Income_"
-  )
-
-# Load data
-nls_data_clean &lt;- nls_no_outliers_wide
-
-# Load US states GeoJSON
-us_states &lt;- geojson_read(
-  "https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json",
-  what = "sp"
-)
-
-# Create region lookup
-region_lookup &lt;- tibble(
-  state = tolower(c("maine", "new hampshire", "vermont", "massachusetts", 
-                    "rhode island", "connecticut", "new york", "new jersey",
-                    "pennsylvania", "ohio", "indiana", "illinois", "michigan",
-                    "wisconsin", "minnesota", "iowa", "missouri", "north dakota",
-                    "south dakota", "nebraska", "kansas", "delaware", "maryland",
-                    "virginia", "west virginia", "north carolina", "south carolina",
-                    "georgia", "florida", "kentucky", "tennessee", "alabama",
-                    "mississippi", "arkansas", "louisiana", "oklahoma", "texas",
-                    "montana", "wyoming", "colorado", "new mexico", "idaho",
-                    "utah", "arizona", "washington", "oregon", "nevada",
-                    "california", "alaska", "hawaii")),
-  region = case_when(
-    state %in% tolower(c("maine", "new hampshire", "vermont", "massachusetts", 
-                         "rhode island", "connecticut", "new york", 
-                         "new jersey", "pennsylvania")) ~ "North East",
-    state %in% tolower(c("ohio", "indiana", "illinois", "michigan", "wisconsin",
-                         "minnesota", "iowa", "missouri", "north dakota",
-                         "south dakota", "nebraska", "kansas")) ~ "Central",
-    state %in% tolower(c("delaware", "maryland", "virginia", "west virginia",
-                         "north carolina", "south carolina", "georgia",
-                         "florida", "kentucky", "tennessee", "alabama",
-                         "mississippi", "arkansas", "louisiana", "oklahoma",
-                         "texas")) ~ "South",
-    TRUE ~ "West"
-  )
-)
-
-state_to_region &lt;- region_lookup$region
-names(state_to_region) &lt;- region_lookup$state
-
-us_states@data$region &lt;- state_to_region[tolower(us_states@data$name)]
-us_states &lt;- us_states[!is.na(us_states@data$region), ]
-
-us_states_sf &lt;- st_as_sf(us_states)
-us_states_sf$region &lt;- state_to_region[tolower(us_states_sf$name)]
-us_states_sf &lt;- us_states_sf %&gt;%
-  filter(!name %in% c("Alaska", "Hawaii"))
-us_states_sf &lt;- st_make_valid(us_states_sf)
-
-regions_sf &lt;- us_states_sf %&gt;%
-  group_by(region) %&gt;%
-  summarize(geometry = st_union(geometry), .groups = "drop")
-
-# --- UI ---
-ui &lt;- fluidPage(
-  titlePanel("Recession Impact Map (Regions)"),
-  sidebarLayout(
-    sidebarPanel(
-      selectInput("selected_race", "Select Race:",
-                  choices = c("- Select Race -" = "", unique(nls_data_clean$Race))),
-      radioButtons("filter", "Filter Result Cards By:",
-                   choices = c("Income by year"), 
-                   selected = "Income by year")
-    ),
-    mainPanel(
-  leafletOutput("map", height = 400),
-  br(),
-  h4("Overall Country Income"),
-  fluidRow(
-    column(3, valueBoxOutput("card2006", width = 12)),
-    column(1, div(style = "font-size: 30px; text-align: center;", icon("arrow-right"))),
-    column(3, valueBoxOutput("card2008", width = 12)),
-    column(1, div(style = "font-size: 30px; text-align: center;", icon("arrow-right"))),
-    column(3, valueBoxOutput("card2010", width = 12))
-  ),
-  br(),
-  conditionalPanel(
-    condition = "input.selected_race != ''",
-    h4("Selected Race Income"),
-    fluidRow(
-      column(3, valueBoxOutput("card2006_race", width = 12)),
-      column(1, div(style = "font-size: 30px; text-align: center;", icon("arrow-right"))),
-      column(3, valueBoxOutput("card2008_race", width = 12)),
-      column(1, div(style = "font-size: 30px; text-align: center;", icon("arrow-right"))),
-      column(3, valueBoxOutput("card2010_race", width = 12))
-    )
-  )
-)
-
-  )
-)
-
-# --- Server ---
-server &lt;- function(input, output, session) {
-  
-  selected_region &lt;- reactiveVal(NULL)
-  
-  get_mean_value &lt;- function(year, type, race = NULL) {
-    region_name &lt;- selected_region()
-    data &lt;- nls_data_clean
-    
-    if (!is.null(race) &amp;&amp; race != "") {
-      data &lt;- data %&gt;% filter(Race == race)
-    }
-    
-    if (type == "Income by year") {
-      if (is.null(region_name)) {
-        data %&gt;%
-          pull(paste0("Income_", year)) %&gt;%
-          mean(na.rm = TRUE)
-      } else {
-        data %&gt;%
-          filter(Region == region_name) %&gt;%
-          pull(paste0("Income_", year)) %&gt;%
-          mean(na.rm = TRUE)
-      }
-    }
-  }
-  
-  output$map &lt;- renderLeaflet({
-    leaflet(regions_sf) %&gt;%
-      addTiles() %&gt;%
-      addPolygons(
-        fillColor = ~case_when(
-          region == "North East" ~ "#1f77b4",
-          region == "Central" ~ "#2ca02c",
-          region == "South" ~ "#ff7f0e",
-          region == "West" ~ "#d62728",
-          TRUE ~ "gray"
-        ),
-        fillOpacity = 0.7,
-        color = "white",
-        weight = 1,
-        label = ~region,
-        layerId = ~region,
-        highlightOptions = highlightOptions(
-          weight = 5,
-          color = "black",
-          bringToFront = TRUE
-        )
-      )
-  })
-
-  observeEvent(input$map_shape_click, {
-    click_region &lt;- input$map_shape_click$id
-    if (!is.null(click_region)) {
-      data_region &lt;- case_when(
-        click_region == "North East" ~ "Northeast",
-        click_region == "Central" ~ "North Central",
-        TRUE ~ click_region
-      )
-      selected_region(data_region)
-    }
-  })
-  
-  render_income_card &lt;- function(year, color, race_specific = FALSE) {
-    renderValueBox({
-      race &lt;- if (race_specific &amp;&amp; input$selected_race != "") input$selected_race else NULL
-      
-      if (race_specific &amp;&amp; is.null(race)) {
-        NULL  # no box at all if race not selected
-      } else {
-        value &lt;- scales::dollar(round(get_mean_value(year, input$filter, race)))
-        
-        region_display &lt;- if (is.null(selected_region())) {
-          "National Average"
-        } else {
-          selected_region()
-        }
-        
-        subtitle &lt;- if (race_specific) {
-          paste0(input$selected_race, " Income ", year)
-        } else {
-          paste0("Income ", year, " - ", region_display)
-        }
-        
-        valueBox(value, subtitle, color = color)
-      }
-    })
-  }
-
-  output$card2006 &lt;- render_income_card(2006, "blue")
-  output$card2008 &lt;- render_income_card(2008, "green")
-  output$card2010 &lt;- render_income_card(2010, "red")
-  
-  output$card2006_race &lt;- render_income_card(2006, "teal", race_specific = TRUE)
-  output$card2008_race &lt;- render_income_card(2008, "lime", race_specific = TRUE)
-  output$card2010_race &lt;- render_income_card(2010, "purple", race_specific = TRUE)
+<p>```{shinylive-r, ech=FALSE} library(shiny) library(tidyverse) library(leaflet) library(geojsonio) library(shinydashboard) library(sf)</p>
+</section>
+<section id="load-nls_no_outliers" class="level1">
+<h1>Load nls_no_outliers</h1>
+<p>nls_no_outliers &lt;- read_rds(“https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/scripts/nls_no_outliers_shiny_dataset.rds”)</p>
+</section>
+<section id="pivot-from-long-to-wide-format" class="level1">
+<h1>Pivot from long to wide format</h1>
+<p>nls_no_outliers_wide &lt;- nls_no_outliers %&gt;% pivot_wider( id_cols = c(Case_ID, Sample_ID, Race, Sex, Highest_Grade_Completed, Marital_Status, Region, Age_2010), names_from = Income_Year, values_from = Income, names_prefix = “Income_” )</p>
+</section>
+<section id="load-data" class="level1">
+<h1>Load data</h1>
+<p>nls_data_clean &lt;- nls_no_outliers_wide</p>
+</section>
+<section id="load-us-states-geojson" class="level1">
+<h1>Load US states GeoJSON</h1>
+<p>us_states &lt;- geojson_read( “https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json”, what = “sp” )</p>
+</section>
+<section id="create-region-lookup" class="level1">
+<h1>Create region lookup</h1>
+<p>region_lookup &lt;- tibble( state = tolower(c(“maine”, “new hampshire”, “vermont”, “massachusetts”, “rhode island”, “connecticut”, “new york”, “new jersey”, “pennsylvania”, “ohio”, “indiana”, “illinois”, “michigan”, “wisconsin”, “minnesota”, “iowa”, “missouri”, “north dakota”, “south dakota”, “nebraska”, “kansas”, “delaware”, “maryland”, “virginia”, “west virginia”, “north carolina”, “south carolina”, “georgia”, “florida”, “kentucky”, “tennessee”, “alabama”, “mississippi”, “arkansas”, “louisiana”, “oklahoma”, “texas”, “montana”, “wyoming”, “colorado”, “new mexico”, “idaho”, “utah”, “arizona”, “washington”, “oregon”, “nevada”, “california”, “alaska”, “hawaii”)), region = case_when( state %in% tolower(c(“maine”, “new hampshire”, “vermont”, “massachusetts”, “rhode island”, “connecticut”, “new york”, “new jersey”, “pennsylvania”)) ~ “North East”, state %in% tolower(c(“ohio”, “indiana”, “illinois”, “michigan”, “wisconsin”, “minnesota”, “iowa”, “missouri”, “north dakota”, “south dakota”, “nebraska”, “kansas”)) ~ “Central”, state %in% tolower(c(“delaware”, “maryland”, “virginia”, “west virginia”, “north carolina”, “south carolina”, “georgia”, “florida”, “kentucky”, “tennessee”, “alabama”, “mississippi”, “arkansas”, “louisiana”, “oklahoma”, “texas”)) ~ “South”, TRUE ~ “West” ) )</p>
+<p>state_to_region &lt;- region_lookup<span class="math inline">\(region
+names(state_to_region) &lt;- region_lookup\)</span>state</p>
+<p>us_states@data<span class="math inline">\(region &lt;- state_to_region[tolower(us_states@data\)</span>name)] us_states &lt;- us_states[!is.na(us_states@data$region), ]</p>
+<p>us_states_sf &lt;- st_as_sf(us_states) us_states_sf<span class="math inline">\(region &lt;- state_to_region[tolower(us_states_sf\)</span>name)] us_states_sf &lt;- us_states_sf %&gt;% filter(!name %in% c(“Alaska”, “Hawaii”)) us_states_sf &lt;- st_make_valid(us_states_sf)</p>
+<p>regions_sf &lt;- us_states_sf %&gt;% group_by(region) %&gt;% summarize(geometry = st_union(geometry), .groups = “drop”)</p>
+</section>
+<section id="ui" class="level1">
+<h1>— UI —</h1>
+<p>ui &lt;- fluidPage( titlePanel(“Recession Impact Map (Regions)”), sidebarLayout( sidebarPanel( selectInput(“selected_race”, “Select Race:”, choices = c(“- Select Race -” = ““, unique(nls_data_clean$Race))), radioButtons(”filter”, “Filter Result Cards By:”, choices = c(“Income by year”), selected = “Income by year”) ), mainPanel( leafletOutput(“map”, height = 400), br(), h4(“Overall Country Income”), fluidRow( column(3, valueBoxOutput(“card2006”, width = 12)), column(1, div(style = “font-size: 30px; text-align: center;”, icon(“arrow-right”))), column(3, valueBoxOutput(“card2008”, width = 12)), column(1, div(style = “font-size: 30px; text-align: center;”, icon(“arrow-right”))), column(3, valueBoxOutput(“card2010”, width = 12)) ), br(), conditionalPanel( condition = “input.selected_race != ’’”, h4(“Selected Race Income”), fluidRow( column(3, valueBoxOutput(“card2006_race”, width = 12)), column(1, div(style = “font-size: 30px; text-align: center;”, icon(“arrow-right”))), column(3, valueBoxOutput(“card2008_race”, width = 12)), column(1, div(style = “font-size: 30px; text-align: center;”, icon(“arrow-right”))), column(3, valueBoxOutput(“card2010_race”, width = 12)) ) ) )</p>
+<p>) )</p>
+</section>
+<section id="server" class="level1">
+<h1>— Server —</h1>
+<p>server &lt;- function(input, output, session) {</p>
+<p>selected_region &lt;- reactiveVal(NULL)</p>
+<p>get_mean_value &lt;- function(year, type, race = NULL) { region_name &lt;- selected_region() data &lt;- nls_data_clean</p>
+<pre><code>if (!is.null(race) &amp;&amp; race != "") {
+  data &lt;- data %&gt;% filter(Race == race)
 }
 
-# Run the app
-shinyApp(ui, server)
-
-
-
-</code></pre>
+if (type == "Income by year") {
+  if (is.null(region_name)) {
+    data %&gt;%
+      pull(paste0("Income_", year)) %&gt;%
+      mean(na.rm = TRUE)
+  } else {
+    data %&gt;%
+      filter(Region == region_name) %&gt;%
+      pull(paste0("Income_", year)) %&gt;%
+      mean(na.rm = TRUE)
+  }
+}</code></pre>
+<p>}</p>
+<p>output$map &lt;- renderLeaflet({ leaflet(regions_sf) %&gt;% addTiles() %&gt;% addPolygons( fillColor = ~case_when( region == “North East” ~ “#1f77b4”, region == “Central” ~ “#2ca02c”, region == “South” ~ “#ff7f0e”, region == “West” ~ “#d62728”, TRUE ~ “gray” ), fillOpacity = 0.7, color = “white”, weight = 1, label = ~region, layerId = ~region, highlightOptions = highlightOptions( weight = 5, color = “black”, bringToFront = TRUE ) ) })</p>
+<p>observeEvent(input<span class="math inline">\(map_shape_click, {
+    click_region &lt;- input\)</span>map_shape_click$id if (!is.null(click_region)) { data_region &lt;- case_when( click_region == “North East” ~ “Northeast”, click_region == “Central” ~ “North Central”, TRUE ~ click_region ) selected_region(data_region) } })</p>
+<p>render_income_card &lt;- function(year, color, race_specific = FALSE) { renderValueBox({ race &lt;- if (race_specific &amp;&amp; input<span class="math inline">\(selected_race != "") input\)</span>selected_race else NULL</p>
+<pre><code>  if (race_specific &amp;&amp; is.null(race)) {
+    NULL  # no box at all if race not selected
+  } else {
+    value &lt;- scales::dollar(round(get_mean_value(year, input$filter, race)))
+    
+    region_display &lt;- if (is.null(selected_region())) {
+      "National Average"
+    } else {
+      selected_region()
+    }
+    
+    subtitle &lt;- if (race_specific) {
+      paste0(input$selected_race, " Income ", year)
+    } else {
+      paste0("Income ", year, " - ", region_display)
+    }
+    
+    valueBox(value, subtitle, color = color)
+  }
+})</code></pre>
+<p>}</p>
+<p>output<span class="math inline">\(card2006 &lt;- render_income_card(2006, "blue")
+  output\)</span>card2008 &lt;- render_income_card(2008, “green”) output$card2010 &lt;- render_income_card(2010, “red”)</p>
+<p>output<span class="math inline">\(card2006_race &lt;- render_income_card(2006, "teal", race_specific = TRUE)
+  output\)</span>card2008_race &lt;- render_income_card(2008, “lime”, race_specific = TRUE) output$card2010_race &lt;- render_income_card(2010, “purple”, race_specific = TRUE) }</p>
+</section>
+<section id="run-the-app" class="level1">
+<h1>Run the app</h1>
+<p>shinyApp(ui, server)</p>
+<p>```</p>
 <p>To get the shinylive-r working.</p>
 <ol type="1">
 <li>Make sure your shiny app works as a regular r chunk.</li>
@@ -399,7 +310,6 @@ shinyApp(ui, server)
 </ol>
 <p>I recommend keeping the data used for the shiny interactive relatively small, though this isn’t completely necessary.</p>
 <hr>
-</section>
 <section id="rubric-on-this-page" class="level2">
 <h2 class="anchored" data-anchor-id="rubric-on-this-page">Rubric: On this page</h2>
 <ul>
@@ -436,6 +346,7 @@ shinyApp(ui, server)
 <p>The main title of your page is informative. Each post has an author/description/informative title. All lab required posts are present. Each page (including the home page) has a nice featured image associated with it. Your about page is up to date and clean. You have removed the generic posts from the initial site template.</p>
 
 
+</section>
 </section>
 </section>
 
