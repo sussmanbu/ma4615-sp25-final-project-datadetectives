@@ -5,10 +5,6 @@ toc: true
 draft: false
 ---
 
-```{r setup, include=FALSE}
-library(here)
-library(tidyverse)  # or specific: readr, dplyr, etc.
-```
 
 ![](https://upload.wikimedia.org/wikipedia/commons/7/77/Pebbleswithquarzite.jpg)
 
@@ -83,9 +79,15 @@ The goal of our analysis is to examine how macroeconomic trends in the aftermath
 ### Motivating Figures and Tables
 
 The following graphs explore some of the relationships between variables in our data to motivate this goal.
-
-```{r chandini graphs, echo= FALSE}
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
 library(scales)
+library(purrr)
+library(readr)
+library(here)
+```
+
+```{r chandini graphs, echo= FALSE, warning=FALSE}
 nls_data_clean <- read_rds("dataset/nls_clean.rds")
 
 #define correct order of education levels(needed for next query)
@@ -120,7 +122,7 @@ ggplot(income_by_grade, aes(x = Highest_Grade_Completed, y = mean_income, group 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
 
-```{r aretha graphs, echo= FALSE}
+```{r aretha graphs, echo= FALSE, warning=FALSE}
 library(scales)
 nls_data_clean <- read_rds("dataset/nls_clean.rds")
 
@@ -154,7 +156,7 @@ ggplot(nls_data_clean_filtered, aes(x = factor(Age_2010), y = Income_2010)) + ge
 
 ### Now, we look at interest rates.
 
-```{r datacombination, echo= FALSE}
+```{r datacombination, echo= FALSE, warning=FALSE, message=FALSE}
 
 nls_with_rates_full<-read_csv("./dataset/nls_with_rates_full.csv")
 
@@ -188,7 +190,7 @@ ggplot(income_by_race, aes(x = Income_Year, y = avg_income, color = avg_interest
 
 First tried with outliers and had bad figures, and we determined there were severe outliers impacting our model. 
 
-```{r outliers, echo= FALSE}
+```{r outliers, echo= FALSE, message=FALSE}
 library(tidyverse)
 
 # Load the data
@@ -241,7 +243,7 @@ nls_no_outliers <- nls_with_rates %>%
 write_csv(nls_no_outliers, "dataset/nls_no_outliers.csv")
 ```
 
-```{r statisticsmod}
+```{r statisticsmod, echo=FALSE, message=FALSE,warning=FALSE}
 library(car)
 library(sandwich)
 library(lmtest)
