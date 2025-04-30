@@ -1,18 +1,24 @@
 ---
-title: "Big Picture"
-description: "A 538/Upshot style article about the data."
+title: "Boom, Bust and Balance - Between The Lines of Income and Interest Rates"
+description: "Exploring the 2008 Crisis ."
 toc: true
+format: html
 draft: FALSE
 filters:
   - shinylive
 ---
 
-![](images/The_Big_Picture_2.jpeg)
+![](images/bigpic-tightrope.png)
 
 This comes from the file `big_picture.qmd`.
 
-Think of this page as your 538/Upshot style article. This means that you should try to tell a story through the data and your analysis. Read articles from those sites and similar sites to get a feeling for what they are like. Try to write in the style of a news or popular article. Importantly, this page should be geared towards the general public. You shouldn't assume the reader understands how to interpret a linear regression or a complicated plot. Focus on interpretation and visualizations.
+### Introduction
+Picture this — you’re approaching a major crossroads in life. Maybe you’re saving for retirement, helping your kids through college, or finally feeling financially secure after decades of hard work. Then, almost overnight, the economy crumbles. Home values plummet, jobs vanish, and uncertainty becomes the new normal.
 
+This was the reality for members of the 1979 National Longitudinal Survey of Youth cohort, who found themselves navigating one of the most severe economic downturns in modern history right at a critical point in their financial lives.
+
+How did the Great Recession of 2008 impact their incomes? How did falling interest rates shape their financial decisions and opportunities?
+In the analysis ahead, we dive into these questions — using regression models to uncover how income and interest rate dynamics shifted from 2006 to 2010. Join us as we explore the lasting financial ripples of the crisis and the stories hidden within the numbers.
 
 
 ---
@@ -22,10 +28,231 @@ Think of this page as your 538/Upshot style article. This means that you should 
 
 Your Big Data page should also include a small interactive dashboard. The dashboard should be created either using Shinylive, as below. This interactive component should in some way support your thesis from your big picture page. Good interactives often provide both high-level understanding of the data while allowing a user to investigate specific scenarios, observations, subgroups, etc.
 
+```{shiny}
+#| echo: false 
+#| standalone: true
+#| warning: false
+
+library(shiny)
+library(tidyverse)
+library(leaflet)
+library(geojsonio)
+library(shinydashboard)
+library(sf)
+
+# Load nls_no_outliers
+nls_no_outliers <- read_rds("https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/scripts/nls_no_outliers_shiny_dataset.rds")
+
+# Pivot from long to wide format
+nls_no_outliers_wide <- nls_no_outliers %>%
+  pivot_wider(
+    id_cols = c(Case_ID, Sample_ID, Race, Sex, Highest_Grade_Completed, Marital_Status, Region, Age_2010),
+    names_from = Income_Year,
+    values_from = Income,
+    names_prefix = "Income_"
+  )
+
+# Load data
+nls_data_clean <- nls_no_outliers_wide
+
+# Load US states GeoJSON
+us_states <- geojson_read(
+  "https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json",
+  what = "sp"
+)
+
+# Create region lookup
+region_lookup <- tibble(
+  state = tolower(c("maine", "new hampshire", "vermont", "massachusetts", 
+                    "rhode island", "connecticut", "new york", "new jersey",
+                    "pennsylvania", "ohio", "indiana", "illinois", "michigan",
+                    "wisconsin", "minnesota", "iowa", "missouri", "north dakota",
+                    "south dakota", "nebraska", "kansas", "delaware", "maryland",
+                    "virginia", "west virginia", "north carolina", "south carolina",
+                    "georgia", "florida", "kentucky", "tennessee", "alabama",
+                    "mississippi", "arkansas", "louisiana", "oklahoma", "texas",
+                    "montana", "wyoming", "colorado", "new mexico", "idaho",
+                    "utah", "arizona", "washington", "oregon", "nevada",
+                    "california", "alaska", "hawaii")),
+  region = case_when(
+    state %in% tolower(c("maine", "new hampshire", "vermont", "massachusetts", 
+                         "rhode island", "connecticut", "new york", 
+                         "new jersey", "pennsylvania")) ~ "North East",
+    state %in% tolower(c("ohio", "indiana", "illinois", "michigan", "wisconsin",
+                         "minnesota", "iowa", "missouri", "north dakota",
+                         "south dakota", "nebraska", "kansas")) ~ "Central",
+    state %in% tolower(c("delaware", "maryland", "virginia", "west virginia",
+                         "north carolina", "south carolina", "georgia",
+                         "florida", "kentucky", "tennessee", "alabama",
+                         "mississippi", "arkansas", "louisiana", "oklahoma",
+                         "texas")) ~ "South",
+    TRUE ~ "West"
+  )
+)
+
+state_to_region <- region_lookup$region
+names(state_to_region) <- region_lookup$state
+
+us_states@data$region <- state_to_region[tolower(us_states@data$name)]
+us_states <- us_states[!is.na(us_states@data$region), ]
+
+us_states_sf <- st_as_sf(us_states)
+us_states_sf$region <- state_to_region[tolower(us_states_sf$name)]
+us_states_sf <- us_states_sf %>%
+  filter(!name %in% c("Alaska", "Hawaii"))
+us_states_sf <- st_make_valid(us_states_sf)
+
+regions_sf <- us_states_sf %>%
+  group_by(region) %>%
+  summarize(geometry = st_union(geometry), .groups = "drop")
+
+# --- UI ---
+ui <- fluidPage(
+  titlePanel("Recession Impact Map (Regions)"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("selected_race", "Select Race:",
+                  choices = c("- Select Race -" = "", unique(nls_data_clean$Race))),
+      radioButtons("filter", "Filter Result Cards By:",
+                   choices = c("Income by year"), 
+                   selected = "Income by year")
+    ),
+    mainPanel(
+  leafletOutput("map", height = 400),
+  br(),
+  h4("Overall Country Income"),
+  fluidRow(
+    column(3, valueBoxOutput("card2006", width = 12)),
+    column(1, div(style = "font-size: 30px; text-align: center;", icon("arrow-right"))),
+    column(3, valueBoxOutput("card2008", width = 12)),
+    column(1, div(style = "font-size: 30px; text-align: center;", icon("arrow-right"))),
+    column(3, valueBoxOutput("card2010", width = 12))
+  ),
+  br(),
+  conditionalPanel(
+    condition = "input.selected_race != ''",
+    h4("Selected Race Income"),
+    fluidRow(
+      column(3, valueBoxOutput("card2006_race", width = 12)),
+      column(1, div(style = "font-size: 30px; text-align: center;", icon("arrow-right"))),
+      column(3, valueBoxOutput("card2008_race", width = 12)),
+      column(1, div(style = "font-size: 30px; text-align: center;", icon("arrow-right"))),
+      column(3, valueBoxOutput("card2010_race", width = 12))
+    )
+  )
+)
+
+  )
+)
+
+# --- Server ---
+server <- function(input, output, session) {
+  
+  selected_region <- reactiveVal(NULL)
+  
+  get_mean_value <- function(year, type, race = NULL) {
+    region_name <- selected_region()
+    data <- nls_data_clean
+    
+    if (!is.null(race) && race != "") {
+      data <- data %>% filter(Race == race)
+    }
+    
+    if (type == "Income by year") {
+      if (is.null(region_name)) {
+        data %>%
+          pull(paste0("Income_", year)) %>%
+          mean(na.rm = TRUE)
+      } else {
+        data %>%
+          filter(Region == region_name) %>%
+          pull(paste0("Income_", year)) %>%
+          mean(na.rm = TRUE)
+      }
+    }
+  }
+  
+  output$map <- renderLeaflet({
+    leaflet(regions_sf) %>%
+      addTiles() %>%
+      addPolygons(
+        fillColor = ~case_when(
+          region == "North East" ~ "#1f77b4",
+          region == "Central" ~ "#2ca02c",
+          region == "South" ~ "#ff7f0e",
+          region == "West" ~ "#d62728",
+          TRUE ~ "gray"
+        ),
+        fillOpacity = 0.7,
+        color = "white",
+        weight = 1,
+        label = ~region,
+        layerId = ~region,
+        highlightOptions = highlightOptions(
+          weight = 5,
+          color = "black",
+          bringToFront = TRUE
+        )
+      )
+  })
+
+  observeEvent(input$map_shape_click, {
+    click_region <- input$map_shape_click$id
+    if (!is.null(click_region)) {
+      data_region <- case_when(
+        click_region == "North East" ~ "Northeast",
+        click_region == "Central" ~ "North Central",
+        TRUE ~ click_region
+      )
+      selected_region(data_region)
+    }
+  })
+  
+  render_income_card <- function(year, color, race_specific = FALSE) {
+    renderValueBox({
+      race <- if (race_specific && input$selected_race != "") input$selected_race else NULL
+      
+      if (race_specific && is.null(race)) {
+        NULL  # no box at all if race not selected
+      } else {
+        value <- scales::dollar(round(get_mean_value(year, input$filter, race)))
+        
+        region_display <- if (is.null(selected_region())) {
+          "National Average"
+        } else {
+          selected_region()
+        }
+        
+        subtitle <- if (race_specific) {
+          paste0(input$selected_race, " Income ", year)
+        } else {
+          paste0("Income ", year, " - ", region_display)
+        }
+        
+        valueBox(value, subtitle, color = color)
+      }
+    })
+  }
+
+  output$card2006 <- render_income_card(2006, "blue")
+  output$card2008 <- render_income_card(2008, "green")
+  output$card2010 <- render_income_card(2010, "red")
+  
+  output$card2006_race <- render_income_card(2006, "teal", race_specific = TRUE)
+  output$card2008_race <- render_income_card(2008, "lime", race_specific = TRUE)
+  output$card2010_race <- render_income_card(2010, "purple", race_specific = TRUE)
+}
+
+# Run the app
+shinyApp(ui, server)
 
 
 
-```{r}
+
+```
+
+
+```{r, echo= FALSE, message=FALSE}
 #| eval: false
 #| standalone: true
 #| viewerHeight: 640 # You will have to adjust this to fit everything

@@ -5,12 +5,8 @@ toc: true
 draft: false
 ---
 
-```{r setup, include=FALSE}
-library(here)
-library(tidyverse)  # or specific: readr, dplyr, etc.
-```
 
-![](https://upload.wikimedia.org/wikipedia/commons/7/77/Pebbleswithquarzite.jpg)
+![](images/anlysisCover.png)
 
 This comes from the file `analysis.qmd`.
 
@@ -83,9 +79,15 @@ The goal of our analysis is to examine how macroeconomic trends in the aftermath
 ### Motivating Figures and Tables
 
 The following graphs explore some of the relationships between variables in our data to motivate this goal.
-
-```{r chandini graphs, echo= FALSE}
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
 library(scales)
+library(purrr)
+library(readr)
+library(here)
+```
+
+```{r chandini graphs, echo= FALSE, warning=FALSE}
 nls_data_clean <- read_rds("dataset/nls_clean.rds")
 
 #define correct order of education levels(needed for next query)
@@ -120,7 +122,7 @@ ggplot(income_by_grade, aes(x = Highest_Grade_Completed, y = mean_income, group 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
 
-```{r aretha graphs, echo= FALSE}
+```{r aretha graphs, echo= FALSE, warning=FALSE}
 library(scales)
 nls_data_clean <- read_rds("dataset/nls_clean.rds")
 
@@ -154,7 +156,7 @@ ggplot(nls_data_clean_filtered, aes(x = factor(Age_2010), y = Income_2010)) + ge
 
 ### Now, we look at interest rates.
 
-```{r datacombination, echo= FALSE}
+```{r datacombination, echo= FALSE, warning=FALSE, message=FALSE}
 
 nls_with_rates_full<-read_csv("./dataset/nls_with_rates_full.csv")
 
@@ -186,26 +188,92 @@ ggplot(income_by_race, aes(x = Income_Year, y = avg_income, color = avg_interest
 
 ## Modeling and Inference
 
-```{r statmod}
+First tried with outliers and had bad figures, and we determined there were severe outliers impacting our model. 
 
-library(scales)
+```{r outliers, echo= FALSE, message=FALSE}
+library(tidyverse)
+
+# Load the data
+nls_with_rates <- read_csv("dataset/nls_with_rates_full.csv")
+
+
+# Calculate IQR and bounds
+Q1 <- quantile(nls_with_rates$Income, 0.25, na.rm = TRUE)
+Q3 <- quantile(nls_with_rates$Income, 0.75, na.rm = TRUE)
+IQR_value <- Q3 - Q1
+
+lower_bound <- Q1 - .20 * IQR_value
+upper_bound <- Q3 + 1.75 * IQR_value
+
+# Plot histogram with cutoff lines
+ggplot(nls_with_rates, aes(x = Income)) +
+  geom_histogram(binwidth = 5000, color = "black", fill = "lightblue") +
+  geom_vline(xintercept = lower_bound, color = "red", linetype = "dashed", size = 1) +
+  geom_vline(xintercept = upper_bound, color = "red", linetype = "dashed", size = 1) +
+  annotate("text", x = lower_bound, y = 3000, label = "Lower Bound", angle = 90, vjust = -0.5, color = "red") +
+  annotate("text", x = upper_bound, y = 3000, label = "Upper Bound", angle = 90, vjust = -0.5, color = "red") +
+  labs(title = "Histogram of Income with Outlier Cutoff Lines",
+       subtitle = "Red dashed lines indicate outlier thresholds",
+       x = "Income",
+       y = "Count") +
+  theme_minimal()
+
+```
+We therefore used R script like below to remove these and create a new dataset specifically for modeling. 
+
+```r
+library(tidyverse)
+
+# Load  merged dataset
+nls_with_rates <- read_csv("dataset/nls_with_rates_full.csv")
+
+# Step 1: Calculate IQR boundaries
+Q1 <- quantile(nls_with_rates$Income, 0.25, na.rm = TRUE)
+Q3 <- quantile(nls_with_rates$Income, 0.75, na.rm = TRUE)
+IQR_value <- Q3 - Q1
+
+lower_bound <- Q1 - 0.24 * IQR_value #lots of 0 (n/a) data
+upper_bound <- Q3 + 1.5 * IQR_value
+
+# Step 2: Filter out the outliers
+nls_no_outliers <- nls_with_rates %>%
+  filter(Income >= lower_bound & Income <= upper_bound)
+
+# Step 3: Save it
+write_csv(nls_no_outliers, "dataset/nls_no_outliers.csv")
+```
+
+```{r statisticsmod, echo=FALSE, message=FALSE,warning=FALSE}
 library(car)
 library(sandwich)
- 
+library(lmtest)
+
 nls_data_tbu <- read_csv("dataset/nls_no_outliers.csv")
- 
 nls_data_modeling <- nls_data_tbu %>%
-   filter(Income_Year %in% c(2006, 2008, 2010))
+   filter(Income_Year %in% c(2006, 2008, 2010)) %>%
+   mutate(edu_bin = case_when(
+     Highest_Grade_Completed %in% c(
+       "UNGRADED", "1ST GRADE",  "2ND GRADE",  "3RD GRADE", "4TH GRADE",  
+        "5TH GRADE",  "6TH GRADE", "7TH GRADE",  "8TH GRADE") ~ "Less than HS",
+      Highest_Grade_Completed %in% c("9TH GRADE", "10TH GRADE",
+                                     "11TH GRADE", "12TH GRADE") ~ "High School",
+      Highest_Grade_Completed %in% c("1ST YEAR COLLEGE", "2ND YEAR COLLEGE", "3RD YEAR COLLEGE"
+      ) ~ "Some College",
+      Highest_Grade_Completed %in% c("4TH YEAR COLLEGE", "5TH YEAR COLLEGE", "6TH YEAR COLLEGE",
+        "7TH YEAR COLLEGE", "8TH YEAR COLLEGE OR MORE") ~ "College+",
+      TRUE ~ NA_character_)) %>%
+  filter(!is.na(edu_bin)) %>%
+  mutate(edu_bin = factor(edu_bin, levels = c("Less than HS", "High School", "Some College", "College+"))) %>% na.omit()
  
-model = lm(Income ~ Race + Sex + Marital_Status + Age_2010 + Region + Highest_Grade_Completed + avg_LT_rate, data = filter(nls_data_modeling, Income > 0))
- 
-# coeftest(model, vcov = vcovHC(model, type = "HC1"))
+model = lm(Income ~ Race + Sex + Marital_Status + Age_2010 + Region + edu_bin + avg_LT_rate, data = filter(nls_data_modeling))
+plot(model, which=c(1))
+plot(model, which=c(2))
  
 model_data = model.frame(model)
 model_data$Predicted = predict(model)
 summary(model)
 vif(model, type = "predictor")
-plot(model)
+coeftest(model, vcov = vcovHC(model, type = "HC1"))
 
 ```
 
