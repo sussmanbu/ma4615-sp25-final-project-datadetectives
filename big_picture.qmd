@@ -36,7 +36,6 @@ Your Big Data page should also include a small interactive dashboard. The dashbo
 library(shiny)
 library(tidyverse)
 library(leaflet)
-library(geojsonio)
 library(shinydashboard)
 library(sf)
 
