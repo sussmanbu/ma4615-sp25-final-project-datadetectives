@@ -391,8 +391,7 @@ dbl (6): Case_ID, Sample_ID, Age_2010, Income_Year, Income, avg_LT_rate
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Save it</span></span>
 <span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(nls_no_outliers, <span class="st">"dataset/nls_no_outliers.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: package 'car' was built under R version 4.4.3</code></pre>
 </div>
@@ -420,7 +419,26 @@ Attaching package: 'car'</code></pre>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: package 'sandwich' was built under R version 4.4.3</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>nls_data_tbu <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"dataset/nls_no_outliers.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'lmtest' was built under R version 4.4.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: zoo</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'zoo' was built under R version 4.4.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'zoo'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    as.Date, as.Date.numeric</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>nls_data_tbu <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"dataset/nls_no_outliers.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 24762 Columns: 12</code></pre>
 </div>
@@ -433,154 +451,123 @@ dbl (6): Case_ID, Sample_ID, Age_2010, Income_Year, Income, avg_LT_rate
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>nls_data_modeling <span class="ot">&lt;-</span> nls_data_tbu <span class="sc">%&gt;%</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">filter</span>(Income_Year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2006</span>, <span class="dv">2008</span>, <span class="dv">2010</span>))</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>model <span class="ot">=</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Race <span class="sc">+</span> Sex <span class="sc">+</span> Marital_Status <span class="sc">+</span> Age_2010 <span class="sc">+</span> Region <span class="sc">+</span> Highest_Grade_Completed <span class="sc">+</span> avg_LT_rate, <span class="at">data =</span> <span class="fu">filter</span>(nls_data_modeling, Income <span class="sc">&gt;</span> <span class="dv">0</span>))</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># coeftest(model, vcov = vcovHC(model, type = "HC1"))</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>model_data <span class="ot">=</span> <span class="fu">model.frame</span>(model)</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>model_data<span class="sc">$</span>Predicted <span class="ot">=</span> <span class="fu">predict</span>(model)</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>nls_data_modeling <span class="ot">&lt;-</span> nls_data_tbu <span class="sc">%&gt;%</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">filter</span>(Income_Year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2006</span>, <span class="dv">2008</span>, <span class="dv">2010</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">edu_bin =</span> <span class="fu">case_when</span>(</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>     Highest_Grade_Completed <span class="sc">%in%</span> <span class="fu">c</span>(</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>       <span class="st">"UNGRADED"</span>, <span class="st">"1ST GRADE"</span>,  <span class="st">"2ND GRADE"</span>,  <span class="st">"3RD GRADE"</span>, <span class="st">"4TH GRADE"</span>,  </span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"5TH GRADE"</span>,  <span class="st">"6TH GRADE"</span>, <span class="st">"7TH GRADE"</span>,  <span class="st">"8TH GRADE"</span>) <span class="sc">~</span> <span class="st">"Less than HS"</span>,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>      Highest_Grade_Completed <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"9TH GRADE"</span>, <span class="st">"10TH GRADE"</span>,</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"11TH GRADE"</span>, <span class="st">"12TH GRADE"</span>) <span class="sc">~</span> <span class="st">"High School"</span>,</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>      Highest_Grade_Completed <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"1ST YEAR COLLEGE"</span>, <span class="st">"2ND YEAR COLLEGE"</span>, <span class="st">"3RD YEAR COLLEGE"</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">~</span> <span class="st">"Some College"</span>,</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>      Highest_Grade_Completed <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"4TH YEAR COLLEGE"</span>, <span class="st">"5TH YEAR COLLEGE"</span>, <span class="st">"6TH YEAR COLLEGE"</span>,</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"7TH YEAR COLLEGE"</span>, <span class="st">"8TH YEAR COLLEGE OR MORE"</span>) <span class="sc">~</span> <span class="st">"College+"</span>,</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(edu_bin)) <span class="sc">%&gt;%</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">edu_bin =</span> <span class="fu">factor</span>(edu_bin, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Less than HS"</span>, <span class="st">"High School"</span>, <span class="st">"Some College"</span>, <span class="st">"College+"</span>))) <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>()</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>model <span class="ot">=</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Race <span class="sc">+</span> Sex <span class="sc">+</span> Marital_Status <span class="sc">+</span> Age_2010 <span class="sc">+</span> Region <span class="sc">+</span> edu_bin <span class="sc">+</span> avg_LT_rate, <span class="at">data =</span> <span class="fu">filter</span>(nls_data_modeling))</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model, <span class="at">which=</span><span class="fu">c</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analysis_files/figure-html/statisticsmod-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model, <span class="at">which=</span><span class="fu">c</span>(<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analysis_files/figure-html/statisticsmod-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>model_data <span class="ot">=</span> <span class="fu">model.frame</span>(model)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>model_data<span class="sc">$</span>Predicted <span class="ot">=</span> <span class="fu">predict</span>(model)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
 lm(formula = Income ~ Race + Sex + Marital_Status + Age_2010 + 
-    Region + Highest_Grade_Completed + avg_LT_rate, data = filter(nls_data_modeling, 
-    Income &gt; 0))
+    Region + edu_bin + avg_LT_rate, data = filter(nls_data_modeling))
 
 Residuals:
    Min     1Q Median     3Q    Max 
--69506 -14653  -2070  12953  78491 
+-65244 -14950  -2252  13331  80376 
 
 Coefficients:
-                                                Estimate Std. Error t value
-(Intercept)                                     26165.42    5240.98   4.992
-RaceHispanic                                     3275.46     670.10   4.888
-RaceNon-Black/Non-Hispanic                       2820.26     506.16   5.572
-SexMale                                         14598.40     409.11  35.684
-Marital_StatusMarried                            2173.43     522.38   4.161
-Marital_StatusNever Married                     -4350.62     718.71  -6.053
-Marital_StatusSeparated                         -5725.37    1099.70  -5.206
-Marital_StatusWidowed                           -4564.88    1598.06  -2.857
-Age_2010                                           14.93      91.02   0.164
-RegionNortheast                                  3910.85     675.84   5.787
-RegionSouth                                       571.03     526.53   1.085
-RegionWest                                       2791.81     645.68   4.324
-Highest_Grade_Completed11TH GRADE                2666.74    1534.04   1.738
-Highest_Grade_Completed12TH GRADE                8853.67    1248.16   7.093
-Highest_Grade_Completed1ST GRADE                -7792.04   12711.36  -0.613
-Highest_Grade_Completed1ST YEAR COLLEGE         11943.28    1412.01   8.458
-Highest_Grade_Completed2ND GRADE                  382.93   12724.00   0.030
-Highest_Grade_Completed2ND YEAR COLLEGE         16549.15    1314.50  12.590
-Highest_Grade_Completed3RD GRADE                -9699.49    6001.61  -1.616
-Highest_Grade_Completed3RD YEAR COLLEGE         15008.54    1708.21   8.786
-Highest_Grade_Completed4TH GRADE                -3026.79    8387.43  -0.361
-Highest_Grade_Completed4TH YEAR COLLEGE         24295.49    1315.56  18.468
-Highest_Grade_Completed5TH GRADE                -7841.64    7846.02  -0.999
-Highest_Grade_Completed5TH YEAR COLLEGE         22417.36    2008.54  11.161
-Highest_Grade_Completed6TH GRADE                   87.04    4475.35   0.019
-Highest_Grade_Completed6TH YEAR COLLEGE         30377.44    1496.30  20.302
-Highest_Grade_Completed7TH GRADE                -3504.77    4175.86  -0.839
-Highest_Grade_Completed7TH YEAR COLLEGE         30600.11    2177.95  14.050
-Highest_Grade_Completed8TH GRADE                -4225.57    2538.12  -1.665
-Highest_Grade_Completed8TH YEAR COLLEGE OR MORE 30094.24    1964.78  15.317
-Highest_Grade_Completed9TH GRADE                 -554.84    1969.97  -0.282
-Highest_Grade_CompletedUNGRADED                  6296.43    8361.79   0.753
-avg_LT_rate                                     -2492.56     563.71  -4.422
-                                                Pr(&gt;|t|)    
-(Intercept)                                     6.05e-07 ***
-RaceHispanic                                    1.03e-06 ***
-RaceNon-Black/Non-Hispanic                      2.57e-08 ***
-SexMale                                          &lt; 2e-16 ***
-Marital_StatusMarried                           3.20e-05 ***
-Marital_StatusNever Married                     1.46e-09 ***
-Marital_StatusSeparated                         1.96e-07 ***
-Marital_StatusWidowed                            0.00429 ** 
-Age_2010                                         0.86968    
-RegionNortheast                                 7.36e-09 ***
-RegionSouth                                      0.27816    
-RegionWest                                      1.55e-05 ***
-Highest_Grade_Completed11TH GRADE                0.08217 .  
-Highest_Grade_Completed12TH GRADE               1.38e-12 ***
-Highest_Grade_Completed1ST GRADE                 0.53989    
-Highest_Grade_Completed1ST YEAR COLLEGE          &lt; 2e-16 ***
-Highest_Grade_Completed2ND GRADE                 0.97599    
-Highest_Grade_Completed2ND YEAR COLLEGE          &lt; 2e-16 ***
-Highest_Grade_Completed3RD GRADE                 0.10609    
-Highest_Grade_Completed3RD YEAR COLLEGE          &lt; 2e-16 ***
-Highest_Grade_Completed4TH GRADE                 0.71820    
-Highest_Grade_Completed4TH YEAR COLLEGE          &lt; 2e-16 ***
-Highest_Grade_Completed5TH GRADE                 0.31760    
-Highest_Grade_Completed5TH YEAR COLLEGE          &lt; 2e-16 ***
-Highest_Grade_Completed6TH GRADE                 0.98448    
-Highest_Grade_Completed6TH YEAR COLLEGE          &lt; 2e-16 ***
-Highest_Grade_Completed7TH GRADE                 0.40132    
-Highest_Grade_Completed7TH YEAR COLLEGE          &lt; 2e-16 ***
-Highest_Grade_Completed8TH GRADE                 0.09597 .  
-Highest_Grade_Completed8TH YEAR COLLEGE OR MORE  &lt; 2e-16 ***
-Highest_Grade_Completed9TH GRADE                 0.77822    
-Highest_Grade_CompletedUNGRADED                  0.45146    
-avg_LT_rate                                     9.88e-06 ***
+                             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                 24071.173   5432.245   4.431 9.46e-06 ***
+RaceHispanic                 2807.627    669.492   4.194 2.76e-05 ***
+RaceNon-Black/Non-Hispanic   2993.485    508.561   5.886 4.06e-09 ***
+SexMale                     14242.081    410.012  34.736  &lt; 2e-16 ***
+Marital_StatusMarried        2218.933    524.499   4.231 2.35e-05 ***
+Marital_StatusNever Married -4408.501    722.159  -6.105 1.06e-09 ***
+Marital_StatusSeparated     -6091.030   1103.705  -5.519 3.49e-08 ***
+Marital_StatusWidowed       -5085.901   1603.212  -3.172  0.00152 ** 
+Age_2010                       -4.619     91.514  -0.050  0.95974    
+RegionNortheast              4010.788    679.436   5.903 3.66e-09 ***
+RegionSouth                   445.695    528.300   0.844  0.39889    
+RegionWest                   2824.512    647.839   4.360 1.31e-05 ***
+edu_binHigh School          10851.067   1621.460   6.692 2.30e-11 ***
+edu_binSome College         18365.587   1646.517  11.154  &lt; 2e-16 ***
+edu_binCollege+             29432.746   1654.119  17.794  &lt; 2e-16 ***
+avg_LT_rate                 -2523.204    567.790  -4.444 8.91e-06 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 21870 on 11854 degrees of freedom
-  (72 observations deleted due to missingness)
-Multiple R-squared:  0.2137,    Adjusted R-squared:  0.2116 
-F-statistic: 100.7 on 32 and 11854 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 22030 on 11871 degrees of freedom
+Multiple R-squared:  0.2009,    Adjusted R-squared:  0.1999 
+F-statistic:   199 on 15 and 11871 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(model, <span class="at">type =</span> <span class="st">"predictor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(model, <span class="at">type =</span> <span class="st">"predictor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>GVIFs computed for predictors</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                            GVIF Df GVIF^(1/(2*Df)) Interacts With
-Race                    1.374493  2        1.082768           --  
-Sex                     1.038698  1        1.019165           --  
-Marital_Status          1.134508  4        1.015900           --  
-Age_2010                1.008508  1        1.004245           --  
-Region                  1.258937  3        1.039124           --  
-Highest_Grade_Completed 1.166015 20        1.003847           --  
-avg_LT_rate             1.000403  1        1.000201           --  
-                                                                                    Other Predictors
-Race                     Sex, Marital_Status, Age_2010, Region, Highest_Grade_Completed, avg_LT_rate
-Sex                     Race, Marital_Status, Age_2010, Region, Highest_Grade_Completed, avg_LT_rate
-Marital_Status                     Race, Sex, Age_2010, Region, Highest_Grade_Completed, avg_LT_rate
-Age_2010                     Race, Sex, Marital_Status, Region, Highest_Grade_Completed, avg_LT_rate
-Region                     Race, Sex, Marital_Status, Age_2010, Highest_Grade_Completed, avg_LT_rate
-Highest_Grade_Completed                     Race, Sex, Marital_Status, Age_2010, Region, avg_LT_rate
-avg_LT_rate                     Race, Sex, Marital_Status, Age_2010, Region, Highest_Grade_Completed</code></pre>
+<pre><code>                   GVIF Df GVIF^(1/(2*Df)) Interacts With
+Race           1.338842  2        1.075678           --  
+Sex            1.028136  1        1.013970           --  
+Marital_Status 1.104040  4        1.012449           --  
+Age_2010       1.004665  1        1.002330           --  
+Region         1.234429  3        1.035725           --  
+edu_bin        1.068939  3        1.011173           --  
+avg_LT_rate    1.000200  1        1.000100           --  
+                                                           Other Predictors
+Race            Sex, Marital_Status, Age_2010, Region, edu_bin, avg_LT_rate
+Sex            Race, Marital_Status, Age_2010, Region, edu_bin, avg_LT_rate
+Marital_Status            Race, Sex, Age_2010, Region, edu_bin, avg_LT_rate
+Age_2010            Race, Sex, Marital_Status, Region, edu_bin, avg_LT_rate
+Region            Race, Sex, Marital_Status, Age_2010, edu_bin, avg_LT_rate
+edu_bin            Race, Sex, Marital_Status, Age_2010, Region, avg_LT_rate
+avg_LT_rate            Race, Sex, Marital_Status, Age_2010, Region, edu_bin</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="analysis_files/figure-html/statmod-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="analysis_files/figure-html/statmod-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="analysis_files/figure-html/statmod-3.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="analysis_files/figure-html/statmod-4.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftest</span>(model, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(model, <span class="at">type =</span> <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+t test of coefficients:
+
+                              Estimate Std. Error t value  Pr(&gt;|t|)    
+(Intercept)                 24071.1731  5283.2735  4.5561 5.263e-06 ***
+RaceHispanic                 2807.6267   654.5453  4.2894 1.805e-05 ***
+RaceNon-Black/Non-Hispanic   2993.4846   501.5900  5.9680 2.470e-09 ***
+SexMale                     14242.0809   410.0990 34.7284 &lt; 2.2e-16 ***
+Marital_StatusMarried        2218.9330   525.8215  4.2199 2.462e-05 ***
+Marital_StatusNever Married -4408.5011   713.9086 -6.1752 6.825e-10 ***
+Marital_StatusSeparated     -6091.0300  1061.6445 -5.7374 9.852e-09 ***
+Marital_StatusWidowed       -5085.9012  1454.9701 -3.4955 0.0004748 ***
+Age_2010                       -4.6193    92.1146 -0.0501 0.9600062    
+RegionNortheast              4010.7885   702.7255  5.7075 1.174e-08 ***
+RegionSouth                   445.6946   516.8593  0.8623 0.3885326    
+RegionWest                   2824.5117   670.0180  4.2156 2.510e-05 ***
+edu_binHigh School          10851.0668  1120.2414  9.6864 &lt; 2.2e-16 ***
+edu_binSome College         18365.5867  1159.7055 15.8364 &lt; 2.2e-16 ***
+edu_binCollege+             29432.7458  1190.5012 24.7230 &lt; 2.2e-16 ***
+avg_LT_rate                 -2523.2040   574.4278 -4.3926 1.130e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
