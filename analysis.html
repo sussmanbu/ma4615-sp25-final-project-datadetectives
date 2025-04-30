@@ -155,14 +155,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#example-of-loading-data" id="toc-example-of-loading-data" class="nav-link active" data-scroll-target="#example-of-loading-data">Example of loading data</a></li>
-  <li><a href="#note-on-attribution" id="toc-note-on-attribution" class="nav-link" data-scroll-target="#note-on-attribution">Note on Attribution</a></li>
-  <li><a href="#rubric-on-this-page" id="toc-rubric-on-this-page" class="nav-link" data-scroll-target="#rubric-on-this-page">Rubric: On this page</a></li>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
   <ul class="collapse">
   <li><a href="#objective-and-research-questions" id="toc-objective-and-research-questions" class="nav-link" data-scroll-target="#objective-and-research-questions">Objective and Research Questions</a></li>
-  <li><a href="#motivating-figures-and-tables" id="toc-motivating-figures-and-tables" class="nav-link" data-scroll-target="#motivating-figures-and-tables">Motivating Figures and Tables</a></li>
-  <li><a href="#now-we-look-at-interest-rates." id="toc-now-we-look-at-interest-rates." class="nav-link" data-scroll-target="#now-we-look-at-interest-rates.">Now, we look at interest rates.</a></li>
+  <li><a href="#motivating-figures-and-tables-demographic-factors" id="toc-motivating-figures-and-tables-demographic-factors" class="nav-link" data-scroll-target="#motivating-figures-and-tables-demographic-factors">Motivating Figures and Tables: Demographic Factors</a></li>
+  <li><a href="#motivating-figures-and-tables-interest-rates" id="toc-motivating-figures-and-tables-interest-rates" class="nav-link" data-scroll-target="#motivating-figures-and-tables-interest-rates">Motivating Figures and Tables: Interest Rates</a></li>
   </ul></li>
   <li><a href="#modeling-and-inference" id="toc-modeling-and-inference" class="nav-link" data-scroll-target="#modeling-and-inference">Modeling and Inference</a></li>
   <li><a href="#results-limitations-and-conclusion" id="toc-results-limitations-and-conclusion" class="nav-link" data-scroll-target="#results-limitations-and-conclusion">Results, Limitations, and Conclusion</a></li>
@@ -196,108 +193,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Pebbleswithquarzite.jpg" class="img-fluid"></p>
-<p>This comes from the file <code>analysis.qmd</code>.</p>
-<p>We describe here our detailed data analysis. This page will provide an overview of what questions you addressed, illustrations of relevant aspects of the data with tables and figures, and a statistical model that attempts to answer part of the question. You’ll also reflect on next steps and further analysis.</p>
-<p>The audience for this page is someone like your class mates, so you can expect that they have some level of statistical and quantitative sophistication and understand ideas like linear and logistic regression, coefficients, confidence intervals, overfitting, etc.</p>
-<p>While the exact number of figures and tables will vary and depend on your analysis, you should target around 5 to 6. An overly long analysis could lead to losing points. If you want you can link back to your blog posts or create separate pages with more details.</p>
-<p>The style of this paper should aim to be that of an academic paper. I don’t expect this to be of publication quality but you should keep that aim in mind. Avoid using “we” too frequently, for example “We also found that …”. Describe your methodology and your findings but don’t describe your whole process.</p>
-<section id="example-of-loading-data" class="level3">
-<h3 class="anchored" data-anchor-id="example-of-loading-data">Example of loading data</h3>
-<p>The code below shows an example of loading the loan refusal data set (which you should delete at some point).</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">getwd</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "C:/Users/areth/OneDrive/Documents/MA615/ma4615-sp25-final-project-datadetectives"</code></pre>
-</div>
-</div>
-</section>
-<section id="note-on-attribution" class="level2">
-<h2 class="anchored" data-anchor-id="note-on-attribution">Note on Attribution</h2>
-<p>In general, you should try to provide links to relevant resources, especially those that helped you. You don’t have to link to every StackOverflow post you used but if there are explainers on aspects of the data or specific models that you found helpful, try to link to those. Also, try to link to other sources that might support (or refute) your analysis. These can just be regular hyperlinks. You don’t need a formal citation.</p>
-<p>If you are directly quoting from a source, please make that clear. You can show long quotes using <code>&gt;</code> like this</p>
-<pre><code>&gt; To be or not to be.</code></pre>
-<blockquote class="blockquote">
-<p>To be or not to be.</p>
-</blockquote>
-<hr>
-</section>
-<section id="rubric-on-this-page" class="level2">
-<h2 class="anchored" data-anchor-id="rubric-on-this-page">Rubric: On this page</h2>
-<p>You will</p>
-<ul>
-<li>Introduce what motivates your Data Analysis (DA)
-<ul>
-<li>Which variables and relationships are you most interested in?</li>
-<li>What questions are you interested in answering?</li>
-<li>Provide context for the rest of the page. This will include figures/tables that illustrate aspects of the data of your question.</li>
-</ul></li>
-<li>Modeling and Inference
-<ul>
-<li>The page will include some kind of formal statistical model. This could be a linear regression, logistic regression, or another modeling framework.</li>
-<li>Explain the ideas and techniques you used to choose the predictors for your model. (Think about including interaction terms and other transformations of your variables.)</li>
-<li>Describe the results of your modelling and make sure to give a sense of the uncertainty in your estimates and conclusions.</li>
-</ul></li>
-<li>Explain the flaws and limitations of your analysis
-<ul>
-<li>Are there some assumptions that you needed to make that might not hold? Is there other data that would help to answer your questions?</li>
-</ul></li>
-<li>Clarity Figures
-<ul>
-<li>Are your figures/tables/results easy to read, informative, without problems like overplotting, hard-to-read labels, etc?</li>
-<li>Each figure should provide a key insight. Too many figures or other data summaries can detract from this. (While not a hard limit, around 5 total figures is probably a good target.)</li>
-<li>Default <code>lm</code> output and plots are typically not acceptable.</li>
-</ul></li>
-<li>Clarity of Explanations
-<ul>
-<li>How well do you explain each figure/result?</li>
-<li>Do you provide interpretations that suggest further analysis or explanations for observed phenomenon?</li>
-</ul></li>
-<li>Organization and cleanliness.
-<ul>
-<li>Make sure to remove excessive warnings, hide all code, organize with sections or multiple pages, use bullets, etc.</li>
-<li>This page should be self-contained, i.e.&nbsp;provide a description of the relevant data.</li>
-</ul></li>
-</ul>
-</section>
+<p><img src="images/anlysisCover.png" class="img-fluid"></p>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <section id="objective-and-research-questions" class="level3">
 <h3 class="anchored" data-anchor-id="objective-and-research-questions">Objective and Research Questions</h3>
-<p>The goal of our analysis is to examine how macroeconomic trends in the aftermath of the 2008 recession, such as shifting interest rates, affected different racial and socioeconomic groups in the United States. We aim to answer some of the following research questions:</p>
+<p>The goal of our analysis is to examine how macroeconomic trends in the aftermath of the 2008 recession, such as shifting interest rates, affected different racial and socioeconomic groups in the United States. We aim to answer some of the following general research questions:</p>
 <ul>
+<li>How do income and employment differ across gender, race, and education levels during periods of economic downturn?</li>
 <li>What factors contribute to upward economic mobility?</li>
-<li>How do income and employment differ across gender, race, and education levels?</li>
 <li>Are there persistent racial disparities in long-term wealth accumulation?</li>
 </ul>
+<p>To limit the scope of the project, we decided to look at the age cohort of people born between 1957 and 1964, represented by the Bureau of Labor Statistics’ NLS 79 survey, who were working adults at the time of the recession. Looking at this population, some of the following questions for analysis arise:</p>
+<ul>
+<li>What effect did falling interest rates during the recession have on income? Can this relationship be modeled</li>
+<li>Did the recession exacerbate income inequality differently along racial, socioeconomic, regional, or other lines?</li>
+</ul>
 </section>
-<section id="motivating-figures-and-tables" class="level3">
-<h3 class="anchored" data-anchor-id="motivating-figures-and-tables">Motivating Figures and Tables</h3>
+<section id="motivating-figures-and-tables-demographic-factors" class="level3">
+<h3 class="anchored" data-anchor-id="motivating-figures-and-tables-demographic-factors">Motivating Figures and Tables: Demographic Factors</h3>
 <p>The following graphs explore some of the relationships between variables in our data to motivate this goal.</p>
-<div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'scales'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:purrr':
-
-    discard</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:readr':
-
-    col_factor</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="analysis_files/figure-html/chandini graphs-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -307,8 +222,7 @@ Attaching package: 'scales'</code></pre>
 </div>
 </div>
 </div>
-<section id="this-box-plot-explores-the-depth-of-the-relationship-between-income-gender-and-region-to-examine-whether-there-are-any-disparities-between-genders." class="level5">
-<h5 class="anchored" data-anchor-id="this-box-plot-explores-the-depth-of-the-relationship-between-income-gender-and-region-to-examine-whether-there-are-any-disparities-between-genders.">This box plot explores the depth of the relationship between income, gender and region to examine whether there are any disparities between genders.</h5>
+<p>This box plot explores the difference in income along gender and racial lines. Across all regions, men appear to make more money than women. However, this effect is particularly pronounced in the South and West regions, where the box plot indicates that a higher proportion of women do not make any income. This higher number of zero-income observations causes some issues for analysis to be accounted for during outlier removal. The graph also highlights the potential difference in effect of income declines across groups.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -319,25 +233,9 @@ Attaching package: 'scales'</code></pre>
 </div>
 </div>
 </section>
-</section>
-<section id="now-we-look-at-interest-rates." class="level3">
-<h3 class="anchored" data-anchor-id="now-we-look-at-interest-rates.">Now, we look at interest rates.</h3>
+<section id="motivating-figures-and-tables-interest-rates" class="level3">
+<h3 class="anchored" data-anchor-id="motivating-figures-and-tables-interest-rates">Motivating Figures and Tables: Interest Rates</h3>
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 31206 Columns: 11
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (5): Race, Sex, Highest_Grade_Completed, Marital_Status, Region
-dbl (6): Case_ID, Sample_ID, Age_2010, Income_Year, Income, avg_LT_rate
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-`summarise()` has grouped output by 'Income_Year'. You can override using the `.groups` argument.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-ℹ Please use `linewidth` instead.</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -352,16 +250,6 @@ dbl (6): Case_ID, Sample_ID, Age_2010, Income_Year, Income, avg_LT_rate
 <h2 class="anchored" data-anchor-id="modeling-and-inference">Modeling and Inference</h2>
 <p>First tried with outliers and had bad figures, and we determined there were severe outliers impacting our model.</p>
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 31206 Columns: 11
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (5): Race, Sex, Highest_Grade_Completed, Marital_Status, Region
-dbl (6): Case_ID, Sample_ID, Age_2010, Income_Year, Income, avg_LT_rate
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -371,104 +259,26 @@ dbl (6): Case_ID, Sample_ID, Age_2010, Income_Year, Income, avg_LT_rate
 </div>
 </div>
 <p>We therefore used R script like below to remove these and create a new dataset specifically for modeling.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load  merged dataset</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>nls_with_rates <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"dataset/nls_with_rates_full.csv"</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Calculate IQR boundaries</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>Q1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(nls_with_rates<span class="sc">$</span>Income, <span class="fl">0.25</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>Q3 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(nls_with_rates<span class="sc">$</span>Income, <span class="fl">0.75</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>IQR_value <span class="ot">&lt;-</span> Q3 <span class="sc">-</span> Q1</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>lower_bound <span class="ot">&lt;-</span> Q1 <span class="sc">-</span> <span class="fl">0.24</span> <span class="sc">*</span> IQR_value <span class="co">#lots of 0 (n/a) data</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>upper_bound <span class="ot">&lt;-</span> Q3 <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> IQR_value</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Filter out the outliers</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>nls_no_outliers <span class="ot">&lt;-</span> nls_with_rates <span class="sc">%&gt;%</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Income <span class="sc">&gt;=</span> lower_bound <span class="sc">&amp;</span> Income <span class="sc">&lt;=</span> upper_bound)</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Save it</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(nls_no_outliers, <span class="st">"dataset/nls_no_outliers.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load  merged dataset</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>nls_with_rates <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"dataset/nls_with_rates_full.csv"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Calculate IQR boundaries</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>Q1 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(nls_with_rates<span class="sc">$</span>Income, <span class="fl">0.25</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>Q3 <span class="ot">&lt;-</span> <span class="fu">quantile</span>(nls_with_rates<span class="sc">$</span>Income, <span class="fl">0.75</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>IQR_value <span class="ot">&lt;-</span> Q3 <span class="sc">-</span> Q1</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>lower_bound <span class="ot">&lt;-</span> Q1 <span class="sc">-</span> <span class="fl">0.24</span> <span class="sc">*</span> IQR_value <span class="co">#lots of 0 (n/a) data</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>upper_bound <span class="ot">&lt;-</span> Q3 <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> IQR_value</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Filter out the outliers</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>nls_no_outliers <span class="ot">&lt;-</span> nls_with_rates <span class="sc">%&gt;%</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Income <span class="sc">&gt;=</span> lower_bound <span class="sc">&amp;</span> Income <span class="sc">&lt;=</span> upper_bound)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Save it</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(nls_no_outliers, <span class="st">"dataset/nls_no_outliers.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'car' was built under R version 4.4.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: carData</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'carData' was built under R version 4.4.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'car'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:dplyr':
-
-    recode</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:purrr':
-
-    some</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sandwich)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'sandwich' was built under R version 4.4.3</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'lmtest' was built under R version 4.4.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: zoo</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'zoo' was built under R version 4.4.3</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'zoo'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:base':
-
-    as.Date, as.Date.numeric</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>nls_data_tbu <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"dataset/nls_no_outliers.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 24762 Columns: 12</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (6): Race, Sex, Highest_Grade_Completed, Marital_Status, Region, income_...
-dbl (6): Case_ID, Sample_ID, Age_2010, Income_Year, Income, avg_LT_rate
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>nls_data_modeling <span class="ot">&lt;-</span> nls_data_tbu <span class="sc">%&gt;%</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">filter</span>(Income_Year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2006</span>, <span class="dv">2008</span>, <span class="dv">2010</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">edu_bin =</span> <span class="fu">case_when</span>(</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>     Highest_Grade_Completed <span class="sc">%in%</span> <span class="fu">c</span>(</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>       <span class="st">"UNGRADED"</span>, <span class="st">"1ST GRADE"</span>,  <span class="st">"2ND GRADE"</span>,  <span class="st">"3RD GRADE"</span>, <span class="st">"4TH GRADE"</span>,  </span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"5TH GRADE"</span>,  <span class="st">"6TH GRADE"</span>, <span class="st">"7TH GRADE"</span>,  <span class="st">"8TH GRADE"</span>) <span class="sc">~</span> <span class="st">"Less than HS"</span>,</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>      Highest_Grade_Completed <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"9TH GRADE"</span>, <span class="st">"10TH GRADE"</span>,</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"11TH GRADE"</span>, <span class="st">"12TH GRADE"</span>) <span class="sc">~</span> <span class="st">"High School"</span>,</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>      Highest_Grade_Completed <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"1ST YEAR COLLEGE"</span>, <span class="st">"2ND YEAR COLLEGE"</span>, <span class="st">"3RD YEAR COLLEGE"</span></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">~</span> <span class="st">"Some College"</span>,</span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>      Highest_Grade_Completed <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"4TH YEAR COLLEGE"</span>, <span class="st">"5TH YEAR COLLEGE"</span>, <span class="st">"6TH YEAR COLLEGE"</span>,</span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"7TH YEAR COLLEGE"</span>, <span class="st">"8TH YEAR COLLEGE OR MORE"</span>) <span class="sc">~</span> <span class="st">"College+"</span>,</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(edu_bin)) <span class="sc">%&gt;%</span></span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">edu_bin =</span> <span class="fu">factor</span>(edu_bin, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Less than HS"</span>, <span class="st">"High School"</span>, <span class="st">"Some College"</span>, <span class="st">"College+"</span>))) <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>()</span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>model <span class="ot">=</span> <span class="fu">lm</span>(Income <span class="sc">~</span> Race <span class="sc">+</span> Sex <span class="sc">+</span> Marital_Status <span class="sc">+</span> Age_2010 <span class="sc">+</span> Region <span class="sc">+</span> edu_bin <span class="sc">+</span> avg_LT_rate, <span class="at">data =</span> <span class="fu">filter</span>(nls_data_modeling))</span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model, <span class="at">which=</span><span class="fu">c</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -476,7 +286,6 @@ dbl (6): Case_ID, Sample_ID, Age_2010, Income_Year, Income, avg_LT_rate
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model, <span class="at">which=</span><span class="fu">c</span>(<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -484,9 +293,6 @@ dbl (6): Case_ID, Sample_ID, Age_2010, Income_Year, Income, avg_LT_rate
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>model_data <span class="ot">=</span> <span class="fu">model.frame</span>(model)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>model_data<span class="sc">$</span>Predicted <span class="ot">=</span> <span class="fu">predict</span>(model)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -522,10 +328,6 @@ Residual standard error: 22030 on 11871 degrees of freedom
 Multiple R-squared:  0.2009,    Adjusted R-squared:  0.1999 
 F-statistic:   199 on 15 and 11871 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(model, <span class="at">type =</span> <span class="st">"predictor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>GVIFs computed for predictors</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                   GVIF Df GVIF^(1/(2*Df)) Interacts With
 Race           1.338842  2        1.075678           --  
@@ -544,7 +346,6 @@ Region            Race, Sex, Marital_Status, Age_2010, edu_bin, avg_LT_rate
 edu_bin            Race, Sex, Marital_Status, Age_2010, Region, avg_LT_rate
 avg_LT_rate            Race, Sex, Marital_Status, Age_2010, Region, edu_bin</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftest</span>(model, <span class="at">vcov =</span> <span class="fu">vcovHC</span>(model, <span class="at">type =</span> <span class="st">"HC1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 t test of coefficients:
