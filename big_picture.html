@@ -205,7 +205,7 @@ nls_no_outliers_wide &lt;- nls_no_outliers %&gt;%
 nls_data_clean &lt;- nls_no_outliers_wide
 
 # Load US states GeoJSON
-us_states &lt;- read_rsd("https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/scripts/us_states.rds")
+us_states &lt;- read_rds("https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/scripts/us_states.rds")
 
 # Create region lookup
 region_lookup &lt;- tibble(
