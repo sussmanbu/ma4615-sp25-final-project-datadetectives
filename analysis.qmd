@@ -8,75 +8,22 @@ draft: false
 
 ![](images/anlysisCover.png)
 
-This comes from the file `analysis.qmd`.
-
-We describe here our detailed data analysis. This page will provide an overview of what questions you addressed, illustrations of relevant aspects of the data with tables and figures, and a statistical model that attempts to answer part of the question. You'll also reflect on next steps and further analysis.
-
-The audience for this page is someone like your class mates, so you can expect that they have some level of statistical and quantitative sophistication and understand ideas like linear and logistic regression, coefficients, confidence intervals, overfitting, etc.
-
-While the exact number of figures and tables will vary and depend on your analysis, you should target around 5 to 6. An overly long analysis could lead to losing points. If you want you can link back to your blog posts or create separate pages with more details.
-
-The style of this paper should aim to be that of an academic paper. I don't expect this to be of publication quality but you should keep that aim in mind. Avoid using "we" too frequently, for example "We also found that ...". Describe your methodology and your findings but don't describe your whole process.
-
-### Example of loading data
-
-The code below shows an example of loading the loan refusal data set (which you should delete at some point).
-
-```{r}
-library(tidyverse)
-print(getwd())
-```
-
-## Note on Attribution
-
-In general, you should try to provide links to relevant resources, especially those that helped you. You don't have to link to every StackOverflow post you used but if there are explainers on aspects of the data or specific models that you found helpful, try to link to those. Also, try to link to other sources that might support (or refute) your analysis. These can just be regular hyperlinks. You don't need a formal citation.
-
-If you are directly quoting from a source, please make that clear. You can show long quotes using `>` like this
-
-```         
-> To be or not to be.
-```
-
-> To be or not to be.
-
-------------------------------------------------------------------------
-
-## Rubric: On this page
-
-You will
-
--   Introduce what motivates your Data Analysis (DA)
-    -   Which variables and relationships are you most interested in?
-    -   What questions are you interested in answering?
-    -   Provide context for the rest of the page. This will include figures/tables that illustrate aspects of the data of your question.
--   Modeling and Inference
-    -   The page will include some kind of formal statistical model. This could be a linear regression, logistic regression, or another modeling framework.
-    -   Explain the ideas and techniques you used to choose the predictors for your model. (Think about including interaction terms and other transformations of your variables.)
-    -   Describe the results of your modelling and make sure to give a sense of the uncertainty in your estimates and conclusions.
--   Explain the flaws and limitations of your analysis
-    -   Are there some assumptions that you needed to make that might not hold? Is there other data that would help to answer your questions?
--   Clarity Figures
-    -   Are your figures/tables/results easy to read, informative, without problems like overplotting, hard-to-read labels, etc?
-    -   Each figure should provide a key insight. Too many figures or other data summaries can detract from this. (While not a hard limit, around 5 total figures is probably a good target.)
-    -   Default `lm` output and plots are typically not acceptable.
--   Clarity of Explanations
-    -   How well do you explain each figure/result?
-    -   Do you provide interpretations that suggest further analysis or explanations for observed phenomenon?
--   Organization and cleanliness.
-    -   Make sure to remove excessive warnings, hide all code, organize with sections or multiple pages, use bullets, etc.
-    -   This page should be self-contained, i.e. provide a description of the relevant data.
-
 ## Introduction
 
 ### Objective and Research Questions
 
-The goal of our analysis is to examine how macroeconomic trends in the aftermath of the 2008 recession, such as shifting interest rates, affected different racial and socioeconomic groups in the United States. We aim to answer some of the following research questions:
+The goal of our analysis is to examine how macroeconomic trends in the aftermath of the 2008 recession, such as shifting interest rates, affected different racial and socioeconomic groups in the United States. We aim to answer some of the following general research questions:
 
--   What factors contribute to upward economic mobility?
--   How do income and employment differ across gender, race, and education levels?
--   Are there persistent racial disparities in long-term wealth accumulation?
+- How do income and employment differ across gender, race, and education levels during periods of economic downturn?
+- What factors contribute to upward economic mobility?
+- Are there persistent racial disparities in long-term wealth accumulation?
 
-### Motivating Figures and Tables
+To limit the scope of the project, we decided to look at the age cohort of people born between 1957 and 1964, represented by the Bureau of Labor Statistics’ NLS 79 survey, who were working adults at the time of the recession. Looking at this population, some of the following questions for analysis arise: 
+
+- What effect did falling interest rates during the recession have on income? Can this relationship be modeled 
+- Did the recession exacerbate income inequality differently along racial, socioeconomic, regional, or other lines? 
+
+### Motivating Figures and Tables: Demographic Factors
 
 The following graphs explore some of the relationships between variables in our data to motivate this goal.
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
@@ -85,41 +32,6 @@ library(scales)
 library(purrr)
 library(readr)
 library(here)
-```
-
-```{r chandini graphs, echo= FALSE, warning=FALSE}
-nls_data_clean <- read_rds("dataset/nls_clean.rds")
-
-#define correct order of education levels(needed for next query)
-education_levels <- c(
-  "1ST GRADE", "2ND GRADE", "3RD GRADE", "4TH GRADE", "5TH GRADE", "6TH GRADE", 
-  "7TH GRADE", "8TH GRADE", "9TH GRADE", "10TH GRADE", "11TH GRADE", "12TH GRADE", 
-  "1ST YEAR COLLEGE", "2ND YEAR COLLEGE", "3RD YEAR COLLEGE", "4TH YEAR COLLEGE", 
-  "5TH YEAR COLLEGE", "6TH YEAR COLLEGE", "7TH YEAR COLLEGE", "8TH YEAR COLLEGE OR MORE",
-  "UNGRADED", NA
-)
-
-#mutate to order based on most education completed 
-nls_data_clean <- nls_data_clean %>%
-  mutate(Highest_Grade_Completed = factor(Highest_Grade_Completed, 
-                                          levels = education_levels,
-                                          ordered = TRUE))
-#Calcualte average mean_income for each grade category
-income_by_grade <- nls_data_clean %>%
-  group_by(Highest_Grade_Completed) %>%
-  summarise(mean_income = mean(Income_2010, na.rm = TRUE)) %>%
-  filter(!is.na(Highest_Grade_Completed))
-
-#income vs highest grade plotted with ggplot
-ggplot(income_by_grade, aes(x = Highest_Grade_Completed, y = mean_income, group = 1)) +
-  geom_line(color = "steelblue", linewidth = 1.2) +
-  geom_point(color = "darkred", size = 2) +
-  labs(title = "Average Income by Highest Grade Completed",
-       x = "Highest Grade Completed",
-       y = "Average Income") +
-  scale_y_continuous(labels = label_comma()) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
 
 ```{r aretha graphs, echo= FALSE, warning=FALSE}
@@ -141,7 +53,7 @@ ggplot(nls_data_clean, aes(x = Region, y = Income_2010, fill = Sex)) +
   scale_y_continuous(labels = scales::comma)
 ```
 
-##### This box plot explores the depth of the relationship between income, gender and region to examine whether there are any disparities between genders.
+This box plot explores the difference in income along gender and racial lines. Across all regions, men appear to make more money than women. However, this effect is particularly pronounced in the South and West regions, where the box plot indicates that a higher proportion of women do not make any income. This higher number of zero-income observations causes some issues for analysis to be accounted for during outlier removal. The graph also highlights the potential difference in effect of income declines across groups. 
 
 ```{r ran graphs, echo= FALSE}
 library(scales)
@@ -154,7 +66,7 @@ ggplot(nls_data_clean_filtered, aes(x = factor(Age_2010), y = Income_2010)) + ge
 
 ```
 
-### Now, we look at interest rates.
+### Motivating Figures and Tables: Interest Rates
 
 ```{r datacombination, echo= FALSE, warning=FALSE, message=FALSE}
 
