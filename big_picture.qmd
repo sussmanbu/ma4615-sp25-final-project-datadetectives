@@ -56,10 +56,7 @@ nls_no_outliers_wide <- nls_no_outliers %>%
 nls_data_clean <- nls_no_outliers_wide
 
 # Load US states GeoJSON
-us_states <- geojson_read(
-  "https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json",
-  what = "sp"
-)
+us_states <- read_rsd("https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/scripts/us_states.rds")
 
 # Create region lookup
 region_lookup <- tibble(
