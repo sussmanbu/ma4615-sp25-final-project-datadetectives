@@ -41,7 +41,7 @@ library(shinydashboard)
 library(sf)
 
 # Load nls_no_outliers
-nls_no_outliers <- read_rds("https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/scripts/nls_no_outliers_shiny_dataset.rds")
+nls_no_outliers <- read_csv("https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/scripts/nls_no_outliers_shiny.csv")
 
 # Pivot from long to wide format
 nls_no_outliers_wide <- nls_no_outliers %>%
