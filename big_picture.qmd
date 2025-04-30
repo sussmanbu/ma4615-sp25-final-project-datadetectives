@@ -32,6 +32,7 @@ Your Big Data page should also include a small interactive dashboard. The dashbo
 #| echo: false 
 #| standalone: true
 #| warning: false
+#| viewerHeight: 650
 
 library(shiny)
 library(tidyverse)
