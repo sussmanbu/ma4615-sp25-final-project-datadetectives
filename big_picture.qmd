@@ -28,7 +28,7 @@ In the analysis ahead, we dive into these questions — using regression models 
 
 Your Big Data page should also include a small interactive dashboard. The dashboard should be created either using Shinylive, as below. This interactive component should in some way support your thesis from your big picture page. Good interactives often provide both high-level understanding of the data while allowing a user to investigate specific scenarios, observations, subgroups, etc.
 
-```{shinylive-r}
+```{r}
 #| echo: false 
 #| standalone: true
 #| warning: false
@@ -55,7 +55,7 @@ nls_no_outliers_wide <- nls_no_outliers %>%
 nls_data_clean <- nls_no_outliers_wide
 
 # Load US states GeoJSON
-us_states <- read_rsd("https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/scripts/us_states.rds")
+us_states <- read_rds("https://sussmanbu.github.io/ma4615-sp25-final-project-datadetectives/scripts/us_states.rds")
 
 # Create region lookup
 region_lookup <- tibble(
