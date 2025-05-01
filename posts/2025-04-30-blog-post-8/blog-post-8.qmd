@@ -1,0 +1,55 @@
+---
+title: "Blog Post #8"
+description:  |
+  This is Data Detectives' 8th blog post, where we explain our thesis, dicuss how we have continued our exploratory data analysis, and describe how we plan to polish our visualizations and tables.
+author: "Data Detectives"
+date: "2025-04-30"
+date-modified: "2025-04-30"
+draft: FALSE
+---
+# Blog post 8
+
+#Intro
+In our last blog post, we discussed adjusting plots/stats and incorporating additional design elements; so far we've been able to build out our shiny element --> a map which shows the national income average for the years 2006, 2008 and 2010. Additionally, it allows users to filter these income results by region selected on map and race. 
+
+
+#Continuing Exploratory Data Analysis
+Currently, we have explored the data through visualizations we thought could provide critical insights into income disparities by gender, race, and region, as well as model diagnostics for regression analysis. So far we've learned: 
+* Men earn more than women across all regions, with the South and West showing the highest disparity (including more zero-income women).
+* A significant proportion of women (especially in the South/West) report $0 income, which may indicate:
+
+#####     Unemployment (higher job losses in female-dominated sectors during the recession).
+
+#####     Underreporting (e.g., informal work, unpaid caregiving).
+
+#####     Selection bias (e.g., survey non-response from low-income women).
+
+- Extreme high-income outliers skewed initial models, requiring careful treatment.
+
+* We could continue to explore this side of the data by comparing Black women in the South vs. West—did one group fare worse post-recession?
+
+
+* We could compare pre/post recession distribution - did the recession widen the income gap?
+
+Additionally, we can look at things like:
+
+* Did single mothers face sharper declines due to childcare costs?
+* Plot income growth against mortgage/loan rates—did lower rates help high-income groups refinance debt?
+
+
+ 
+#Thesis
+Falling interest rates during the 2008 recession provided financial relief for high-income earners but failed to prevent income declines for Black households, reflecting systemic inequities in economic recovery. Hispanic households experienced relative resilience, suggesting structural differences in employment stability and access to credit. 
+
+
+
+#Visualizations and Tables
+
+Next steps for Improving Visualizations and Tables:
+1. Titles & Captions - use more descriptive titles, sdd subtitles/captions explaining data sources, time periods, or key observations.
+
+2. Annotation & Highlights - Label key groups (e.g., "Zero-income women in South"), add recession shading, and emphasize disparities with arrows/text
+
+3. Themes & Aesthetics - Use theme_pubr() for clean, publication-ready layouts and rotate x-labels if long.
+
+
