@@ -155,6 +155,10 @@ nls_no_outliers <- nls_with_rates %>%
 write_csv(nls_no_outliers, "dataset/nls_no_outliers.csv")
 ```
 
+After cleaning the data with the script, we began creating our model. After reading the "No Outliers" dataset, we filtered the data by the income years of interest (2006, 2008, and 2010). We also transformed the data by changing the education levels to binned groups ("Less than HS", "High School", "Some College", and "College+" (College+ standing for college graduate or more)). 
+
+After omitting NA values for the bins, we utilized `lm` to create a linear model, testing covariates of `Race`, `Sex`, `Marital Status`, `Age_2010` (Age at Year 2010), `Region`, `edu_bin` (education group bins), and `avg_LT_rate` (average long-term interest rates) and received the following model summary statistics.
+
 ```{r statisticsmod, echo=FALSE, message=FALSE,warning=FALSE}
 library(car)
 library(sandwich)
@@ -178,15 +182,272 @@ nls_data_modeling <- nls_data_tbu %>%
   mutate(edu_bin = factor(edu_bin, levels = c("Less than HS", "High School", "Some College", "College+"))) %>% na.omit()
  
 model = lm(Income ~ Race + Sex + Marital_Status + Age_2010 + Region + edu_bin + avg_LT_rate, data = filter(nls_data_modeling))
-plot(model, which=c(1))
-plot(model, which=c(2))
- 
-model_data = model.frame(model)
-model_data$Predicted = predict(model)
-summary(model)
-vif(model, type = "predictor")
-coeftest(model, vcov = vcovHC(model, type = "HC1"))
+```
+
+```{r modelsum, echo=FALSE, message=FALSE,warning=FALSE}
+library(broom)
+library(kableExtra)
+
+coef_summary <- tidy(model, vcov = vcovHC(model, type = "HC1"))
+
+coefs <- coef_summary %>%
+  mutate(
+    Estimate    = round(estimate, 3),
+    `Std. Error`= round(std.error, 3),
+    `t value`   = round(statistic, 3),
+    `Pr(>|t|)`  = ifelse(p.value < 2e-16,
+                    "< 2e-16",
+                    formatC(p.value, format = "e", digits = 2)
+                  ),
+    Signif.     = symnum(
+                    p.value,
+                    corr     = FALSE,
+                    cutpoints= c(0, 0.001, 0.01, 0.05, 0.1, 1),
+                    symbols  = c("***", "**", "*", ".", " ")
+                  )
+  ) %>%
+  dplyr::select(term, Estimate, `Std. Error`, `t value`, `Pr(>|t|)`, Signif.)
+
+sm     <- summary(model)
+rse    <- round(sm$sigma, 0)
+df_res <- sm$df[2]
+rsq    <- round(sm$r.squared, 4)
+adj    <- round(sm$adj.r.squared, 4)
+F      <- sm$fstatistic
+Fval   <- round(F[1], 0); Fdf1 <- F[2]; Fdf2 <- F[3]
+Fp     <- pf(F[1], F[2], F[3], lower.tail = FALSE)
+Fp_lbl <- ifelse(Fp < 2e-16, "< 2e-16", formatC(Fp, format = "e", digits = 2))
+
+
+coefs %>%
+  kable(
+    format    = "html",  
+    caption   = "Coefficients",
+    booktabs  = TRUE,
+    align     = c("l","r","r","r","r","c")
+  ) %>%
+  kable_styling(
+    full_width       = FALSE,
+    position         = "center",
+    bootstrap_options= c("striped","hover","condensed")
+  ) %>%
+  footnote(
+    general           = c(
+      "Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1",
+      paste0("Residual standard error: ", rse, " on ", df_res, " degrees of freedom"),
+      paste0("Multiple R-squared:  ", rsq, ",    Adjusted R-squared:  ", adj),
+      paste0("F-statistic:   ", Fval, " on ", Fdf1,
+             " and ", Fdf2, " DF,    p-value: ", Fp_lbl)
+    ),
+    general_title     = "",
+    footnote_as_chunk = TRUE
+  )
 
 ```
+
+**• Model Fit:** The following summary statistics for the linear model show us that our model has a r-squared value of 0.2009, indicating that 20.09% of the variance in our model is explained by these covariates. Upon further analysis, the adjusted r-squared value is noted to be slightly lower at 0.1999, which indicates that 19.99% of the variance in the model is explained by our covariates after considerations of the number of predictors. 
+
+**• Other Model Metrics:** The F-statistic of 199 and p-value of <2e-16 (extremely close to 0) leads us to believe that the overall model is statistically significant, with these effects unlikely to occur due to random chance alone. These metrics indicate that atleast some of the covariates in the model explain our response variable `Income`. A further glimpse into the covariates tells us that only `Age_2010` and `RegionSouth` seem to have an insignificant effect in predicting `Income`. However, the residual standard error of 22033 tells us that our model's income forecast are off by roughly $22000. When analyzed further, the ratio of the residual standard error to the average annual income is roughly ~ `0.5418`, indicating substantial noise in our model and the need for further analysis of our model. 
+
+```{r rse_analysis, echo=FALSE, message=FALSE,warning=FALSE, include=FALSE}
+
+mean_income <- mean(nls_data_modeling$Income)
+rse <- summary(model)$sigma
+rse / mean_income
+
+```
+
+Based on the metrics we observed, we observed our model's diagnostic plots in the form of a residual vs. fitted plot and a Q-Q normality plot.
+
+```{r residualplot, echo=FALSE, message=FALSE,warning=FALSE}
+
+plot(model, which=c(1))
+
+```
+• The residual vs. fitted values for our multiple linear regression model shows a form of funneling, indicating moderate levels of heteroscedasticity. Such heteroscedasticity could be resulting in incorrect standard errors for our coefficients by underestimating or overestimating the values, leading to invalid t-test statistics and p-values and undermining the actual significance of covariates in the model.   
+
+```{r qqplot, echo=FALSE, message=FALSE,warning=FALSE}
+plot(model, which=c(2))
+
+```
+• Interestingly, our Q-Q normality plot tells us a slightly different story. In the comparison of our standardized residuals to the theoretical quantiles, most of the points follow along the dashed diagonal line very well, indicating most of our residuals are close to normally distributed. 
+
+• A handful of points on either end stray away, reflecting a few extreme (under and over) predictions. These are expected considering we only trimmed the most clear outliers based on our bound calculations and the fact that predicting `Income` often results with heavy tails (following disparity of how income is distributed).  
+
+As we continued to check for potential errors in the model, another consideration we made was to check our coefficient estimates to make sure they aren't imprecise due to correlated predictors. We computed the predictor-level GVIF values adjusted with degrees of freedom to check for multicollinearity. All of our values fell below 1.5, with most covariates having GVIF values close to 1. We did not include any interaction terms in our model as the negligible collinearity among predictors informed that the predictors were quite orthogonal. Our predictors aren't artificially inflating the r-squared and adjusted r-squared values and the coefficient estimates are precise. 
+
+```{r vif, echo=FALSE, message=FALSE, warning=FALSE}
+
+vif_tibble <- as_tibble(
+  vif(model, type = "predictor"), rownames = "Predictor")
+
+vif_pres <- vif_tibble %>% dplyr::select(
+    -`Interacts With`,
+    -`Other Predictors`
+    )
+  
+vif_pres %>%
+  kable(
+    format   = "html",
+    caption  = "Predictor-level Variance Inflation Factors",
+    booktabs = TRUE
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width        = FALSE,
+    position          = "center"
+  )
+
+```
+
+After checking diagnostics, we noted that moderate heteroscedasticity existed from analyzing our residual vs. fitted plot, residuals in our Q-Q plot were roughly normal, and there was relatively no multicollinearity based on the GVIFs. Given that the fanning of the residuals (heteroscedasticity) could be still biasing our standard errors, our next logical step was to experiment with stabilizing the variance through transformations of our outcome. 
+
+For the transformations, we decided to look at various transformations and included a few of the common ones often used to fix heteroscedasticity (`boxcox`, `square root`, `logarithm`, `reciprocal`). For the `boxcox` transform, we calculated the best lambda value for a potential transformation. We then calculated the residual standard errors for all the transformations. 
+
+```{r transformations, echo=FALSE, message=FALSE, warning=FALSE}
+library(MASS)
+
+bc <- boxcox(lm(Income ~ Race + Sex + Marital_Status + Age_2010 + Region + edu_bin + avg_LT_rate, data = nls_data_modeling), lambda = seq(-1, 2, 0.1), plotit = FALSE)
+lambda_opt <- bc$x[which.max(bc$y)]
+
+mods <- list(
+  `sqrt(Income)`    = lm(update(model, formula = sqrt(Income)    ~ .), data = nls_data_modeling),
+  `log(Income + 1)` = lm(update(model, formula = log(Income + 1) ~ .), data = nls_data_modeling),
+  `1 / Income`      = lm(update(model, formula = I(1/Income)     ~ .), data = nls_data_modeling),
+  `BC(λ=0.6)`       = lm(update(model, formula = I((Income^0.6 - 1)/0.6) ~ .), data = nls_data_modeling)
+)
+
+resid_ses <- tibble(
+  Transform   = names(mods),
+  Residual_SE = sapply(mods, function(m) round(summary(m)$sigma, 0))
+)
+
+resid_ses %>%
+  kable(
+    format    = "html",
+    caption   = "Residual Standard Errors by Transformation",
+    booktabs  = TRUE,
+    col.names = c("Transformation", "Residual SE"),
+    align     = c("l", "r")
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped","hover","condensed"),
+    full_width        = FALSE,
+    position          = "center"
+  )
+
+```
+• The residual SE of 59 for the `sqrt()` transformation tells us that on the square-root scale, the typical residual is 59 `square root dollar units` (as the sqrt() transform is also doing a sqrt() on dollars, which is the unit of the original `Income` response variable).
+
+• The residual SE of 1 for the `log()` transformation means that on the log scale, the typical residual is 1 `log dollar unit`, which would mean multiplicative errors in our residual calculations of `~2.7x`.    
+
+• The residual SE of 0 for the `1/Income` reciprocal transformation collapses all the variation towards 0 (as `Income` values are relatively large for everyone). The residual SE of 0 would lead one to presume that there's no noise and would be ideal, but given the squashing and extreme compression of large incomes to near-zero, the model is distorted and the coefficients cannot be interpreted.  
+
+• The residual SE of 332 for the `boxcox` transformation on lambda value of 0.6 is closer to the sqrt() transform (lambda value 0.5). 
+
+
+Although the residual SEs for `sqrt()`, `log()`, and `boxcox` transformations seem to be promising (considering `1/Income` reciprocal transformation isn't a real solution), a further analysis into the residual vs. fitted plots for all the transformations reveals that none of these transformations shrink heteroscedasticity. 
+
+```{r transformplots, echo=FALSE, message=FALSE, warning=FALSE}
+old_par <- par(mfrow = c(2, 2), mar = c(4, 4, 4, 1))
+
+model_names <- names(mods)[1:4]
+for (nm in model_names) {
+  plot(
+    mods[[nm]],
+    which = 1,
+    main  = paste("Residuals vs Fitted —", nm),
+    sub   = "" 
+  )
+}
+
+```
+As noticeable in these plots, all the transformations show funneling indicative of heteroscedasticity. Given that `sqrt()` and `boxcox` have lambda values close to each other, both look roughly the same -- the difference between 0.5 and 0.6 for lambda is negligible. The `log()` transformation has a drastic change in scales, but still suffers from heteroscedastic fanning. As previously discussed, the `1/Income` reciprocal transformation makes our residual plot seem homoscedastic, but the variation is completely crushed into one band and removes meaningful differences between observations. 
+
+Given the heteroscedasticity problems persisting (and the additional problem that coefficients on any of these scales are tough to interpret), we decided to not look for the perfect transform to fix heteroscedasticity. Our updated approach and solution was to correct for inference issues caused by heteroscedasticity by using robust standard errors through `coeftest()` to ensure our point estimates would be unbiased and our standard errors, t-stat values, and p-values are valid by accounting for heteroscedastic problems. 
+
+```{r coeftestadj, echo=FALSE, message=FALSE,warning=FALSE}
+
+coeft_table <- coeftest(model, vcov = vcovHC(model, type = "HC1"))
+
+co_tibble <- tidy(coeft_table) %>%
+  transmute(
+    term         = term,
+    Estimate     = round(estimate,    3),
+    `Std. Error` = round(std.error,   3),
+    `t value`    = round(statistic,   3),
+    `Pr(>|t|)`   = ifelse(
+                      p.value < 2e-16, 
+                      "< 2e-16", 
+                      formatC(p.value, format="e", digits=2)
+                    ),
+    Signif       = symnum(
+                      p.value,
+                      corr      = FALSE,
+                      cutpoints = c(0,0.001,0.01,0.05,0.1,1),
+                      symbols   = c("***","**","*","."," ")
+                    )
+  )
+
+co_tibble %>%
+  kable(
+    format    = "html",
+    caption   = "HC1‐Robust coeftest t‐tests for OLS Coefficients",
+    booktabs  = TRUE,
+    align     = c("l","r","r","r","r","c")
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped","hover","condensed"),
+    full_width        = FALSE,
+    position          = "center"
+  )
+
+```
+Our coefficient estimates did not change nor did the scale of our variables, and our standard errors, t-values, and p-values were adjusted accordingly through `coeftest()` and updated our significance levels. Initially, the `Marital_StatusWidowed` term was moderately significant, but after adjustments, the model has updated that term as having a more substantial effect on the model.  
+
+With valid inferences now, the last part we decided to test was the use of stepwise AIC/BIC regression for variable selection. 
+
+```{r stepAICBIC, echo=FALSE, message=FALSE,warning=FALSE}
+
+full_mod <- lm(
+  Income ~ Race + Sex + Marital_Status + Age_2010 + Region + edu_bin + avg_LT_rate,
+  data = nls_data_modeling
+)
+
+null_mod <- lm(Income ~ 1, data = nls_data_modeling)
+
+step_aic <- stepAIC(
+  object    = full_mod,
+  scope     = list(lower = null_mod, upper = full_mod),
+  direction = "both",
+  trace     = FALSE
+)
+
+n_obs <- nrow(nls_data_modeling)
+step_bic <- step(
+  object    = null_mod,
+  scope     = list(lower = null_mod, upper = full_mod),
+  direction = "both",
+  k         = log(n_obs),
+  trace     = FALSE
+)
+
+selected_aic <- formula(step_aic)
+selected_bic <- formula(step_bic)
+
+tibble(
+  Criterion = c("AIC", "BIC"),
+  Formula   = c(
+    deparse(selected_aic, width.cutoff = 60),
+    deparse(selected_bic, width.cutoff = 60)
+  )
+) %>%
+  knitr::kable(
+    caption = "Variables Chosen by Stepwise AIC vs. BIC",
+    booktabs = TRUE, 
+  )
+
+```
+The use of stepwise AIC/BIC regression shows that both AIC and BIC criterion based selections result in the same models, with the omission of `Age_2010` as a variable to consider. These results align with the `***` significance markers in our coefficient tests as `Age_2010` is not included as a significant covariate (The `RegionSouth` level is also not considered significant, but the overall `Region` variable is significant as the other levels have an effect). However, these stepwise regression results still need to be considered with caution as heteroscedasticity violates the penalties enacted by AIC and BIC. More principled selection methods can be explored, but these are out of our scope. 
 
 ## Results, Limitations, and Conclusion
