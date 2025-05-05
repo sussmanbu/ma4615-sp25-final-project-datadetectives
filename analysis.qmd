@@ -23,7 +23,7 @@ To limit the scope of the project, we decided to look at the age cohort of peopl
 - What effect did falling interest rates during the recession have on income? Can this relationship be modeled 
 - Did the recession exacerbate income inequality differently along racial, socioeconomic, regional, or other lines? 
 
-### Motivating Figures and Tables: Demographic Factors
+### Motivating Figures for Analysis
 
 The following graphs explore some of the relationships between variables in our data to motivate this goal.
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
@@ -33,27 +33,6 @@ library(purrr)
 library(readr)
 library(here)
 ```
-
-```{r aretha graphs, echo= FALSE, warning=FALSE}
-library(scales)
-nls_data_clean <- read_rds("dataset/nls_clean.rds")
-
-nls_data_clean <- nls_data_clean %>%
-  filter(!is.na(Region))
-
-# Regional Variation in Gender Income Gap
-ggplot(nls_data_clean, aes(x = Region, y = Income_2010, fill = Sex)) +
-  geom_boxplot(outlier.alpha = 0.5, outlier.size = 1) +
-  labs(title = "Income Distribution by Region and Gender",
-       x = "Region", 
-       y = "Total Income (Previous Year)", 
-       fill = "Gender") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_y_continuous(labels = scales::comma)
-```
-
-This box plot explores the difference in income along gender and racial lines. Across all regions, men appear to make more money than women. However, this effect is particularly pronounced in the South and West regions, where the box plot indicates that a higher proportion of women do not make any income. This higher number of zero-income observations causes some issues for analysis to be accounted for during outlier removal. The graph also highlights the potential difference in effect of income declines across groups. 
 
 ```{r ran graphs, echo= FALSE}
 library(scales)
@@ -66,7 +45,7 @@ ggplot(nls_data_clean_filtered, aes(x = factor(Age_2010), y = Income_2010)) + ge
 
 ```
 
-### Motivating Figures and Tables: Interest Rates
+These boxplots explore the difference in income along the lines of age, race, and sex. Across most age and race groups, men in the dataset tend to make more money than women. The pay gap is especially pronounced among Non-Black / Non-Hispanic people. These boxplots indicate that there is a higher proportion of women who do not make any income. The higher number of zero-income values causes some issues for analysis to be accounted for during outlier removal. Our analysis aims to examine how the differences observed in income between groups observed in these boxplots were impacted by the recession. 
 
 ```{r datacombination, echo= FALSE, warning=FALSE, message=FALSE}
 
@@ -97,6 +76,8 @@ ggplot(income_by_race, aes(x = Income_Year, y = avg_income, color = avg_interest
   theme(legend.position = "bottom")
 
 ```
+
+This graph shows how interest rates declined over the course of the 2000s, and juxtaposes this trend with income for Black, Hispanic, and Non-Black / Non-Hispanic people. Whereas incomes for people within the first two hroups saw a decline in average income, Non-Black / Non-Hispanic peolpe saw a slight increase, further indicating that macroeconomic trends such as indicated through interest rates might have different impacts on different demographic groups. 
 
 ## Modeling and Inference
 
@@ -496,24 +477,19 @@ $$
 
 Our pooled-OLS model (pooling 2006, 2008, and 2010 while retaining only long-term average interest rates) with HC1-Robust SEs (checked for person-clustered SEs) provided us with the following key takeaways: 
 
-
 **Education and Gender remain the most dominant effects on Income**:
-
 - With all other predictors held constant, males earned on average `~$14,242` more per year than females regardless of the year. 
 
 - Averaging across 2006-2010, college graduates earned nearly `~$30000` more than those who did not attend high school ("Less than HS" is part of the base estimate as an indicator variable). The gap is of a similar magnitude in each year, which suggests that a college education was stable even during the 2008 downturn. 
 
 - Each successive education category translated to about `$7000-$11000` in additional annual earnings, a pattern stable across 2006-2010.  
 
-
 **Race, Marriage, and Region have strong secondary effects**:
-
 - Individuals identifying as `Non-Black/Non-Hispanic` and `Hispanic` earned nearly `$2993` and `$2807` more than those identifying as `Black / African-American` (baseline), potentially indicative of `Black / African-American` individuals being disproportionately affected with relation to earnings. 
 
 - Married individuals earned `$6627` more than those who never married (baseline). Divorced individuals earned `$4408` more, while separated and widowed individuals earned `$1682` and `$677` less, respectively. Marriage might have had an economical advantage (potentially dual incomes, shared expenses, financial support from spouse). 
 
 - Compared to those living in the central United States (baseline), residents in the Northeast earned `~$4010` more, and residents living in the West earned `~2824` more. The South had a modest increase in earnings of `~$445`. These differences may reflect economic opportunities, urbanization, and higher costs of living. 
-
 
 **Macroeconomic conditions have an impact**:  
 By omitting factor levels for each year, the long-term interest rates are isolated and show the marginal cyclical effect of the rates, not conflated with other effects embedded in the model and intercept (ex: wage growth, recessionary gaps, stimulus programs). 
