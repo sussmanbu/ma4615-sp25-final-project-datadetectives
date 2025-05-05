@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Data Detectives">
+<meta name="dcterms.date" content="2025-04-30">
+<meta name="description" content="This is Data Detectives’ 8th blog post, where we explain our thesis, dicuss how we have continued our exploratory data analysis, and describe how we plan to polish our visualizations and tables.">
 
-<title>The Cost of Crisis: Economic Inequality in the Wake of U.S. Macroeconomic Shocks – MA 415 Data Detectives Final Project</title>
+<title>Blog Post #8 – MA 415 Data Detectives Final Project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +26,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,77 +69,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-subtitle','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">MA 415 Data Detectives Final Project</span>
     </a>
   </div>
@@ -149,19 +92,19 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./big_picture.html"> 
+    <a class="nav-link" href="../../big_picture.html"> 
 <span class="menu-text">Boom, Bust and Balance - Between The Lines of Income and Interest Rates</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./analysis.html"> 
+    <a class="nav-link" href="../../analysis.html"> 
 <span class="menu-text">Analysis</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./data.html"> 
+    <a class="nav-link" href="../../data.html"> 
 <span class="menu-text">Data</span></a>
   </li>  
 </ul>
@@ -174,272 +117,89 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">The Cost of Crisis: Economic Inequality in the Wake of U.S. Macroeconomic Shocks</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">Blog Post #8</h1>
+                  <div>
+        <div class="description">
+          <p>This is Data Detectives’ 8th blog post, where we explain our thesis, dicuss how we have continued our exploratory data analysis, and describe how we plan to polish our visualizations and tables.</p>
+        </div>
+      </div>
+                </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Data Detectives </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 30, 2025</p>
+      </div>
+    </div>
     
+      <div>
+      <div class="quarto-title-meta-heading">Modified</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date-modified">April 30, 2025</p>
+      </div>
+    </div>
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(8)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
-<p><img src="images/indexqmd.png" class="img-fluid"></p>
-<section id="final-project-due-may-5-2024-at-1159pm." class="level1">
-<h1>Final Project due May 5, 2024 at 11:59pm.</h1>
-
+<section id="blog-post-8" class="level1">
+<h1>Blog post 8</h1>
+<p>#Intro In our last blog post, we discussed adjusting plots/stats and incorporating additional design elements; so far we’ve been able to build out our shiny element –&gt; a map which shows the national income average for the years 2006, 2008 and 2010. Additionally, it allows users to filter these income results by region selected on map and race.</p>
+<p>#Continuing Exploratory Data Analysis Currently, we have explored the data through visualizations we thought could provide critical insights into income disparities by gender, race, and region, as well as model diagnostics for regression analysis. So far we’ve learned: * Men earn more than women across all regions, with the South and West showing the highest disparity (including more zero-income women). * A significant proportion of women (especially in the South/West) report $0 income, which may indicate:</p>
+<section id="unemployment-higher-job-losses-in-female-dominated-sectors-during-the-recession." class="level5">
+<h5 class="anchored" data-anchor-id="unemployment-higher-job-losses-in-female-dominated-sectors-during-the-recession.">Unemployment (higher job losses in female-dominated sectors during the recession).</h5>
+</section>
+<section id="underreporting-e.g.-informal-work-unpaid-caregiving." class="level5">
+<h5 class="anchored" data-anchor-id="underreporting-e.g.-informal-work-unpaid-caregiving.">Underreporting (e.g., informal work, unpaid caregiving).</h5>
+</section>
+<section id="selection-bias-e.g.-survey-non-response-from-low-income-women." class="level5">
+<h5 class="anchored" data-anchor-id="selection-bias-e.g.-survey-non-response-from-low-income-women.">Selection bias (e.g., survey non-response from low-income women).</h5>
+<ul>
+<li><p>Extreme high-income outliers skewed initial models, requiring careful treatment.</p></li>
+<li><p>We could continue to explore this side of the data by comparing Black women in the South vs.&nbsp;West—did one group fare worse post-recession?</p></li>
+<li><p>We could compare pre/post recession distribution - did the recession widen the income gap?</p></li>
+</ul>
+<p>Additionally, we can look at things like:</p>
+<ul>
+<li>Did single mothers face sharper declines due to childcare costs?</li>
+<li>Plot income growth against mortgage/loan rates—did lower rates help high-income groups refinance debt?</li>
+</ul>
+<p>#Thesis Falling interest rates during the 2008 recession provided financial relief for high-income earners but failed to prevent income declines for Black households, reflecting systemic inequities in economic recovery. Hispanic households experienced relative resilience, suggesting structural differences in employment stability and access to credit.</p>
+<p>#Visualizations and Tables</p>
+<p>Next steps for Improving Visualizations and Tables: 1. Titles &amp; Captions - use more descriptive titles, sdd subtitles/captions explaining data sources, time periods, or key observations.</p>
+<ol start="2" type="1">
+<li><p>Annotation &amp; Highlights - Label key groups (e.g., “Zero-income women in South”), add recession shading, and emphasize disparities with arrows/text</p></li>
+<li><p>Themes &amp; Aesthetics - Use theme_pubr() for clean, publication-ready layouts and rotate x-labels if long.</p></li>
+</ol>
 
 
 </section>
+</section>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1745985600000" data-listing-file-modified-sort="1746461831027" data-listing-date-modified-sort="1745985600000" data-listing-reading-time-sort="2" data-listing-word-count-sort="348">
-<div class="thumbnail">
-<p><a href="./posts/2025-04-30-blog-post-8/blog-post-8.html" class="no-external"></a></p><a href="./posts/2025-04-30-blog-post-8/blog-post-8.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2025-04-30-blog-post-8/blog-post-8.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-04-30-blog-post-8/blog-post-8.html" class="no-external">Blog Post #8</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-04-30-blog-post-8/blog-post-8.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/2025-04-30-blog-post-8/blog-post-8.html" class="no-external">This is Data Detectives’ 8th blog post, where we explain our thesis, dicuss how we have continued our exploratory data analysis, and describe how we plan to polish our visualizations and tables. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-04-30-blog-post-8/blog-post-8.html" class="no-external">
-<div class="listing-date">
-Apr 30, 2025
-</div>
-<div class="listing-author">
-Data Detectives
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1745208000000" data-listing-file-modified-sort="1745357712706" data-listing-date-modified-sort="1745208000000" data-listing-reading-time-sort="2" data-listing-word-count-sort="258">
-<div class="thumbnail">
-<p><a href="./posts/2025-04-21-blog-post-7/blog-post-7.html" class="no-external"></a></p><a href="./posts/2025-04-21-blog-post-7/blog-post-7.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2025-04-21-blog-post-7/blog-post-7.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-04-21-blog-post-7/blog-post-7.html" class="no-external">Blog Post #7</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-04-21-blog-post-7/blog-post-7.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/2025-04-21-blog-post-7/blog-post-7.html" class="no-external">This is Data Detectives’ 7th blog post, where we describe our thoughts and progress on the interactive for our final project </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-04-21-blog-post-7/blog-post-7.html" class="no-external">
-<div class="listing-date">
-Apr 21, 2025
-</div>
-<div class="listing-author">
-Data Detectives
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1744603200000" data-listing-file-modified-sort="1744721172596" data-listing-date-modified-sort="1744603200000" data-listing-reading-time-sort="2" data-listing-word-count-sort="322">
-<div class="thumbnail">
-<p><a href="./posts/2025-04-14-blog-post-6/blog-post-6.html" class="no-external"></a></p><a href="./posts/2025-04-14-blog-post-6/blog-post-6.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2025-04-14-blog-post-6/blog-post-6.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-04-14-blog-post-6/blog-post-6.html" class="no-external">Blog Post #6</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-04-14-blog-post-6/blog-post-6.html" class="no-external">Exploratory Data Analysis</a>
-</div>
-<div class="listing-description">
-<a href="./posts/2025-04-14-blog-post-6/blog-post-6.html" class="no-external">This is data detectives’ sixth blog post, where we continue our work. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-04-14-blog-post-6/blog-post-6.html" class="no-external">
-<div class="listing-date">
-Apr 14, 2025
-</div>
-<div class="listing-author">
-Data Detectives
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1743998400000" data-listing-file-modified-sort="1744655982951" data-listing-date-modified-sort="1743998400000" data-listing-reading-time-sort="1" data-listing-word-count-sort="199">
-<div class="thumbnail">
-<p><a href="./posts/2025-04-07-blog-post-5/blog-post-5.html" class="no-external"></a></p><a href="./posts/2025-04-07-blog-post-5/blog-post-5.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2025-04-07-blog-post-5/blog-post-5.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-04-07-blog-post-5/blog-post-5.html" class="no-external">Blog Post #5</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-04-07-blog-post-5/blog-post-5.html" class="no-external">Exploratory Data Analysis</a>
-</div>
-<div class="listing-description">
-<a href="./posts/2025-04-07-blog-post-5/blog-post-5.html" class="no-external">This is data detectives’ fifth blog post, where we add a new data set about interest rates. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-04-07-blog-post-5/blog-post-5.html" class="no-external">
-<div class="listing-date">
-Apr 7, 2025
-</div>
-<div class="listing-author">
-Data Detectives
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-listing-date-sort="1743134400000" data-listing-file-modified-sort="1743618808037" data-listing-date-modified-sort="1743134400000" data-listing-reading-time-sort="4" data-listing-word-count-sort="755">
-<div class="thumbnail">
-<p><a href="./posts/2025-03-28-blog-post-4/blog-post-4.html" class="no-external"></a></p><a href="./posts/2025-03-28-blog-post-4/blog-post-4.html" class="no-external">
-<p class="card-img-top"><img src="posts/2025-03-28-blog-post-4/blog-post-4_files/figure-html/chandini graphs-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/2025-03-28-blog-post-4/blog-post-4.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-03-28-blog-post-4/blog-post-4.html" class="no-external">Blog Post #4</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-03-28-blog-post-4/blog-post-4.html" class="no-external">Exploratory Data Analysis</a>
-</div>
-<div class="listing-description">
-<a href="./posts/2025-03-28-blog-post-4/blog-post-4.html" class="no-external">This is data detectives’ fourth blog post, where we do some initial exploratory data analysis on our cleaned data set. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-03-28-blog-post-4/blog-post-4.html" class="no-external">
-<div class="listing-date">
-Mar 28, 2025
-</div>
-<div class="listing-author">
-Data Detectives
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-listing-date-sort="1742788800000" data-listing-file-modified-sort="1743007385644" data-listing-date-modified-sort="1742788800000" data-listing-reading-time-sort="2" data-listing-word-count-sort="368">
-<div class="thumbnail">
-<p><a href="./posts/2025-03-24-blog-post-3/blog-post-3.html" class="no-external"></a></p><a href="./posts/2025-03-24-blog-post-3/blog-post-3.html" class="no-external">
-<p class="card-img-top"><img src="posts/2025-03-24-blog-post-3/blog-post-3_files/figure-html/datacleaning-1.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/2025-03-24-blog-post-3/blog-post-3.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-03-24-blog-post-3/blog-post-3.html" class="no-external">Blog Post 3</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-03-24-blog-post-3/blog-post-3.html" class="no-external">Data Loading/Cleaning</a>
-</div>
-<div class="listing-description">
-<a href="./posts/2025-03-24-blog-post-3/blog-post-3.html" class="no-external">This is Data Detectives’ third blog post where we further investigate, load, and clean our initial dataset. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-03-24-blog-post-3/blog-post-3.html" class="no-external">
-<div class="listing-date">
-Mar 24, 2025
-</div>
-<div class="listing-author">
-Data Detectives
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-listing-date-sort="1742184000000" data-listing-file-modified-sort="1742582173427" data-listing-date-modified-sort="1742184000000" data-listing-reading-time-sort="2" data-listing-word-count-sort="380">
-<div class="thumbnail">
-<p><a href="./posts/2025-03-17-blog-post-2/blog-post-2.html" class="no-external"></a></p><a href="./posts/2025-03-17-blog-post-2/blog-post-2.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2025-03-17-blog-post-2/blog-post-2.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-03-17-blog-post-2/blog-post-2.html" class="no-external">Blog Post #2</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-03-17-blog-post-2/blog-post-2.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/2025-03-17-blog-post-2/blog-post-2.html" class="no-external">This is DataDetectives’ second blog post, where we dive into detail regarding one of the data sets we looked at in the past blog post.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-03-17-blog-post-2/blog-post-2.html" class="no-external">
-<div class="listing-date">
-Mar 17, 2025
-</div>
-<div class="listing-author">
-Patrio Marcus, Chandini Toleti, Ranbir, Aretha McDonald, Emir
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-listing-date-sort="1740546000000" data-listing-file-modified-sort="1742582173427" data-listing-date-modified-sort="1740546000000" data-listing-reading-time-sort="3" data-listing-word-count-sort="525">
-<div class="thumbnail">
-<p><a href="./posts/2025-02-26-blog-post-1/blog-post-1.html" class="no-external"></a></p><a href="./posts/2025-02-26-blog-post-1/blog-post-1.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2025-02-26-blog-post-1/blog-post-1.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-02-26-blog-post-1/blog-post-1.html" class="no-external">Blog Post #1</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-02-26-blog-post-1/blog-post-1.html" class="no-external"></a>
-</div>
-<div class="listing-description">
-<a href="./posts/2025-02-26-blog-post-1/blog-post-1.html" class="no-external">This is DataDetectives’ first blog post, where we describe potential datasets to use for our final project.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-02-26-blog-post-1/blog-post-1.html" class="no-external">
-<div class="listing-date">
-Feb 26, 2025
-</div>
-<div class="listing-author">
-Patrio Marcus, Chandini Toleti, Ranbir, Aretha McDonald, Emir
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

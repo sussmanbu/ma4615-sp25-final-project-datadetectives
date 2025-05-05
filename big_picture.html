@@ -128,12 +128,7 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#interactive" id="toc-interactive" class="nav-link" data-scroll-target="#interactive">Interactive</a></li>
-  <li><a href="#rubric-on-this-page" id="toc-rubric-on-this-page" class="nav-link" data-scroll-target="#rubric-on-this-page">Rubric: On this page</a></li>
-  <li><a href="#rubric-other-components" id="toc-rubric-other-components" class="nav-link" data-scroll-target="#rubric-other-components">Rubric: Other components</a>
-  <ul class="collapse">
-  <li><a href="#video-recording" id="toc-video-recording" class="nav-link" data-scroll-target="#video-recording">Video Recording</a></li>
-  <li><a href="#rest-of-the-site" id="toc-rest-of-the-site" class="nav-link" data-scroll-target="#rest-of-the-site">Rest of the Site</a></li>
-  </ul></li>
+  <li><a href="#thesis" id="toc-thesis" class="nav-link" data-scroll-target="#thesis">Thesis</a></li>
   </ul>
 </nav>
     </div>
@@ -170,19 +165,29 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
 <p>Picture this — you’re approaching a major crossroads in life. Maybe you’re saving for retirement, helping your kids through college, or finally feeling financially secure after decades of hard work. Then, almost overnight, the economy crumbles. Home values plummet, jobs vanish, and uncertainty becomes the new normal.</p>
 <p>This was the reality for members of the 1979 National Longitudinal Survey of Youth cohort, who found themselves navigating one of the most severe economic downturns in modern history right at a critical point in their financial lives.</p>
-<p>How did the Great Recession of 2008 impact their incomes? How did falling interest rates shape their financial decisions and opportunities? In the analysis ahead, we dive into these questions — using regression models to uncover how income and interest rate dynamics shifted from 2006 to 2010. Join us as we explore the lasting financial ripples of the crisis and the stories hidden within the numbers.</p>
+<p><strong>Our aim is to show how the Great Recession of 2008 impact these members’ incomes. We want to show how falling interest rates shaped their financial decisions and opportunities.</strong> In the analysis ahead, we dive into these questions — using regression models to uncover how income and interest rate dynamics shifted from 2006 to 2010. Join us as we explore the lasting financial ripples of the crisis and the stories hidden within the numbers.</p>
 <hr>
 </section>
 <section id="interactive" class="level3">
 <h3 class="anchored" data-anchor-id="interactive">Interactive</h3>
-<p>Your Big Data page should also include a small interactive dashboard. The dashboard should be created either using Shinylive, as below. This interactive component should in some way support your thesis from your big picture page. Good interactives often provide both high-level understanding of the data while allowing a user to investigate specific scenarios, observations, subgroups, etc.</p>
+<p>Below is our interactive dashboard - a map which shows the national income average for the years 2006, 2008 and 2010. Additionally, it allows users to filter these income results by region selected on map and race.</p>
+<section id="what-you-will-observe" class="level5">
+<h5 class="anchored" data-anchor-id="what-you-will-observe">What You Will Observe :</h5>
+<ol type="1">
+<li>Overall national income grew from 2006 to 2008 but stagnated slightly in 2010 (41,284 → 41,670)</li>
+</ol>
+<p>2.Non-Hispanic incomes followed a similar trend but remained higher than the national average</p>
+<ol start="3" type="1">
+<li>Black incomes rose until 2008 but declined slightly in 2010, suggesting a stronger recessionary impact</li>
+</ol>
+<p>4.Hispanic incomes saw steady growth, even post-recession (37,998 → 40,986)</p>
 <pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
 #|   shinylive does not work in self-contained HTML documents.
 #|   Please set `embed-resources: false` in your metadata.
 #| echo: false 
 #| standalone: true
 #| warning: false
-#| viewerHeight: 650
+#| viewerHeight: 800
 
 library(shiny)
 library(tidyverse)
@@ -267,7 +272,7 @@ ui &lt;- fluidPage(
     mainPanel(
   leafletOutput("map", height = 400),
   br(),
-  h4("Overall Country Income"),
+  h4("Overall Country/Region Income"),
   fluidRow(
     column(3, valueBoxOutput("card2006", width = 12)),
     column(1, div(style = "font-size: 30px; text-align: center;", icon("arrow-right"))),
@@ -396,56 +401,14 @@ shinyApp(ui, server)
 
 
 </code></pre>
-<p>To get the shinylive-r working.</p>
-<ol type="1">
-<li>Make sure your shiny app works as a regular r chunk.</li>
-<li>Make sure that the chunk is completely self-contained. Meaning all packages and data are loaded inside that chunk. It can’t rely on any other chunks.</li>
-<li>For the data that you are using for shiny, copy the rds file or any other files into the scripts folder, and then publish your website.</li>
-<li>Where you load in your data, change it to use a URL to the data set which will now be on your website. Something like read_rds(“https://sussmanbu.github.io/ma-4615-fa24-final-project-group-a/scripts/dataset_for_shiny.rds”)</li>
-<li>Check that the chunk still works as a regular r chunk.</li>
-<li>Change it to a shinylive-r chunk.</li>
-<li>Commit and publish your work.</li>
-</ol>
-<p>I recommend keeping the data used for the shiny interactive relatively small, though this isn’t completely necessary.</p>
-<hr>
+<p>The recession officially began in Dec 2007 and peaked in 2008-2009, yet most groups saw income growth in 2008—possibly due to lag effects or government stimulus <a href="https://www.congress.gov/bill/110th-congress/house-bill/5140#:~:text=Economic%20Stimulus%20Act%20of%202008%20%2D%20Title%20I%3A%20Recovery%20Rebates%20and,married%20taxpayers%20filing%20joint%20returns">e.g., 2008 Economic Stimulus Act</a>.</p>
 </section>
-<section id="rubric-on-this-page" class="level2">
-<h2 class="anchored" data-anchor-id="rubric-on-this-page">Rubric: On this page</h2>
-<ul>
-<li>Title
-<ul>
-<li>Your big picture page should have a creative/click-bait-y title/headline that provides a hint about your thesis.</li>
-</ul></li>
-<li>Clarity of Explanation
-<ul>
-<li>You should have a clear thesis/goal for this page. What are you trying to show? Make sure that you explain your analysis in detail but don’t go into top much mathematics or statistics. The audience for this page is the general public (to the extent possible). Your thesis should be a statement, not a question.</li>
-<li>Each figure should be very polished and also not too complicated. There should be a clear interpretation of the figure so the figure has a clear purpose. Even something like a histogram can be difficult to interpret for non-experts.</li>
-</ul></li>
-<li>Creativity
-<ul>
-<li>Do your best to make things interesting. Think of a how a news article or a magazine story might draw you in. Think of how each part of your analysis supports the previous part or provides a different perspective.</li>
-</ul></li>
-<li>Interactive component
-<ul>
-<li>Quality and ease of use of the interactive components. Is it clear what can be explored using your interactive components? Does it enhance and reinforce your conclusions?</li>
-</ul></li>
-<li>This page should be self-contained.</li>
-</ul>
-<p><strong>Note</strong>: This page should have no code visible, i.e.&nbsp;use <code>#| echo: FALSE</code>.</p>
 </section>
-<section id="rubric-other-components" class="level2">
-<h2 class="anchored" data-anchor-id="rubric-other-components">Rubric: Other components</h2>
-<section id="video-recording" class="level3">
-<h3 class="anchored" data-anchor-id="video-recording">Video Recording</h3>
-<p>Make a video recording (probably using Zoom) demonstrating your interactive components. You should provide a quick explanation of your data and demonstrate some of the conclusions from your EDA. This video should be no longer than 4 minutes. Include a link to your video (and password if needed) in your README.md file on your Github repository. You are not required to provide a link on the website. This can be presented by any subset of the team members.</p>
-</section>
-<section id="rest-of-the-site" class="level3">
-<h3 class="anchored" data-anchor-id="rest-of-the-site">Rest of the Site</h3>
-<p>Finally, here are important things to keep in mind for the rest of the site.</p>
-<p>The main title of your page is informative. Each post has an author/description/informative title. All lab required posts are present. Each page (including the home page) has a nice featured image associated with it. Your about page is up to date and clean. You have removed the generic posts from the initial site template.</p>
+<section id="thesis" class="level3">
+<h3 class="anchored" data-anchor-id="thesis">Thesis</h3>
+<p>Falling interest rates during the 2008 recession provided financial relief for high-income earners but failed to prevent income declines for Black households, reflecting systemic inequities in economic recovery. Hispanic households experienced relative resilience, suggesting structural differences in employment stability and access to credit.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
