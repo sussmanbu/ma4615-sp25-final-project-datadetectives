@@ -81,7 +81,7 @@ This graph shows how interest rates declined over the course of the 2000s, and j
 
 ## Modeling and Inference
 
-First tried with outliers and had bad figures, and we determined there were severe outliers impacting our model. 
+Our first goal was to remove extreme outlying points from income in our database to improve modeling. 
 
 ```{r outliers, echo= FALSE, message=FALSE}
 library(tidyverse)
@@ -112,7 +112,7 @@ ggplot(nls_with_rates, aes(x = Income)) +
   theme_minimal()
 
 ```
-We therefore used R script like below to remove these and create a new dataset specifically for modeling. 
+We therefore used R script like below to remove these and create a new dataset specifically for this purpose.  
 
 ```r
 library(tidyverse)
