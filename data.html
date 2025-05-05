@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="description" content="We describe the sources of our data and the cleaning process.">
 
-<title>Data – MA 415 Data Detectives Final Project</title>
+<title>MA 415 Data Detectives Final Project - Data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -34,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -118,7 +118,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -141,7 +141,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
+          <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -159,11 +159,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#dataset-1---nls-national-longitudinal-survey" id="toc-dataset-1---nls-national-longitudinal-survey" class="nav-link" data-scroll-target="#dataset-1---nls-national-longitudinal-survey">DataSet #1 - NLS National Longitudinal Survey</a></li>
   </ul></li>
-  <li><a href="#data-cleaning---nls-national-longitudinal-survey" id="toc-data-cleaning---nls-national-longitudinal-survey" class="nav-link" data-scroll-target="#data-cleaning---nls-national-longitudinal-survey">Data Cleaning - NLS National Longitudinal Survey</a>
+  <li><a href="#data-cleaning---nls-national-longitudinal-survey" id="toc-data-cleaning---nls-national-longitudinal-survey" class="nav-link" data-scroll-target="#data-cleaning---nls-national-longitudinal-survey">Data Cleaning - NLS National Longitudinal Survey</a></li>
+  <li><a href="#summary-statistics---nls-national-longitudinal-survey" id="toc-summary-statistics---nls-national-longitudinal-survey" class="nav-link" data-scroll-target="#summary-statistics---nls-national-longitudinal-survey">Summary Statistics - NLS National Longitudinal Survey</a>
   <ul class="collapse">
   <li><a href="#dataset-2---interest-rates-by-year" id="toc-dataset-2---interest-rates-by-year" class="nav-link" data-scroll-target="#dataset-2---interest-rates-by-year">DataSet #2 - Interest Rates by Year</a></li>
   </ul></li>
-  <li><a href="#data-cleaning---interest-rates-by-year" id="toc-data-cleaning---interest-rates-by-year" class="nav-link" data-scroll-target="#data-cleaning---interest-rates-by-year">Data Cleaning - Interest Rates by Year</a>
+  <li><a href="#data-cleaning---interest-rates-by-year" id="toc-data-cleaning---interest-rates-by-year" class="nav-link" data-scroll-target="#data-cleaning---interest-rates-by-year">Data Cleaning - Interest Rates by Year</a></li>
+  <li><a href="#summary-statistics---interest-rates" id="toc-summary-statistics---interest-rates" class="nav-link" data-scroll-target="#summary-statistics---interest-rates">Summary Statistics - Interest Rates</a>
   <ul class="collapse">
   <li><a href="#data-combination" id="toc-data-combination" class="nav-link" data-scroll-target="#data-combination">Data Combination</a></li>
   </ul></li>
@@ -205,7 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="dataset-1---nls-national-longitudinal-survey" class="level3">
 <h3 class="anchored" data-anchor-id="dataset-1---nls-national-longitudinal-survey">DataSet #1 - NLS National Longitudinal Survey</h3>
 <hr>
-<p>All the R scripts we used to load and clean this dataset can be found <a href="./scripts/clean_data_update.R">here</a>. Our cleaned dataset can be found <a href="./dataset/nls_clean.csv">here</a>.</p>
+<p>All the R scripts we used to load and clean this dataset can be found <a href=".\scripts/clean_data_update.R">here</a>. Our cleaned dataset can be found <a href=".\dataset/nls_clean.csv">here</a>.</p>
 <hr>
 <div class="cell">
 <div class="cell-output-display">
@@ -387,6 +389,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>    <span class="at">Income_2010 =</span> T3045300</span>
 <span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
+</section>
+<section id="summary-statistics---nls-national-longitudinal-survey" class="level2">
+<h2 class="anchored" data-anchor-id="summary-statistics---nls-national-longitudinal-survey">Summary Statistics - NLS National Longitudinal Survey</h2>
+<p>Here are some important variables and their distributions found in the NLS data.</p>
+<hr>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -416,9 +423,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>NULL</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -437,7 +441,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="dataset-2---interest-rates-by-year" class="level3">
 <h3 class="anchored" data-anchor-id="dataset-2---interest-rates-by-year">DataSet #2 - Interest Rates by Year</h3>
 <hr>
-<p>This cleaned dataset can be found <a href="./dataset/interest_rates_cleaned.csv">here</a>.</p>
+<p>This cleaned dataset can be found <a href=".\dataset/interest_rates_cleaned.csv">here</a>.</p>
 <hr>
 <div class="cell">
 <div class="cell-output-display">
@@ -516,45 +520,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="data-cleaning---interest-rates-by-year" class="level2">
 <h2 class="anchored" data-anchor-id="data-cleaning---interest-rates-by-year">Data Cleaning - Interest Rates by Year</h2>
 <p>We began by importing the dataset using the read_csv() function from the readr package in the tidyverse. Then, we first added additional income years to cover 2000-2010 as opposed to just 2010. Afterwards, we joined the interest rate average of each year with the corresponding two years - so 2001 and 2002 went into 2002, 2003 and 2004 went into 2004, and so on. By doing this, we were able to join the interest rate data into our survey data in an efficient and complementary way.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load in another library to clean second dataset</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we clean the second Dataset which we loaded in </span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>rates <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"./dataset/long-term-rates-2000-2010.csv"</span>)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>rates2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"./dataset/long-term-rates-2011-2020.csv"</span>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#combine rates and rates2</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>combined_rates <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(rates1, rates2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load in another library to clean second dataset</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we clean the second Dataset which we loaded in </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>rates <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"./dataset/long-term-rates-2000-2010.csv"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>rates2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"./dataset/long-term-rates-2011-2020.csv"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#combine rates and rates2</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>combined_rates <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(rates1, rates2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Additionally, defining a custom get_mode() function, made it easy to handle mode calculation, since R does not provide a built-in mode() for numeric data in a tidy pipeline.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a mode function (returns the first mode if multiple)</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>get_mode <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  ux <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">na.omit</span>(x))</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  ux[<span class="fu">which.max</span>(<span class="fu">tabulate</span>(<span class="fu">match</span>(x, ux)))]</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a mode function (returns the first mode if multiple)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>get_mode <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  ux <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">na.omit</span>(x))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  ux[<span class="fu">which.max</span>(<span class="fu">tabulate</span>(<span class="fu">match</span>(x, ux)))]</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The Date column, originally in character format, was converted to proper Date objects using lubridate::mdy(). We then extracted the year from each date to enable grouping by year. To understand yearly trends in interest rates, we grouped the data by Year and computed a comprehensive set of summary statistics for each of the two rate columns including mean, minimum, maximum, standard deviation, median, and mode.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mutate data to have proper year date format (wil be easier to compute stat summaries with)</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>interest_rates_cleaned <span class="ot">&lt;-</span> combined_rates <span class="sc">%&gt;%</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Date =</span> <span class="fu">mdy</span>(Date),</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Year =</span> <span class="fu">year</span>(Date)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">%&gt;%</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_LT =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">min_LT =</span> <span class="fu">min</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_LT =</span> <span class="fu">max</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_LT =</span> <span class="fu">sd</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_LT =</span> <span class="fu">median</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">mode_LT =</span> <span class="fu">get_mode</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>),</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_TREASURY =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">min_TREASURY =</span> <span class="fu">min</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_TREASURY =</span> <span class="fu">max</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_TREASURY =</span> <span class="fu">sd</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_TREASURY =</span> <span class="fu">median</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">mode_TREASURY =</span> <span class="fu">get_mode</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>)</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mutate data to have proper year date format (wil be easier to compute stat summaries with)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>interest_rates_cleaned <span class="ot">&lt;-</span> combined_rates <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Date =</span> <span class="fu">mdy</span>(Date),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Year =</span> <span class="fu">year</span>(Date)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_LT =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">min_LT =</span> <span class="fu">min</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_LT =</span> <span class="fu">max</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_LT =</span> <span class="fu">sd</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_LT =</span> <span class="fu">median</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">mode_LT =</span> <span class="fu">get_mode</span>(<span class="st">`</span><span class="at">LT COMPOSITE (&gt;10 Yrs)</span><span class="st">`</span>),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_TREASURY =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">min_TREASURY =</span> <span class="fu">min</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_TREASURY =</span> <span class="fu">max</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_TREASURY =</span> <span class="fu">sd</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_TREASURY =</span> <span class="fu">median</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">mode_TREASURY =</span> <span class="fu">get_mode</span>(<span class="st">`</span><span class="at">TREASURY 20-Yr CMT</span><span class="st">`</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Finally, the dataset is written on to a CSV file for later use.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(interest_rates_cleaned, <span class="st">"interest_rates_cleaned.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(interest_rates_cleaned, <span class="st">"interest_rates_cleaned.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+<section id="summary-statistics---interest-rates" class="level2">
+<h2 class="anchored" data-anchor-id="summary-statistics---interest-rates">Summary Statistics - Interest Rates</h2>
+<p>Here are some important variables and their distributions found in the Interest Rates data.</p>
+<hr>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -581,54 +591,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="data-combination" class="level3">
 <h3 class="anchored" data-anchor-id="data-combination">Data Combination</h3>
 <hr>
-<p>This cleaned dataset can be found <a href="./dataset/nls-with-more-years.csv">here</a>.</p>
+<p>This cleaned dataset can be found <a href=".\dataset/nls-with-more-years.csv">here</a>.</p>
 <hr>
 <p>We begin by loading our cleaned second dataset. Since the interest rates were available annually but the NLS income data was collected biennially, we created a mapping table (rate_to_income) that associates each available rate year with the closest corresponding income year.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the cleaned interest rate data</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>interest_rates <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"dataset"</span>, <span class="st">"interest_rates_cleaned.csv"</span>))</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Map rate years to income years</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>rate_to_income <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Year, <span class="sc">~</span>Income_Year,</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2000</span>, <span class="dv">2000</span>,</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2001</span>, <span class="dv">2002</span>,</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2002</span>, <span class="dv">2002</span>,</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2003</span>, <span class="dv">2004</span>,</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2004</span>, <span class="dv">2004</span>,</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2005</span>, <span class="dv">2006</span>,</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2006</span>, <span class="dv">2006</span>,</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2007</span>, <span class="dv">2008</span>,</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2008</span>, <span class="dv">2008</span>,</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2009</span>, <span class="dv">2010</span>,</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2010</span>, <span class="dv">2010</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the cleaned interest rate data</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>interest_rates <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"dataset"</span>, <span class="st">"interest_rates_cleaned.csv"</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Map rate years to income years</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>rate_to_income <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Year, <span class="sc">~</span>Income_Year,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2000</span>, <span class="dv">2000</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2001</span>, <span class="dv">2002</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2002</span>, <span class="dv">2002</span>,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2003</span>, <span class="dv">2004</span>,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2004</span>, <span class="dv">2004</span>,</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2005</span>, <span class="dv">2006</span>,</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2006</span>, <span class="dv">2006</span>,</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2007</span>, <span class="dv">2008</span>,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2008</span>, <span class="dv">2008</span>,</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2009</span>, <span class="dv">2010</span>,</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2010</span>, <span class="dv">2010</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Using the mapping, we joined the interest rates to their matched income years. Then, we grouped the data by Income_Year and computed the mean of the long-term interest rates (avg_LT_rate) for each income year.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join and average interest rates by income year</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>mapped_rates <span class="ot">&lt;-</span> rate_to_income <span class="sc">%&gt;%</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(interest_rates, <span class="at">by =</span> <span class="st">"Year"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Income_Year) <span class="sc">%&gt;%</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_LT_rate =</span> <span class="fu">mean</span>(mean_LT, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join and average interest rates by income year</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>mapped_rates <span class="ot">&lt;-</span> rate_to_income <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(interest_rates, <span class="at">by =</span> <span class="st">"Year"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Income_Year) <span class="sc">%&gt;%</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_LT_rate =</span> <span class="fu">mean</span>(mean_LT, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The NLS dataset was originally wide, with separate columns for each year’s income. We reshaped it into a long format where each row represents an individual-year combination, keeping demographic variables unchanged. The income year was extracted from the column names and converted into an integer for proper joining.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Pivot NLS data to long format while keeping demographic columns</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>nls_income_long <span class="ot">&lt;-</span> nls_data_clean <span class="sc">%&gt;%</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"Income_"</span>),</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Income_Year"</span>,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_prefix =</span> <span class="st">"Income_"</span>,</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Income"</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Income_Year =</span> <span class="fu">as.integer</span>(Income_Year))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Pivot NLS data to long format while keeping demographic columns</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>nls_income_long <span class="ot">&lt;-</span> nls_data_clean <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"Income_"</span>),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Income_Year"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_prefix =</span> <span class="st">"Income_"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Income"</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Income_Year =</span> <span class="fu">as.integer</span>(Income_Year))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We then merged the long-format NLS income data with the mapped interest rates using Income_Year as the key. This appended the relevant avg_LT_rate to each income record. Finally, we saved the fully combined dataset (nls_with_rates_full.csv) for future modeling and analysis.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Join average interest rates by income year</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>nls_with_rates_full <span class="ot">&lt;-</span> nls_income_long <span class="sc">%&gt;%</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(mapped_rates, <span class="at">by =</span> <span class="st">"Income_Year"</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(nls_with_rates_full, <span class="fu">here</span>(<span class="st">"dataset"</span>, <span class="st">"nls_with_rates_full.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Join average interest rates by income year</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>nls_with_rates_full <span class="ot">&lt;-</span> nls_income_long <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(mapped_rates, <span class="at">by =</span> <span class="st">"Income_Year"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(nls_with_rates_full, <span class="fu">here</span>(<span class="st">"dataset"</span>, <span class="st">"nls_with_rates_full.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
@@ -670,7 +680,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const onCopySuccess = function(e) {
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -702,29 +723,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
   });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/sussmanbu\.github\.io\/ma4615-sp25-final-project-datadetectives\/");
@@ -732,7 +731,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

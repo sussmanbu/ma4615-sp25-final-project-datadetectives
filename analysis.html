@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="description" content="Here we provide a detailed analysis using more sophisticated statistics techniques.">
 
-<title>Analysis – MA 415 Data Detectives Final Project</title>
+<title>MA 415 Data Detectives Final Project - Analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -34,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -102,9 +102,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+
 <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -149,7 +151,7 @@ window.Quarto = {
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -172,7 +174,7 @@ window.Quarto = {
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
+          <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -189,8 +191,7 @@ window.Quarto = {
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
   <ul class="collapse">
   <li><a href="#objective-and-research-questions" id="toc-objective-and-research-questions" class="nav-link" data-scroll-target="#objective-and-research-questions">Objective and Research Questions</a></li>
-  <li><a href="#motivating-figures-and-tables-demographic-factors" id="toc-motivating-figures-and-tables-demographic-factors" class="nav-link" data-scroll-target="#motivating-figures-and-tables-demographic-factors">Motivating Figures and Tables: Demographic Factors</a></li>
-  <li><a href="#motivating-figures-and-tables-interest-rates" id="toc-motivating-figures-and-tables-interest-rates" class="nav-link" data-scroll-target="#motivating-figures-and-tables-interest-rates">Motivating Figures and Tables: Interest Rates</a></li>
+  <li><a href="#motivating-figures-for-analysis" id="toc-motivating-figures-for-analysis" class="nav-link" data-scroll-target="#motivating-figures-for-analysis">Motivating Figures for Analysis</a></li>
   </ul></li>
   <li><a href="#modeling-and-inference" id="toc-modeling-and-inference" class="nav-link" data-scroll-target="#modeling-and-inference">Modeling and Inference</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
@@ -241,19 +242,9 @@ window.Quarto = {
 <li>Did the recession exacerbate income inequality differently along racial, socioeconomic, regional, or other lines?</li>
 </ul>
 </section>
-<section id="motivating-figures-and-tables-demographic-factors" class="level3">
-<h3 class="anchored" data-anchor-id="motivating-figures-and-tables-demographic-factors">Motivating Figures and Tables: Demographic Factors</h3>
+<section id="motivating-figures-for-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="motivating-figures-for-analysis">Motivating Figures for Analysis</h3>
 <p>The following graphs explore some of the relationships between variables in our data to motivate this goal.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="analysis_files/figure-html/aretha graphs-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>This box plot explores the difference in income along gender and racial lines. Across all regions, men appear to make more money than women. However, this effect is particularly pronounced in the South and West regions, where the box plot indicates that a higher proportion of women do not make any income. This higher number of zero-income observations causes some issues for analysis to be accounted for during outlier removal. The graph also highlights the potential difference in effect of income declines across groups.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -263,9 +254,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-</section>
-<section id="motivating-figures-and-tables-interest-rates" class="level3">
-<h3 class="anchored" data-anchor-id="motivating-figures-and-tables-interest-rates">Motivating Figures and Tables: Interest Rates</h3>
+<p>These boxplots explore the difference in income along the lines of age, race, and sex. Across most age and race groups, men in the dataset tend to make more money than women. The pay gap is especially pronounced among Non-Black / Non-Hispanic people. These boxplots indicate that there is a higher proportion of women who do not make any income. The higher number of zero-income values causes some issues for analysis to be accounted for during outlier removal. Our analysis aims to examine how the differences observed in income between groups observed in these boxplots were impacted by the recession and macroeconomic trends.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -275,6 +264,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
+<p>This graph shows how interest rates declined over the course of the 2000s, and juxtaposes this trend with income for Black, Hispanic, and Non-Black / Non-Hispanic people. Whereas incomes for people within the first two hroups saw a decline in average income, Non-Black / Non-Hispanic peolpe saw a slight increase, further indicating that macroeconomic trends such as indicated through interest rates might have different impacts on different demographic groups.</p>
 </section>
 </section>
 <section id="modeling-and-inference" class="level2">
@@ -878,7 +868,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const onCopySuccess = function(e) {
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -910,29 +911,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
   });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/sussmanbu\.github\.io\/ma4615-sp25-final-project-datadetectives\/");
@@ -940,7 +919,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

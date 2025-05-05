@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Exploring the 2008 Crisis .">
+<meta name="description" content="Exploring the 2008 Crisis">
 
-<title>Boom, Bust and Balance - Between The Lines of Income and Interest Rates – MA 415 Data Detectives Final Project</title>
+<title>MA 415 Data Detectives Final Project - Boom, Bust and Balance - Between The Lines of Income and Interest Rates</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -89,7 +89,7 @@ ul.task-list li input[type="checkbox"] {
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -112,7 +112,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
+          <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -142,7 +142,7 @@ ul.task-list li input[type="checkbox"] {
 
 <div>
   <div class="description">
-    Exploring the 2008 Crisis .
+    Exploring the 2008 Crisis
   </div>
 </div>
 
@@ -401,12 +401,14 @@ shinyApp(ui, server)
 
 
 </code></pre>
-<p>The recession officially began in Dec 2007 and peaked in 2008-2009, yet most groups saw income growth in 2008—possibly due to lag effects or government stimulus <a href="https://www.congress.gov/bill/110th-congress/house-bill/5140#:~:text=Economic%20Stimulus%20Act%20of%202008%20%2D%20Title%20I%3A%20Recovery%20Rebates%20and,married%20taxpayers%20filing%20joint%20returns">e.g., 2008 Economic Stimulus Act</a>.</p>
+<p>The recession officially began in Dec 2007 and peaked in 2008-2009, yet most groups saw income growth in 2008—possibly due to lag effects or government stimulus <a href="https://www.congress.gov/bill/110th-congress/house-bill/5140#:~:text=Economic%20Stimulus%20Act%20of%202008%20%2D%20Title%20I%3A%20Recovery%20Rebates%20and,married%20taxpayers%20filing%20joint%20returns">e.g., 2008 Economic Stimulus Act</a>. Additionally, average income rates declined over time in 2007/2008 - these lower rates could have boosted home refinancing for homes with stable incomes, reduces returns on savings, disproportionately affecting lower-income groups and eased creat access, but Black/Hispanic househould may still have faced higher loan rejection rates due to systemic biases.</p>
 </section>
 </section>
 <section id="thesis" class="level3">
 <h3 class="anchored" data-anchor-id="thesis">Thesis</h3>
 <p>Falling interest rates during the 2008 recession provided financial relief for high-income earners but failed to prevent income declines for Black households, reflecting systemic inequities in economic recovery. Hispanic households experienced relative resilience, suggesting structural differences in employment stability and access to credit.</p>
+<p>=======</p>
+<p><strong>Note</strong>: This page should have no code visible, i.e.&nbsp;use <code>#| echo: FALSE</code>.</p>
 
 
 </section>
@@ -447,7 +449,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const onCopySuccess = function(e) {
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -479,29 +492,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
   });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/sussmanbu\.github\.io\/ma4615-sp25-final-project-datadetectives\/");
@@ -509,7 +500,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
