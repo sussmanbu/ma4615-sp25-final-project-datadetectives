@@ -167,7 +167,9 @@ library(lmtest)
 nls_data_tbu <- read_csv("dataset/nls_no_outliers.csv")
 nls_data_modeling <- nls_data_tbu %>%
    filter(Income_Year %in% c(2006, 2008, 2010)) %>%
-   mutate(edu_bin = case_when(
+  mutate(
+    Marital_Status = relevel(factor(Marital_Status), ref = "Never Married")
+  ) %>% mutate(edu_bin = case_when(
      Highest_Grade_Completed %in% c(
        "UNGRADED", "1ST GRADE",  "2ND GRADE",  "3RD GRADE", "4TH GRADE",  
         "5TH GRADE",  "6TH GRADE", "7TH GRADE",  "8TH GRADE") ~ "Less than HS",
@@ -403,7 +405,7 @@ co_tibble %>%
   )
 
 ```
-Our coefficient estimates did not change nor did the scale of our variables, and our standard errors, t-values, and p-values were adjusted accordingly through `coeftest()` and updated our significance levels. Initially, the `Marital_StatusWidowed` term was moderately significant, but after adjustments, the model has updated that term as having a more substantial effect on the model.  
+Our coefficient estimates did not change nor did the scale of our variables, and our standard errors, t-values, and p-values were adjusted accordingly through `coeftest()` and updated our significance levels. Initially, the `Marital_StatusWidowed` term was moderately significant, but after adjustments, the model has updated that term as having a more substantial effect on the model. We clustered by `Case_ID` to check for between-person correlation, but this did not differ from the original HC1 coeftest() and did not alter conclusions, so we only reported the original results.  
 
 With valid inferences now, the last part we decided to test was the use of stepwise AIC/BIC regression for variable selection. 
 
@@ -450,4 +452,43 @@ tibble(
 ```
 The use of stepwise AIC/BIC regression shows that both AIC and BIC criterion based selections result in the same models, with the omission of `Age_2010` as a variable to consider. These results align with the `***` significance markers in our coefficient tests as `Age_2010` is not included as a significant covariate (The `RegionSouth` level is also not considered significant, but the overall `Region` variable is significant as the other levels have an effect). However, these stepwise regression results still need to be considered with caution as heteroscedasticity violates the penalties enacted by AIC and BIC. More principled selection methods can be explored, but these are out of our scope. 
 
-## Results, Limitations, and Conclusion
+
+## Conclusion
+
+Based on our diagnostics and overall checks, the following is our OLS model on the untransformed `Income` scale: 
+
+$$
+\mathrm{Income}_i \;=\; \beta_0 
+  + \beta_{\text{Race}} 
+  + \beta_{\text{Sex}} 
+  + \beta_{\text{Marital}} 
+  + \beta_{\text{Region}} 
+  + \beta_{\text{Edu}} 
+  + \beta_{\text{LT Rate}} 
+  + \varepsilon_i
+$$
+
+Our pooled-OLS model (pooling 2006, 2008, and 2010 while retaining only long-term average interest rates) with HC1-Robust SEs (checked for person-clustered SEs) provided us with the following key takeaways: 
+
+**Education and Gender remain the most dominant effects on Income**:
+• Considering all other predictors held constant, regardless of the year, men earned on average `~$14,242` more per year than women. 
+
+• Averaging across 2006-2010, college graduates earned nearly `~$30000` more than those who did not attend high school ("Less than HS" is part of the base estimate as an indicator variable). The gap is of a similar magnitude in each year, which suggests that a college education was stable even during the 2008 downturn. 
+
+• Those who attended high school earned `~$10851` more than those who did not attend high school. Moving from high school to some college education added `~$7514` more to earnings. Those who completed traditional 4-year college paths and those who pursued postgraduate education earned `$11067` more than the previous level. Each successive education category translated to about `$7000-$11000` in additional annual earnings, a pattern stable across 2006-2010. 
+
+**Racial Disparity, Marriage, and Region contribute with strong secondary effects**:
+• Those under the `Non-Black/Non-Hispanic` and those who indicated the `Hispanic` race category earned nearly `$2993` and `$2807` more than those in the `Black / African-American` race category respectively (baseline). This can be indicative that the individuals in the `Black / African-American` category were more disproportionately affected with relation to `Income` regardless of the year (or the recession). 
+
+• Those who were married earned `$6627` more than those were never married (baseline). Divorced individuals earned `$4408` more than people who never married. On the flip side, those who were separated or widowed saw a reduction in income on average of `$1682` and `$677`. The large increase between those who were single and those who were married indicate that marriage had an economical advantage (likely through dual incomes, shared expenses, financial support from spouse, tax breaks). 
+
+• In comparison to the baseline of living in the central part of the United States, those who living in the Northeastern United States earned `~$4010` more. Those living in the Western parts of the country earned `~2824` more than those in the central areas. Only the Southern United States was relatively similar with a small increase in earnings of `~$445`. Such differences may have existed due to more economic opportunities, urban areas, adjustments for higher costs of living and expenses, and more. 
+
+**Macroeconomic conditions have an impact**:  
+By omitting factor levels for each year, the long-term interest rates are isolated and show the marginal cyclical effect of the rates, not conflated with other effects embedded in the model and intercept (ex: wage growth, recessionary gaps, stimulus programs, and more). Including the years as factor levels would have absorbed the rate.  
+
+A one-percent point rise in the average long-term interest rate is associated with a `$2523` reduction in income on average across the three years, even after pooling across the recessionary dip in 2008. However, this is not a causal effect as other pure-rate impacts would need to be added. 
+
+Noting on the recession in 2008, the reduction does not account for total shock in 2008, but rather the credit-cost sensitivity (as a marginal cyclical effect), explaining the average difference in income due to the change in borrowing costs with all other demographic traits fixed.
+
+If the years were added as factors, then the aggregate recession impact could be measured, but we would not be able to distinguish how much of that was due to the long-term interest rates vs. other shock. 
