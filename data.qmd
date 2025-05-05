@@ -34,7 +34,7 @@ nls <- read_csv("dataset/nls_clean.csv", show_col_types = FALSE) %>%
 
 ```
 
-```{r nls vars, echo= FALSE}
+```{r nls vars, echo= FALSE, warning=FALSE}
 
 # Create a variable dictionary based on the column names
 nls_descriptions <- tibble(
@@ -183,7 +183,13 @@ nls_data_clean <- nls_data %>%
 
 ***
 
-```{r dataset1 vars, echo= FALSE}
+## Summary Statistics - NLS National Longitudinal Survey
+
+Here are some important variables and their distributions found in the NLS data. 
+
+***
+
+```{r dataset1 vars, echo=FALSE, warning= FALSE}
 nls_data_clean <- read_rds("dataset/nls_clean.rds")
 
 #personal income
@@ -216,8 +222,7 @@ nls %>%
   ggplot(aes(x = "", y = n, fill = Sex)) +
   geom_bar(stat = "identity", width = 1) +
   coord_polar("y") +
-  scale_fill_manual(values = c("Male" = "#D2691E",  
-                               "Female" = "#FF8C00"))
+  scale_fill_manual(values = c("Male" = "#D2691E", "Female" = "#FF8C00"))+
   labs(title = "Sex Distribution") +
   theme_void()
 
@@ -247,7 +252,7 @@ This cleaned dataset can be found [here](/dataset/interest_rates_cleaned.csv).
 
 ***
   
-```{r dataset2 vars, echo= FALSE}
+```{r dataset2 vars, echo= FALSE, warning=FALSE}
 # Load the data
 df <- read_csv("dataset/interest_rates_cleaned.csv",show_col_types= FALSE)
 
@@ -332,7 +337,15 @@ write_csv(interest_rates_cleaned, "interest_rates_cleaned.csv")
 
 ```
 
-```{r dataset2 distributions, echo= FALSE}
+***
+
+## Summary Statistics - Interest Rates
+
+Here are some important variables and their distributions found in the Interest Rates data. 
+
+***
+
+```{r dataset2 distributions, echo= FALSE, warning=FALSE}
 
 #LT stats
 lt_long <- df %>%

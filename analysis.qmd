@@ -496,19 +496,24 @@ $$
 
 Our pooled-OLS model (pooling 2006, 2008, and 2010 while retaining only long-term average interest rates) with HC1-Robust SEs (checked for person-clustered SEs) provided us with the following key takeaways: 
 
+
 **Education and Gender remain the most dominant effects on Income**:
+
 - With all other predictors held constant, males earned on average `~$14,242` more per year than females regardless of the year. 
 
 - Averaging across 2006-2010, college graduates earned nearly `~$30000` more than those who did not attend high school ("Less than HS" is part of the base estimate as an indicator variable). The gap is of a similar magnitude in each year, which suggests that a college education was stable even during the 2008 downturn. 
 
 - Each successive education category translated to about `$7000-$11000` in additional annual earnings, a pattern stable across 2006-2010.  
 
+
 **Race, Marriage, and Region have strong secondary effects**:
+
 - Individuals identifying as `Non-Black/Non-Hispanic` and `Hispanic` earned nearly `$2993` and `$2807` more than those identifying as `Black / African-American` (baseline), potentially indicative of `Black / African-American` individuals being disproportionately affected with relation to earnings. 
 
 - Married individuals earned `$6627` more than those who never married (baseline). Divorced individuals earned `$4408` more, while separated and widowed individuals earned `$1682` and `$677` less, respectively. Marriage might have had an economical advantage (potentially dual incomes, shared expenses, financial support from spouse). 
 
 - Compared to those living in the central United States (baseline), residents in the Northeast earned `~$4010` more, and residents living in the West earned `~2824` more. The South had a modest increase in earnings of `~$445`. These differences may reflect economic opportunities, urbanization, and higher costs of living. 
+
 
 **Macroeconomic conditions have an impact**:  
 By omitting factor levels for each year, the long-term interest rates are isolated and show the marginal cyclical effect of the rates, not conflated with other effects embedded in the model and intercept (ex: wage growth, recessionary gaps, stimulus programs). 
