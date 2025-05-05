@@ -259,9 +259,9 @@ summary_row %>%
 
 ```
 
-**• Model Fit:** Our model has a r-squared value of 0.2009, indicating that 20.09% of the variance in our model is explained by the model's covariates. The adjusted r-squared value is slightly lower at 0.1999, meaning our model explains 19.99% of the variance in the model after adjusting for the number of predictors. 
+- Our model has a r-squared value of 0.2009, indicating that 20.09% of the variance in our model is explained by the model's covariates. The adjusted r-squared value is slightly lower at 0.1999, meaning our model explains 19.99% of the variance in the model after adjusting for the number of predictors. 
 
-**• Other Model Metrics:** The F-statistic of 199 and p-value of <2e-16 (extremely close to 0) confirms that the overall model is statistically significant; Atleast some of the covariates in the model explain our response variable `Income`. Only `Age_2010` and `RegionSouth` fail to have a significant effect in explaining `Income`. The residual standard error of 22033 (roughly `0.5418` of mean income) indicates substantial noise exists in our model. 
+- The F-statistic of 199 and p-value of <2e-16 (extremely close to 0) confirms that the overall model is statistically significant; Atleast some of the covariates in the model explain our response variable `Income`. Only `Age_2010` and `RegionSouth` fail to have a significant effect in explaining `Income`. The residual standard error of 22033 (roughly `0.5418` of mean income) indicates substantial noise exists in our model. 
 
 ```{r rse_analysis, echo=FALSE, message=FALSE,warning=FALSE, include=FALSE}
 
@@ -283,7 +283,7 @@ theme_minimal()
 residplot
 
 ```
-• The residual vs. fitted values for our model reveals funneling, indicating moderate levels of heteroscedasticity that could bias the standard errors for our coefficients. This could distort our t-test statistics and p-values and undermining the actual significance of covariates in the model.   
+- The residual vs. fitted values for our model reveals funneling, indicating moderate levels of heteroscedasticity that could bias the standard errors for our coefficients. This could distort our t-test statistics and p-values and undermining the actual significance of covariates in the model.   
 
 ```{r qqplot, echo=FALSE, message=FALSE,warning=FALSE}
 
@@ -293,9 +293,9 @@ norm_plot <- ggplot(df_info, aes(sample = .std.resid)) + stat_qq(size = 0.8) +
 norm_plot
 
 ```
-• Analyzing our normal Q-Q plot, most points follow along the dashed diagonal line very well; most residuals are approximately normally distributed. 
+- Analyzing our normal Q-Q plot, most points follow along the dashed diagonal line very well; most residuals are approximately normally distributed. 
 
-• On the ends, several points stray away, reflecting a few extreme (under and over) predictions and heavier tails than a normal Gaussian distribution. These results are expected as we only trimmed the most extreme outliers and because of the nature of our data (most people cluster around the middle of the distribution, but a few people earn very little while a few earn very large sums -- disparity in income distribution). 
+- On the ends, several points stray away, reflecting a few extreme (under and over) predictions and heavier tails than a normal Gaussian distribution. These results are expected as we only trimmed the most extreme outliers and because of the nature of our data (most people cluster around the middle of the distribution, but a few people earn very little while a few earn very large sums -- disparity in income distribution). 
 
 Another consideration we made was to check for multicollinearity (for the precision of our coefficient estimates) by computing predictor-level GVIF values adjusted with degrees of freedom. All values fell below 1.5, with most covariates having GVIF values close to 1. No interaction terms were needed in our model, and our r-squared and adjusted r-squared values are not inflated by correlated predictors. 
 
@@ -324,13 +324,14 @@ vif_pres %>%
 ```
 
 After checking diagnostics and GVIFs: 
-• Moderate heteroscedasticity existed (seen in residual vs. fitted plot). 
-• Residuals in our Q-Q plot were roughly normal. 
-• Relatively no multicollinearity based on the GVIFs.
+
+- Moderate heteroscedasticity existed (seen in residual vs. fitted plot).
+- Residuals in our Q-Q plot were roughly normal. 
+- Relatively no multicollinearity based on the GVIFs.
 
 Our next logical step was to experiment with stabilizing the variance through transformations of our outcome. 
 
-We fitted various transformations,included four common ones (`boxcox` - lambda = 0.6, `square root`, `logarithm`, `reciprocal`), and compared their residual standard errors for further analysis.  
+We fitted various transformations, included four common ones (`boxcox` - lambda = 0.6, `square root`, `logarithm`, `reciprocal`), and compared their residual standard errors for further analysis.  
 
 ```{r transformations, echo=FALSE, message=FALSE, warning=FALSE}
 library(MASS)
@@ -365,13 +366,13 @@ resid_ses %>%
   )
 
 ```
-• For the `sqrt()` transformation, the residual SE was 59 `square root dollar units`, showing some variance stabilization but not intuitive on this scale. 
+- For the `sqrt()` transformation, the residual SE was 59 `square root dollar units`, showing some variance stabilization but not intuitive on this scale. 
 
-• For the `log()` transformation, the residual SE was 1 `log dollar unit`, translating to multiplicative errors of `~2.7x` in our residual calculations.    
+- For the `log()` transformation, the residual SE was 1 `log dollar unit`, translating to multiplicative errors of `~2.7x` in our residual calculations.    
 
-• For the `1/Income` reciprocal transformation, the residual SE was 0. The transformation collapsed all the variation towards 0 but over compressed to the point of breaking interpretability of the coefficients.   
+- For the `1/Income` reciprocal transformation, the residual SE was 0. The transformation collapsed all the variation towards 0 but over compressed to the point of breaking interpretability of the coefficients.   
 
-• For the `boxcox` transformation, the residual SE was 332 (on lambda value of 0.6), comparable to the sqrt() transform (lambda value 0.5) but non-intuitive on a different scale. 
+- For the `boxcox` transformation, the residual SE was 332 (on lambda value of 0.6), comparable to the sqrt() transform (lambda value 0.5) but non-intuitive on a different scale. 
 
 Further analysis into the residual vs. fitted plots for all the transformations revealed that none of these transformations corrected for heteroscedasticity, with all showing funneling (and therefore we have omitted the plots for brevity).  
 
@@ -496,22 +497,22 @@ $$
 Our pooled-OLS model (pooling 2006, 2008, and 2010 while retaining only long-term average interest rates) with HC1-Robust SEs (checked for person-clustered SEs) provided us with the following key takeaways: 
 
 **Education and Gender remain the most dominant effects on Income**:
-• With all other predictors held constant, males earned on average `~$14,242` more per year than females regardless of the year. 
+- With all other predictors held constant, males earned on average `~$14,242` more per year than females regardless of the year. 
 
-• Averaging across 2006-2010, college graduates earned nearly `~$30000` more than those who did not attend high school ("Less than HS" is part of the base estimate as an indicator variable). The gap is of a similar magnitude in each year, which suggests that a college education was stable even during the 2008 downturn. 
+- Averaging across 2006-2010, college graduates earned nearly `~$30000` more than those who did not attend high school ("Less than HS" is part of the base estimate as an indicator variable). The gap is of a similar magnitude in each year, which suggests that a college education was stable even during the 2008 downturn. 
 
-•  Each successive education category translated to about `$7000-$11000` in additional annual earnings, a pattern stable across 2006-2010.  
+- Each successive education category translated to about `$7000-$11000` in additional annual earnings, a pattern stable across 2006-2010.  
 
-**Race, Marriage, and Region contribute with strong secondary effects**:
-• Individuals identifying as `Non-Black/Non-Hispanic` and `Hispanic` earned nearly `$2993` and `$2807` more than those identifying as `Black / African-American` (baseline), potentially indicative of `Black / African-American` individuals being disproportionately affected with relation to earnings. 
+**Race, Marriage, and Region have strong secondary effects**:
+- Individuals identifying as `Non-Black/Non-Hispanic` and `Hispanic` earned nearly `$2993` and `$2807` more than those identifying as `Black / African-American` (baseline), potentially indicative of `Black / African-American` individuals being disproportionately affected with relation to earnings. 
 
-• Married individuals earned `$6627` more than those who never married (baseline). Divorced individuals earned `$4408` more, while separated and widowed individuals earned `$1682` and `$677` less, respectively. Marriage might have had an economical advantage (potentially dual incomes, shared expenses, financial support from spouse). 
+- Married individuals earned `$6627` more than those who never married (baseline). Divorced individuals earned `$4408` more, while separated and widowed individuals earned `$1682` and `$677` less, respectively. Marriage might have had an economical advantage (potentially dual incomes, shared expenses, financial support from spouse). 
 
-• Compared to those living in the central United States (baseline), residents in the Northeast earned `~$4010` more, and residents living in the West earned `~2824` more. The South had a modest increase in earnings of `~$445`. These differences may reflect economic opportunities, urbanization, and higher costs of living. 
+- Compared to those living in the central United States (baseline), residents in the Northeast earned `~$4010` more, and residents living in the West earned `~2824` more. The South had a modest increase in earnings of `~$445`. These differences may reflect economic opportunities, urbanization, and higher costs of living. 
 
 **Macroeconomic conditions have an impact**:  
 By omitting factor levels for each year, the long-term interest rates are isolated and show the marginal cyclical effect of the rates, not conflated with other effects embedded in the model and intercept (ex: wage growth, recessionary gaps, stimulus programs). 
 
-• A one-percent point rise in the average long-term interest rate is associated with a `$2523` reduction in income on average across the three years, even after pooling across the recessionary dip in 2008.
+- A one-percent point rise in the average long-term interest rate is associated with a `$2523` reduction in income on average across the three years, even after pooling across the recessionary dip in 2008.
 
-This reduction does not account for total shock in 2008, rather reflecting on the credit-cost sensitivity, explaining the average difference in income due to the change in borrowing costs with all other demographic traits fixed.
+This reduction does not account for total shock in 2008, rather reflecting on the credit-cost sensitivity, explaining the average difference in income due to the change in borrowing costs with all other predictors fixed.
