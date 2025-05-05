@@ -155,6 +155,10 @@ nls_no_outliers <- nls_with_rates %>%
 write_csv(nls_no_outliers, "dataset/nls_no_outliers.csv")
 ```
 
+After cleaning the data with the script, we began creating our model. After reading the "No Outliers" dataset, we filtered the data by the income years of interest (2006, 2008, and 2010). We also transformed the data by changing the education levels to binned groups ("Less than HS", "High School", "Some College", and "College+" (College+ standing for college graduate or more)) and baseline of "Never Married" for `Marital Status`. The remaining baselines were determined through alphabetical order automatically through the model (which has been addressed in our conclusions).  
+
+After omitting NA values for the bins, we utilized `lm` to create a linear model, testing covariates of `Race`, `Sex`, `Marital Status`, `Age_2010` (Age at Year 2010), `Region`, `edu_bin` (education group bins), and `avg_LT_rate` (average long-term interest rates) and received the following model summary statistics.
+
 ```{r statisticsmod, echo=FALSE, message=FALSE,warning=FALSE}
 library(car)
 library(sandwich)
@@ -163,7 +167,9 @@ library(lmtest)
 nls_data_tbu <- read_csv("dataset/nls_no_outliers.csv")
 nls_data_modeling <- nls_data_tbu %>%
    filter(Income_Year %in% c(2006, 2008, 2010)) %>%
-   mutate(edu_bin = case_when(
+  mutate(
+    Marital_Status = relevel(factor(Marital_Status), ref = "Never Married")
+  ) %>% mutate(edu_bin = case_when(
      Highest_Grade_Completed %in% c(
        "UNGRADED", "1ST GRADE",  "2ND GRADE",  "3RD GRADE", "4TH GRADE",  
         "5TH GRADE",  "6TH GRADE", "7TH GRADE",  "8TH GRADE") ~ "Less than HS",
@@ -178,15 +184,335 @@ nls_data_modeling <- nls_data_tbu %>%
   mutate(edu_bin = factor(edu_bin, levels = c("Less than HS", "High School", "Some College", "College+"))) %>% na.omit()
  
 model = lm(Income ~ Race + Sex + Marital_Status + Age_2010 + Region + edu_bin + avg_LT_rate, data = filter(nls_data_modeling))
-plot(model, which=c(1))
-plot(model, which=c(2))
- 
-model_data = model.frame(model)
-model_data$Predicted = predict(model)
-summary(model)
-vif(model, type = "predictor")
-coeftest(model, vcov = vcovHC(model, type = "HC1"))
+```
+
+```{r modelsum, echo=FALSE, message=FALSE,warning=FALSE}
+library(broom)
+library(kableExtra)
+
+coef_summary <- tidy(model, vcov = vcovHC(model, type = "HC1"))
+
+coefs <- coef_summary %>%
+  mutate(
+    Estimate    = round(estimate, 3),
+    `Std. Error`= round(std.error, 3),
+    `t value`   = round(statistic, 3),
+    `Pr(>|t|)`  = ifelse(p.value < 2e-16,
+                    "< 2e-16",
+                    formatC(p.value, format = "e", digits = 2)
+                  ),
+    Signif.     = symnum(
+                    p.value,
+                    corr     = FALSE,
+                    cutpoints= c(0, 0.001, 0.01, 0.05, 0.1, 1),
+                    symbols  = c("***", "**", "*", ".", " ")
+                  )
+  ) %>%
+  dplyr::select(term, Estimate, `Std. Error`, `t value`, `Pr(>|t|)`, Signif.)
+
+sm     <- summary(model)
+rse    <- round(sm$sigma, 0)
+df_res <- sm$df[2]
+rsq    <- round(sm$r.squared, 4)
+adj    <- round(sm$adj.r.squared, 4)
+F      <- sm$fstatistic
+Fval   <- round(F[1], 0); Fdf1 <- F[2]; Fdf2 <- F[3]
+Fp     <- pf(F[1], F[2], F[3], lower.tail = FALSE)
+Fp_lbl <- ifelse(Fp < 2e-16, "< 2e-16", formatC(Fp, format = "e", digits = 2))
+
+
+coefs %>%
+  kable(
+    format    = "html",  
+    caption   = "Coefficients",
+    booktabs  = TRUE,
+    align     = c("l","r","r","r","r","c")
+  ) %>%
+  kable_styling(
+    full_width       = FALSE,
+    position         = "center",
+    bootstrap_options= c("striped","hover","condensed")
+  ) 
+
+summary_row <- tibble(
+  `Residual SE`            = rse,
+  `Degrees of Freedom`     = df_res, 
+  `R-squared`     = rsq,
+  `Adjusted R-squared`     = adj,
+  `F-statistic`           = Fval,
+  `P-Value`  = Fp_lbl, 
+)
+
+summary_row %>%
+  kable(
+    format    = "html",
+    caption   = "Model Fit Statistics",
+    booktabs  = TRUE,
+    align     = c("l","r","r","r","r")
+  ) %>%
+  kable_styling(
+    full_width        = FALSE,
+    position          = "center",
+    bootstrap_options = c("striped","hover","condensed")
+  )
+
 
 ```
 
-## Results, Limitations, and Conclusion
+- Our model has a r-squared value of 0.2009, indicating that 20.09% of the variance in our model is explained by the model's covariates. The adjusted r-squared value is slightly lower at 0.1999, meaning our model explains 19.99% of the variance in the model after adjusting for the number of predictors. 
+
+- The F-statistic of 199 and p-value of <2e-16 (extremely close to 0) confirms that the overall model is statistically significant; Atleast some of the covariates in the model explain our response variable `Income`. Only `Age_2010` and `RegionSouth` fail to have a significant effect in explaining `Income`. The residual standard error of 22033 (roughly `0.5418` of mean income) indicates substantial noise exists in our model. 
+
+```{r rse_analysis, echo=FALSE, message=FALSE,warning=FALSE, include=FALSE}
+
+mean_income <- mean(nls_data_modeling$Income)
+rse <- summary(model)$sigma
+rse / mean_income
+
+```
+
+Based on the metrics we observed, we observed our model's diagnostic plots in the form of a residual vs. fitted plot and a Q-Q normality plot.
+
+```{r residualplot, echo=FALSE, message=FALSE, warning=FALSE}
+
+df_info <- augment(model)
+
+residplot <- ggplot(df_info, aes(.fitted, .resid)) + geom_point(alpha = 0.5, size = 1) + geom_smooth(method = "loess", se = FALSE, color = "firebrick") + geom_hline(yintercept = 0, linetype = "dashed", color = "grey") + labs(x = "Fitted values (Predicted Income in $)", y = "Residuals", title = "Residuals vs Fitted - OLS Model") +
+theme_minimal()
+
+residplot
+
+```
+- The residual vs. fitted values for our model reveals funneling, indicating moderate levels of heteroscedasticity that could bias the standard errors for our coefficients. This could distort our t-test statistics and p-values and undermining the actual significance of covariates in the model.   
+
+```{r qqplot, echo=FALSE, message=FALSE,warning=FALSE}
+
+norm_plot <- ggplot(df_info, aes(sample = .std.resid)) + stat_qq(size = 0.8) +
+  stat_qq_line(linetype = "dashed", color = "firebrick") + labs(x = "Theoretical Quantiles", y = "Standardized Residuals", title = "Normal Q–Q Plot") + theme_minimal()
+
+norm_plot
+
+```
+- Analyzing our normal Q-Q plot, most points follow along the dashed diagonal line very well; most residuals are approximately normally distributed. 
+
+- On the ends, several points stray away, reflecting a few extreme (under and over) predictions and heavier tails than a normal Gaussian distribution. These results are expected as we only trimmed the most extreme outliers and because of the nature of our data (most people cluster around the middle of the distribution, but a few people earn very little while a few earn very large sums -- disparity in income distribution). 
+
+Another consideration we made was to check for multicollinearity (for the precision of our coefficient estimates) by computing predictor-level GVIF values adjusted with degrees of freedom. All values fell below 1.5, with most covariates having GVIF values close to 1. No interaction terms were needed in our model, and our r-squared and adjusted r-squared values are not inflated by correlated predictors. 
+
+```{r vif, echo=FALSE, message=FALSE, warning=FALSE}
+
+vif_tibble <- as_tibble(
+  vif(model, type = "predictor"), rownames = "Predictor")
+
+vif_pres <- vif_tibble %>% dplyr::select(
+    -`Interacts With`,
+    -`Other Predictors`
+    )
+  
+vif_pres %>%
+  kable(
+    format   = "html",
+    caption  = "Predictor-level Variance Inflation Factors",
+    booktabs = TRUE
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed"),
+    full_width        = FALSE,
+    position          = "center"
+  )
+
+```
+
+After checking diagnostics and GVIFs: 
+
+- Moderate heteroscedasticity existed (seen in residual vs. fitted plot).
+- Residuals in our Q-Q plot were roughly normal. 
+- Relatively no multicollinearity based on the GVIFs.
+
+Our next logical step was to experiment with stabilizing the variance through transformations of our outcome. 
+
+We fitted various transformations, included four common ones (`boxcox` - lambda = 0.6, `square root`, `logarithm`, `reciprocal`), and compared their residual standard errors for further analysis.  
+
+```{r transformations, echo=FALSE, message=FALSE, warning=FALSE}
+library(MASS)
+
+bc <- boxcox(lm(Income ~ Race + Sex + Marital_Status + Age_2010 + Region + edu_bin + avg_LT_rate, data = nls_data_modeling), lambda = seq(-1, 2, 0.1), plotit = FALSE)
+lambda_opt <- bc$x[which.max(bc$y)]
+
+mods <- list(
+  `sqrt(Income)`    = lm(update(model, formula = sqrt(Income)    ~ .), data = nls_data_modeling),
+  `log(Income + 1)` = lm(update(model, formula = log(Income + 1) ~ .), data = nls_data_modeling),
+  `1 / Income`      = lm(update(model, formula = I(1/Income)     ~ .), data = nls_data_modeling),
+  `BC(λ=0.6)`       = lm(update(model, formula = I((Income^0.6 - 1)/0.6) ~ .), data = nls_data_modeling)
+)
+
+resid_ses <- tibble(
+  Transform   = names(mods),
+  Residual_SE = sapply(mods, function(m) round(summary(m)$sigma, 0))
+)
+
+resid_ses %>%
+  kable(
+    format    = "html",
+    caption   = "Residual Standard Errors by Transformation",
+    booktabs  = TRUE,
+    col.names = c("Transformation", "Residual SE"),
+    align     = c("l", "r")
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped","hover","condensed"),
+    full_width        = FALSE,
+    position          = "center"
+  )
+
+```
+- For the `sqrt()` transformation, the residual SE was 59 `square root dollar units`, showing some variance stabilization but not intuitive on this scale. 
+
+- For the `log()` transformation, the residual SE was 1 `log dollar unit`, translating to multiplicative errors of `~2.7x` in our residual calculations.    
+
+- For the `1/Income` reciprocal transformation, the residual SE was 0. The transformation collapsed all the variation towards 0 but over compressed to the point of breaking interpretability of the coefficients.   
+
+- For the `boxcox` transformation, the residual SE was 332 (on lambda value of 0.6), comparable to the sqrt() transform (lambda value 0.5) but non-intuitive on a different scale. 
+
+Further analysis into the residual vs. fitted plots for all the transformations revealed that none of these transformations corrected for heteroscedasticity, with all showing funneling (and therefore we have omitted the plots for brevity).  
+
+```{r transformplots, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+old_par <- par(mfrow = c(2, 2), mar = c(4, 4, 4, 1))
+
+model_names <- names(mods)[1:4]
+for (nm in model_names) {
+  plot(
+    mods[[nm]],
+    which = 1,
+    main  = paste("Residuals vs Fitted —", nm),
+    sub   = "" 
+  )
+}
+
+```
+
+
+Instead of using these transformations, we decided to keep `Income` on its original scale and correct for valid inference by using robust standard errors through `coeftest()` for unbiased point estimates and accurate standard errors, t-stat values, and p-values under heteroscedasticity 
+
+```{r coeftestadj, echo=FALSE, message=FALSE,warning=FALSE}
+
+coeft_table <- coeftest(model, vcov = vcovHC(model, type = "HC1"))
+
+co_tibble <- tidy(coeft_table) %>%
+  transmute(
+    term         = term,
+    Estimate     = round(estimate,    3),
+    `Std. Error` = round(std.error,   3),
+    `t value`    = round(statistic,   3),
+    `Pr(>|t|)`   = ifelse(
+                      p.value < 2e-16, 
+                      "< 2e-16", 
+                      formatC(p.value, format="e", digits=2)
+                    ),
+    Signif       = symnum(
+                      p.value,
+                      corr      = FALSE,
+                      cutpoints = c(0,0.001,0.01,0.05,0.1,1),
+                      symbols   = c("***","**","*","."," ")
+                    )
+  )
+
+co_tibble %>%
+  kable(
+    format    = "html",
+    caption   = "HC1‐Robust coeftest t‐tests for OLS Coefficients",
+    booktabs  = TRUE,
+    align     = c("l","r","r","r","r","c")
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped","hover","condensed"),
+    full_width        = FALSE,
+    position          = "center"
+  )
+
+```
+After applying robust inference with `coeftest()`, our standard errors, t-values, and p-values were adjusted. Coefficients for predictors remained the same. We clustered by `Case_ID` to check for between-person correlation, but this did not differ from the original HC1 coeftest() and did not alter conclusions, so we only reported the original results. While there were no changes to significant terms, the p-value for average long-term interest rates lowered further.   
+
+With valid inferences now, the last part we decided to test was the use of stepwise AIC/BIC regression for variable selection. 
+
+```{r stepAICBIC, echo=FALSE, message=FALSE,warning=FALSE}
+
+full_mod <- lm(
+  Income ~ Race + Sex + Marital_Status + Age_2010 + Region + edu_bin + avg_LT_rate,
+  data = nls_data_modeling
+)
+
+null_mod <- lm(Income ~ 1, data = nls_data_modeling)
+
+step_aic <- stepAIC(
+  object    = full_mod,
+  scope     = list(lower = null_mod, upper = full_mod),
+  direction = "both",
+  trace     = FALSE
+)
+
+n_obs <- nrow(nls_data_modeling)
+step_bic <- step(
+  object    = null_mod,
+  scope     = list(lower = null_mod, upper = full_mod),
+  direction = "both",
+  k         = log(n_obs),
+  trace     = FALSE
+)
+
+selected_aic <- formula(step_aic)
+selected_bic <- formula(step_bic)
+
+tibble(
+  Criterion = c("AIC", "BIC"),
+  Formula   = c(
+    deparse(selected_aic, width.cutoff = 60),
+    deparse(selected_bic, width.cutoff = 60)
+  )
+) %>%
+  knitr::kable(
+    caption = "Variables Chosen by Stepwise AIC vs. BIC",
+    booktabs = TRUE, 
+  )
+
+```
+Both AIC and BIC criterion based selections show the same models, omitting `Age_2010`, aligning with the `***` significance markers in our coefficient tests. While specific levels in variables (`RegionSouth`, `Marital_StatusSeparated`, etc) are not considered significant, the overall variables they belong to are significant as other levels have an effect. These stepwise regression results need to be considered with caution as heteroscedasticity violates the penalties enacted by AIC and BIC. More principled selection methods can be explored, but these are out of our scope. 
+
+
+## Conclusion
+
+Based on our diagnostics and overall checks, the following is our OLS model on the untransformed `Income` scale: 
+
+$$
+\mathrm{Income}_i \;=\; \beta_0 
+  + \beta_{\text{Race}} 
+  + \beta_{\text{Sex}} 
+  + \beta_{\text{Marital}} 
+  + \beta_{\text{Region}} 
+  + \beta_{\text{Edu}} 
+  + \beta_{\text{LT Rate}} 
+  + \varepsilon_i
+$$
+
+Our pooled-OLS model (pooling 2006, 2008, and 2010 while retaining only long-term average interest rates) with HC1-Robust SEs (checked for person-clustered SEs) provided us with the following key takeaways: 
+
+**Education and Gender remain the most dominant effects on Income**:
+- With all other predictors held constant, males earned on average `~$14,242` more per year than females regardless of the year. 
+
+- Averaging across 2006-2010, college graduates earned nearly `~$30000` more than those who did not attend high school ("Less than HS" is part of the base estimate as an indicator variable). The gap is of a similar magnitude in each year, which suggests that a college education was stable even during the 2008 downturn. 
+
+- Each successive education category translated to about `$7000-$11000` in additional annual earnings, a pattern stable across 2006-2010.  
+
+**Race, Marriage, and Region have strong secondary effects**:
+- Individuals identifying as `Non-Black/Non-Hispanic` and `Hispanic` earned nearly `$2993` and `$2807` more than those identifying as `Black / African-American` (baseline), potentially indicative of `Black / African-American` individuals being disproportionately affected with relation to earnings. 
+
+- Married individuals earned `$6627` more than those who never married (baseline). Divorced individuals earned `$4408` more, while separated and widowed individuals earned `$1682` and `$677` less, respectively. Marriage might have had an economical advantage (potentially dual incomes, shared expenses, financial support from spouse). 
+
+- Compared to those living in the central United States (baseline), residents in the Northeast earned `~$4010` more, and residents living in the West earned `~2824` more. The South had a modest increase in earnings of `~$445`. These differences may reflect economic opportunities, urbanization, and higher costs of living. 
+
+**Macroeconomic conditions have an impact**:  
+By omitting factor levels for each year, the long-term interest rates are isolated and show the marginal cyclical effect of the rates, not conflated with other effects embedded in the model and intercept (ex: wage growth, recessionary gaps, stimulus programs). 
+
+- A one-percent point rise in the average long-term interest rate is associated with a `$2523` reduction in income on average across the three years, even after pooling across the recessionary dip in 2008.
+
+This reduction does not account for total shock in 2008, rather reflecting on the credit-cost sensitivity, explaining the average difference in income due to the change in borrowing costs with all other predictors fixed.
