@@ -41,7 +41,7 @@ Below is our interactive dashboard - a map which shows the national income avera
 #| echo: false 
 #| standalone: true
 #| warning: false
-#| viewerHeight: 650
+#| viewerHeight: 800
 
 library(shiny)
 library(tidyverse)
@@ -126,7 +126,7 @@ ui <- fluidPage(
     mainPanel(
   leafletOutput("map", height = 400),
   br(),
-  h4("Overall Country Income"),
+  h4("Overall Country/Region Income"),
   fluidRow(
     column(3, valueBoxOutput("card2006", width = 12)),
     column(1, div(style = "font-size: 30px; text-align: center;", icon("arrow-right"))),
@@ -266,7 +266,7 @@ Falling interest rates during the 2008 recession provided financial relief for h
 ```{r, echo= FALSE, message=FALSE}
 #| eval: false
 #| standalone: true
-#| viewerHeight: 640 # You will have to adjust this to fit everything
+#| viewerHeight: 730 # You will have to adjust this to fit everything
 
 
 library(shiny)
