@@ -17,8 +17,7 @@ Picture this — you’re approaching a major crossroads in life. Maybe you’re
 
 This was the reality for members of the 1979 National Longitudinal Survey of Youth cohort, who found themselves navigating one of the most severe economic downturns in modern history right at a critical point in their financial lives.
 
-How did the Great Recession of 2008 impact their incomes? How did falling interest rates shape their financial decisions and opportunities?
-In the analysis ahead, we dive into these questions — using regression models to uncover how income and interest rate dynamics shifted from 2006 to 2010. Join us as we explore the lasting financial ripples of the crisis and the stories hidden within the numbers.
+**Our aim is to show how the Great Recession of 2008 impact these members' incomes. We want to show how falling interest rates shaped their financial decisions and opportunities.** In the analysis ahead, we dive into these questions — using regression models to uncover how income and interest rate dynamics shifted from 2006 to 2010. Join us as we explore the lasting financial ripples of the crisis and the stories hidden within the numbers.
 
 
 ---
@@ -28,7 +27,7 @@ In the analysis ahead, we dive into these questions — using regression models 
 
 Below is our interactive dashboard - a map which shows the national income average for the years 2006, 2008 and 2010. Additionally, it allows users to filter these income results by region selected on map and race. 
 
-#####What You Will Observe : 
+##### What You Will Observe : 
 1. Overall national income grew from 2006 to 2008 but stagnated slightly in 2010 (41,284 → 41,670)
 
 2.Non-Hispanic incomes followed a similar trend but remained higher than the national average
@@ -42,7 +41,7 @@ Below is our interactive dashboard - a map which shows the national income avera
 #| echo: false 
 #| standalone: true
 #| warning: false
-#| viewerHeight: 650
+#| viewerHeight: 800
 
 library(shiny)
 library(tidyverse)
@@ -127,7 +126,7 @@ ui <- fluidPage(
     mainPanel(
   leafletOutput("map", height = 400),
   br(),
-  h4("Overall Country Income"),
+  h4("Overall Country/Region Income"),
   fluidRow(
     column(3, valueBoxOutput("card2006", width = 12)),
     column(1, div(style = "font-size: 30px; text-align: center;", icon("arrow-right"))),
@@ -267,7 +266,7 @@ Falling interest rates during the 2008 recession provided financial relief for h
 ```{r, echo= FALSE, message=FALSE}
 #| eval: false
 #| standalone: true
-#| viewerHeight: 640 # You will have to adjust this to fit everything
+#| viewerHeight: 730 # You will have to adjust this to fit everything
 
 
 library(shiny)
@@ -314,18 +313,3 @@ server <- function(input, output) {
 # Create Shiny app ----
 shinyApp(ui = ui, server = server)
 ```
-
-**Note**: This page should have no code visible, i.e. use `#| echo: FALSE`.  
-
-
-
-
-## Rubric: Other components
-
-### Video Recording
-
-Make a video recording (probably using Zoom) demonstrating your interactive components.
-You should provide a quick explanation of your data and demonstrate some of the conclusions from your EDA.
-This video should be no longer than 4 minutes.
-Include a link to your video (and password if needed) in your README.md file on your Github repository. You are not required to provide a link on the website.
-This can be presented by any subset of the team members.
