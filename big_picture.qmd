@@ -313,22 +313,10 @@ server <- function(input, output) {
 # Create Shiny app ----
 shinyApp(ui = ui, server = server)
 ```
-<<<<<<< Updated upstream
+
 =======
 
 **Note**: This page should have no code visible, i.e. use `#| echo: FALSE`.  
 
 
 
-
-## Rubric: Other components
-
-### Video Recording
-
-Make a video recording (probably using Zoom) demonstrating your interactive components.
-You should provide a quick explanation of your data and demonstrate some of the conclusions from your EDA.
-This video should be no longer than 4 minutes.
-Include a link to your video (and password if needed) in your README.md file on your Github repository. You are not required to provide a link on the website.
-This can be presented by any subset of the team members.
-
->>>>>>> Stashed changes
