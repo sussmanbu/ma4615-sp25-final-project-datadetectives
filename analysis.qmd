@@ -45,7 +45,7 @@ ggplot(nls_data_clean_filtered, aes(x = factor(Age_2010), y = Income_2010)) + ge
 
 ```
 
-These boxplots explore the difference in income along the lines of age, race, and sex. Across most age and race groups, men in the dataset tend to make more money than women. The pay gap is especially pronounced among Non-Black / Non-Hispanic people. These boxplots indicate that there is a higher proportion of women who do not make any income. The higher number of zero-income values causes some issues for analysis to be accounted for during outlier removal. Our analysis aims to examine how the differences observed in income between groups observed in these boxplots were impacted by the recession. 
+These boxplots explore the difference in income along the lines of age, race, and sex. Across most age and race groups, men in the dataset tend to make more money than women. The pay gap is especially pronounced among Non-Black / Non-Hispanic people. These boxplots indicate that there is a higher proportion of women who do not make any income. The higher number of zero-income values causes some issues for analysis to be accounted for during outlier removal. Our analysis aims to examine how the differences observed in income between groups observed in these boxplots were impacted by the recession and macroeconomic trends. 
 
 ```{r datacombination, echo= FALSE, warning=FALSE, message=FALSE}
 
