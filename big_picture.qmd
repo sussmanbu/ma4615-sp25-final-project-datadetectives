@@ -316,7 +316,5 @@ shinyApp(ui = ui, server = server)
 
 =======
 
-**Note**: This page should have no code visible, i.e. use `#| echo: FALSE`.  
-
 
 
